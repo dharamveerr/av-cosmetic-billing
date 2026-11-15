@@ -13,6 +13,7 @@ then open http://localhost:8080 (use `PORT=3000 npm run dev` for another port) a
 - `index.html` - page structure
 - `styles.css` - look and layout (light and dark, phone first)
 - `config.js` - Supabase project URL and the public (publishable) key
+- `pdf.js` - builds the receipt PDF (no library; drawn on a canvas so Hindi looks right)
 - `app.js` - all the logic (sign in, billing, items, clients, pending payments, reports, backup, English/Hindi)
 - `supabase/schema.sql` - the database tables, security rules and functions (already run once in the project)
 - `server.js` - tiny local web server used by `npm run dev`

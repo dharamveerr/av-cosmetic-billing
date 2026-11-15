@@ -26,7 +26,10 @@ var HI={
 'Who is this bill for?':'यह बिल किसके लिए है?','Search customer by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No customers match.':'कोई ग्राहक नहीं मिला।',
 '+ New customer':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
 'GST is added at each item\'s rate.':'हर सामान की अपनी दर से जीएसटी जुड़ेगा।',
-'Pending':'बकाया','Paid':'जमा','Manual (own unit)':'मैनुअल (अपनी इकाई)','Unit name':'इकाई का नाम','Pieces in one unit':'एक इकाई में पीस','Price per unit (\u20B9)':'प्रति इकाई कीमत (\u20B9)','e.g. Set':'जैसे सेट',
+'Pending':'बकाया','Paid':'जमा','Share PDF':'PDF शेयर करें','Download PDF':'PDF डाउनलोड करें','PDF downloaded. Attach it in WhatsApp.':'PDF डाउनलोड हो गया। इसे WhatsApp में जोड़ें।','PDF could not be created':'PDF नहीं बन सका',
+'Review bill':'बिल जाँचें','Please check the bill before saving.':'सहेजने से पहले बिल जाँच लें।','Back':'वापस','Confirm & save':'पक्का करें और सहेजें',
+'Import items from Excel':'Excel से सामान जोड़ें','Save your Excel sheet as CSV using the columns in the sample. Name and one price are needed. Then choose the file here.':'अपनी Excel शीट को नमूने के कॉलम के साथ CSV के रूप में सहेजें। नाम और एक कीमत ज़रूरी हैं। फिर फ़ाइल यहाँ चुनें।',
+'Import items':'सामान जोड़ें','no price':'कीमत नहीं है','item already exists':'सामान पहले से है','Manual unit needs the unit name and pieces':'मैनुअल इकाई के लिए इकाई का नाम और पीस चाहिए','Manual (own unit)':'मैनुअल (अपनी इकाई)','Unit name':'इकाई का नाम','Pieces in one unit':'एक इकाई में पीस','Price per unit (\u20B9)':'प्रति इकाई कीमत (\u20B9)','e.g. Set':'जैसे सेट',
 'Enter the unit name and how many pieces it holds':'इकाई का नाम और उसमें कितने पीस हैं, लिखें','Example: Set, 6 pieces, \u20B9300. A bill line then reads "2 Set (12 pcs)".':'उदाहरण: सेट, 6 पीस, \u20B9300। बिल में लिखा आएगा "2 सेट (12 पीस)"।','Import customers from Excel':'Excel से ग्राहक जोड़ें','Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.':'अपनी Excel शीट को CSV के रूप में सहेजें, जिसमें Name, Mobile Number और Address कॉलम हों। फिर फ़ाइल यहाँ चुनें।',
 'Download sample CSV':'नमूना CSV डाउनलोड करें','Import customers':'ग्राहक जोड़ें','Or paste the rows here':'या पंक्तियाँ यहाँ पेस्ट करें','Row':'पंक्ति','no name':'नाम नहीं है','mobile number must be 10 digits':'मोबाइल नंबर 10 अंकों का होना चाहिए','mobile number already exists':'मोबाइल नंबर पहले से है',
 'Choose a CSV file or paste the rows first':'पहले CSV फ़ाइल चुनें या पंक्तियाँ पेस्ट करें','Added':'जोड़े गए','Skipped':'छोड़े गए','Switch to light mode':'लाइट मोड चालू करें','Switch to dark mode':'डार्क मोड चालू करें','Sign in':'साइन इन','Sign out':'साइन आउट','Email':'ईमेल','Password':'पासवर्ड','Wrong email or password':'ईमेल या पासवर्ड गलत है','Could not connect. Check your internet.':'कनेक्ट नहीं हो सका। इंटरनेट जाँचें।',
@@ -496,13 +499,30 @@ function drawBill(){
       cur.paidStr='';drawBill();return}
     var i=e.target.dataset.qty;if(i!=null){cur.paidStr='';var q=parseInt(e.target.value,10);if(q>0)cur.lines[+i].qty=q;else cur.lines.splice(+i,1);drawBill()}};
   $('#clear').onclick=function(){var s=cur.clientSel;newBill();cur.clientSel=s;cur.step='items';drawBill()};
-  $('#save').onclick=saveBill;
+  $('#save').onclick=reviewBill;
   var cb=$('#cartbar');
   if(cb){
     cb.hidden=!cur.lines.length||!cartVisible;
     cb.innerHTML='<div><div class="note">'+cur.lines.length+' '+esc(t('Items'))+'</div><b style="font-size:18px">'+money(c.total)+'</b></div><button class="primary" id="cartgo">'+esc(t('View bill'))+'</button>';
     $('#cartgo').onclick=function(){$('#billpanel').scrollIntoView({behavior:'smooth',block:'start'})};
   }
+}
+function reviewBill(){
+  if(!cur.lines.length)return;
+  var c0=cur.clientSel&&cur.clientSel!=='walkin'?clientById(cur.clientSel):null,tt=calc(cur),pd=paidNow(tt),left=r2(tt.total-pd);
+  if(left>0&&!c0){toast(t('Choose a customer to keep a pending amount'));return}
+  var rows=cur.lines.map(function(l){return '<tr><td>'+esc(nm(l))+'<div class="note">'+esc(qtyLabel(l))+' \u00D7 '+money(l.price)+'</div></td><td class="num">'+money(l.price*l.qty)+'</td></tr>'}).join('');
+  var tot=function(a,v,b){return '<tr><td'+(b?' style="font-weight:600"':'')+'>'+esc(a)+'</td><td class="num"'+(b?' style="font-weight:600"':'')+'>'+v+'</td></tr>'};
+  var m=$('#modal');openBill=null;openLedger=null;
+  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(t('Review bill'))+'"><h2>'+esc(t('Review bill'))+'</h2><p class="note">'+esc(t('Please check the bill before saving.'))+'</p>'+
+  '<p><span class="muted">'+esc(t('Customer'))+':</span> <b>'+esc(clientLabel())+'</b></p>'+
+  '<div class="tablewrap"><table style="min-width:0"><tbody>'+rows+
+  (tt.disc>0||(cur.gstOn&&tt.tax>0)?tot(t('Subtotal'),money(tt.sub)):'')+(tt.disc>0?tot(t('Discount'),'\u2212 '+money(tt.disc)):'')+(cur.gstOn&&tt.tax>0?tot(t('GST'),money(tt.tax)):'')+
+  tot(t('Total'),money(tt.total),true)+tot(t('Paid now'),money(pd))+tot(t('Balance left'),'<span class="'+(left>0?'warn':'')+'">'+money(left)+'</span>')+tot(t('Payment'),esc(t(cur.pay)))+
+  '</tbody></table></div><div class="row" style="margin-top:14px"><button type="button" id="rvback">'+esc(t('Back'))+'</button><button class="primary grow" type="button" id="rvok">'+esc(t('Confirm & save'))+'</button></div></div>';
+  m.hidden=false;
+  $('#rvback').onclick=closeModal;
+  $('#rvok').onclick=function(){closeModal();saveBill()};
 }
 function saveBill(){
   if(!cur.lines.length)return;
@@ -559,11 +579,13 @@ function showBill(id){
     '<div class="row"><span class="muted">'+esc(t('Balance after this payment'))+':</span> <b class="warn" id="pprev">'+money(due)+'</b><button class="small" type="button" id="pfullb">'+esc(t('Full balance'))+'</button></div><div class="note warn" id="perr" hidden></div>'+
     '<button class="primary" id="prec">'+esc(t('Record payment'))+'</button><p class="note">'+esc(t('If the customer will pay the rest later, leave it. The balance stays in Pending until you record the payment.'))+'</p></div>':'';
   m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(b.no)+'"><div class="row" style="justify-content:space-between"><h2>'+esc(b.no)+(b.status==='cancelled'?' <span class="pill cancel">'+esc(t('Cancelled'))+'</span>':'')+'</h2><button class="small" id="mx">'+esc(t('Close'))+'</button></div>'+
-  '<div class="row" style="margin-top:8px">'+statusPill(b)+'<span class="note">'+esc(t('Paid'))+' '+money(paidOf(b))+' / '+money(b.total)+'</span></div><pre class="receipt">'+esc(receiptText(b))+'</pre>'+plist+form+'<div class="row" style="margin-top:12px"><button class="primary grow" id="mc">'+esc(t('Copy as text'))+'</button>'+
+  '<div class="row" style="margin-top:8px">'+statusPill(b)+'<span class="note">'+esc(t('Paid'))+' '+money(paidOf(b))+' / '+money(b.total)+'</span></div><pre class="receipt">'+esc(receiptText(b))+'</pre>'+plist+form+'<div class="row" style="margin-top:12px"><button class="primary grow" id="msh">'+esc(t('Share PDF'))+'</button><button id="mdl">'+esc(t('Download PDF'))+'</button></div><div class="row" style="margin-top:8px"><button class="grow" id="mc">'+esc(t('Copy as text'))+'</button>'+
   (b.status!=='cancelled'?'<button class="danger" id="mk">'+esc(t('Cancel bill'))+'</button>':'')+'</div><p class="note">'+esc(t('Send the copied text on WhatsApp, or paste it into a printing app for your thermal printer.'))+'</p></div>';
   m.hidden=false;
   $('#mx').onclick=closeModal;
   $('#mc').onclick=function(){copy(receiptText(b),t('Bill copied'))};
+  $('#msh').onclick=function(){sharePdf(b)};
+  $('#mdl').onclick=function(){var f=billPdf(b);if(f)saveBlob(f.blob,f.name)};
   var pr=$('#prec');if(pr)pr.onclick=function(){
     var amt=parseFloat($('#pa').value),pe=$('#perr');
     if(!(amt>0)){pe.textContent=t('Enter the amount received first.');pe.hidden=false;$('#pa').focus();return}
@@ -579,6 +601,41 @@ function showBill(id){
     rpc('cancel_bill',{p_bill:b.id}).then(function(){
       b.status='cancelled';b.lines.forEach(function(l){var it=itemById(l.itemId);if(it&&it.stock!==''&&it.stock!=null)it.stock+=Math.round(l.qty*(l.factor||1))});
       toast(b.no+' '+t('cancelled'));showBill(id);render()}).catch(fail)})};
+}
+/* PDF of a bill: named FirstName_date_invoice.pdf, shared through the phone's share sheet (WhatsApp etc.) or downloaded */
+function pdfName(b){
+  var first=String(b.clientName||'Customer').trim().split(/\s+/)[0]||'Customer';
+  first=first.replace(/[^A-Za-z0-9\u0900-\u097F_-]/g,'')||'Customer';
+  return first+'_'+b.date+'_'+b.no+'.pdf';
+}
+function billDoc(b){
+  var cn=nm(b,'clientName','clientNameHi'),pd=paidOf(b),due=b.status==='cancelled'?0:r2(b.total-pd);
+  var totals=[[t('Subtotal'),money(b.subtotal)]];
+  if(b.discount)totals.push([t('Discount'),'\u2212 '+money(b.discount)]);
+  if(b.tax)totals.push([t('GST'),money(b.tax)]);
+  totals.push([t('TOTAL'),money(b.total),true],[t('Paid'),money(pd)]);
+  if(due>0)totals.push([t('Balance due'),money(due),true]);
+  totals.push([t('Paid by'),t(b.pay)]);
+  return {title:t('AV Cosmetics & Bangle Store'),subtitle:t('Tax invoice / cash memo'),stamp:b.status==='cancelled'?'*** '+t('CANCELLED')+' ***':'',
+    info:[[t('Bill'),b.no],[t('Date'),b.date+'  '+b.time],[t('Customer'),cn+(b.clientPhone?'  '+b.clientPhone:'')]],
+    items:b.lines.map(function(l){return {name:nm(l),detail:qtyLabel(l)+' \u00D7 '+money(l.price),amount:money(l.total)}}),
+    totals:totals,footer:t('Thank you, visit again')};
+}
+function billPdf(b){
+  try{return {blob:window.AVPDF.build(billDoc(b)),name:pdfName(b)}}catch(e){toast(t('PDF could not be created'));return null}
+}
+function saveBlob(blob,name){
+  var u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000);
+}
+function sharePdf(b){
+  var f=billPdf(b);if(!f)return;
+  var file;try{file=new File([f.blob],f.name,{type:'application/pdf'})}catch(e){}
+  if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
+    navigator.share({files:[file],title:f.name}).catch(function(e){if(e&&e.name!=='AbortError'){saveBlob(f.blob,f.name);toast(t('PDF downloaded. Attach it in WhatsApp.'))}});
+    return;
+  }
+  saveBlob(f.blob,f.name);toast(t('PDF downloaded. Attach it in WhatsApp.'));
 }
 function showLedger(cid){
   var c=clientById(cid);if(!c)return;
@@ -673,7 +730,12 @@ function viewItems(box){
   '<div class="row"><label class="grow">'+esc(t('HSN code'))+'<input id="ih" placeholder="'+esc(t('Optional'))+'"></label><label class="grow">'+esc(t('Stock (pieces)'))+'<input id="is" inputmode="numeric" placeholder="'+esc(t('Optional'))+'"></label></div>'+
   '<div class="row"><button class="primary grow" type="submit" id="isave">'+esc(t('Add item'))+'</button><button type="button" id="icancel" hidden>'+esc(t('Cancel edit'))+'</button></div>'+
   '<p class="note">'+esc(t('Changing a price here never changes old bills. They keep the price they were billed at.'))+'</p><p class="note">'+esc(t('Type the name in English. In Hindi mode it is written in Hindi automatically. Fill the Hindi name only to correct the spelling.'))+'</p></form>'+
-  '<div class="panel stack" id="catpanel"></div></div></div>';
+  '<div class="panel stack" id="catpanel"></div>'+
+  '<div class="panel stack" id="itemImport"><h2>'+esc(t('Import items from Excel'))+'</h2><p class="muted">'+esc(t('Save your Excel sheet as CSV using the columns in the sample. Name and one price are needed. Then choose the file here.'))+'</p>'+
+  '<div class="row"><button id="itemSample" type="button">'+esc(t('Download sample CSV'))+'</button></div>'+
+  '<input type="file" id="itemFile" accept=".csv,text/csv,text/plain" aria-label="CSV">'+
+  '<textarea id="itemText" placeholder="'+esc(t('Or paste the rows here'))+'" aria-label="'+esc(t('Or paste the rows here'))+'" style="min-height:120px"></textarea>'+
+  '<div class="row"><button class="primary" id="itemGo" type="button">'+esc(t('Import items'))+'</button></div><div id="itemRes" class="note"></div></div></div></div>';
 
   function fillCats(sel){
     $('#ic').innerHTML='<option value="">'+esc(t('Choose a category'))+'</option>'+allCats().map(function(c){return '<option value="'+esc(c)+'">'+esc(tc(c))+'</option>'}).join('')+'<option value="__new__">'+esc(t('+ Add new category…'))+'</option>';
@@ -712,7 +774,7 @@ function viewItems(box){
       return '<tr><td><b>'+esc(nm(i))+'</b>'+(i.hsn?'<div class="note">HSN '+esc(i.hsn)+'</div>':'')+'</td><td>'+esc(tc(i.category))+'</td><td class="num">'+money(i.price)+' / '+esc(t('pc'))+'<div class="note">'+money(dozPrice(i))+' / '+esc(t('dozen'))+'</div>'+(hasCustom(i)?'<div class="note">'+money(customPrice(i))+' / '+esc(uLabel(i.unitName))+' ('+i.unitQty+' '+esc(t('pcs'))+')</div>':'')+'</td><td class="num">'+(i.gst?i.gst+'%':'–')+'</td><td class="num">'+stc+'</td><td class="row"><button class="small" data-edit="'+i.id+'">'+esc(t('Edit'))+'</button><button class="small danger" data-del="'+i.id+'">'+esc(t('Delete'))+'</button></td></tr>'}).join(''):
       '<tr><td colspan="6" class="muted">'+esc(db.items.length?t('No items in this view.'):t('No items yet. Add the first one using the form.'))+'</td></tr>')+'</tbody></table></div>';
   }
-  fillCats('');drawCats();drawItems();
+  fillCats('');drawCats();drawItems();wireItemImport();
   $('#fq').addEventListener('input',function(e){itemF.q=e.target.value;drawItems()});
   $('#ic').onchange=function(){$('#icnw').hidden=this.value!=='__new__';if(this.value==='__new__')$('#icn').focus()};
   var reset=function(){$('#iform').reset();$('#iid').value='';$('#ititle').textContent=t('Add item');$('#isave').textContent=t('Add item');$('#icancel').hidden=true;$('#icnw').hidden=true;syncCu()};
@@ -884,6 +946,74 @@ function wireImport(){
       return batches.reduce(function(p,b){return p.then(function(){return rest('POST','/rest/v1/clients?on_conflict=id',b.map(clientRow),'resolution=merge-duplicates,return=minimal')})},Promise.resolve()).then(function(){
         db.clients=db.clients.concat(res.added);render();
         var box=$('#csvRes');
+        if(box)box.innerHTML='<b class="good-text">'+esc(t('Added'))+': '+res.added.length+'</b>'+(res.skipped.length?'<br><b>'+esc(t('Skipped'))+': '+res.skipped.length+'</b><br>'+res.skipped.slice(0,20).map(esc).join('<br>')+(res.skipped.length>20?'<br>\u2026':''):'');
+        toast(t('Added')+': '+res.added.length);
+      }).catch(fail);
+    });
+  };
+}
+
+/* Items import: parse a CSV file (see the sample for the columns) */
+var SAMPLE_ITEMS_CSV='Name,Hindi Name,Category,Price per Piece,Price per Dozen,Sold In,GST %,HSN Code,Stock (pieces),Unit Name,Pieces in Unit,Price per Unit\r\n'+
+  'Matte Lipstick,\u092E\u0948\u091F \u0932\u093F\u092A\u0938\u094D\u091F\u093F\u0915,Cosmetics,349,,Piece,18,3304,24,,,\r\n'+
+  'Glass Bangles,\u0915\u093E\u0901\u091A \u0915\u0940 \u091A\u0942\u0921\u093C\u093F\u092F\u093E\u0901,Bangles,12.5,150,Dozen,3,7018,240,,,\r\n'+
+  'Silk Thread Bangles,,Bangles,40,,Manual,3,7117,60,Set,6,220\r\n';
+function colKey(n){
+  if(/hindi/.test(n))return 'nameHi';
+  if(/dozen/.test(n))return 'dozen';
+  if(/unitname/.test(n))return 'unitName';
+  if(/piecesin|piecesper|unitqty|qtyinunit/.test(n))return 'unitQty';
+  if(/priceperunit|unitprice/.test(n))return 'unitPrice';
+  if(/soldin|defaultunit|^unit$|sellby|soldby/.test(n))return 'soldIn';
+  if(/category/.test(n))return 'category';
+  if(/gst|tax/.test(n))return 'gst';
+  if(/hsn/.test(n))return 'hsn';
+  if(/stock|qty|quantity/.test(n))return 'stock';
+  if(/price|rate|mrp/.test(n))return 'price';
+  if(/name|item|product/.test(n))return 'name';
+  return '';
+}
+function readItems(text){
+  var rows=parseCSV(text),res={added:[],skipped:[],cats:[]};
+  if(rows.length<2){return res}
+  var map={};rows[0].forEach(function(h,i){var k=colKey(h.toLowerCase().replace(/[^a-z0-9]/g,''));if(k&&map[k]==null)map[k]=i});
+  if(map.name==null){res.skipped.push(t('Row')+' 1: '+t('no name'));return res}
+  var num=function(v){var x=parseFloat(String(v==null?'':v).replace(/[^\d.\-]/g,''));return isNaN(x)?NaN:x};
+  var get=function(r,k){return map[k]==null?'':String(r[map[k]]==null?'':r[map[k]]).trim()};
+  var seen={};db.items.forEach(function(i){seen[i.name.toLowerCase()]=1});
+  var cats=db.categories.slice();
+  rows.slice(1).forEach(function(r,k){
+    var line=k+2,name=get(r,'name');
+    if(!name){res.skipped.push(t('Row')+' '+line+': '+t('no name'));return}
+    if(seen[name.toLowerCase()]){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('item already exists'));return}
+    var pp=num(get(r,'price')),dp=num(get(r,'dozen')),up=num(get(r,'unitPrice')),uq=parseInt(get(r,'unitQty'),10)||0,un=get(r,'unitName'),si=get(r,'soldIn').toLowerCase();
+    var custom=un&&uq>=2;
+    if(!(pp>=0)&&!(dp>=0)&&!(custom&&up>=0)){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('no price'));return}
+    var unit='pc';
+    if(/manual|custom|own/.test(si)){if(!custom){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('Manual unit needs the unit name and pieces'));return}unit='custom'}
+    else if(/doz/.test(si))unit='doz';
+    var price=pp>=0?pp:(dp>=0?r2(dp/12):r2(up/uq)),st=get(r,'stock'),cat=get(r,'category')||'Other',g=num(get(r,'gst'));
+    seen[name.toLowerCase()]=1;
+    if(cats.indexOf(cat)<0){cats.push(cat);res.cats.push(cat)}
+    res.added.push({id:uid(),name:name,nameHi:get(r,'nameHi'),category:cat,price:price,dozenPrice:dp>=0?dp:'',unit:unit,unitName:custom?un:'',unitQty:custom?uq:1,unitPrice:(custom&&up>=0)?up:'',gst:g>=0?g:0,hsn:get(r,'hsn'),stock:st===''||isNaN(parseInt(st,10))?'':Math.max(0,parseInt(st,10)),active:true});
+  });
+  return res;
+}
+function wireItemImport(){
+  $('#itemSample').onclick=function(){
+    var b=new Blob(['\uFEFF'+SAMPLE_ITEMS_CSV],{type:'text/csv;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u;a.download='items-sample.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000);
+  };
+  $('#itemFile').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$('#itemText').value=String(r.result)};r.readAsText(f)};
+  $('#itemGo').onclick=function(){
+    var res=readItems($('#itemText').value);
+    if(!res.added.length&&!res.skipped.length){toast(t('Choose a CSV file or paste the rows first'));return}
+    guard($('#itemGo'),function(){
+      var batches=[];for(var i=0;i<res.added.length;i+=200)batches.push(res.added.slice(i,i+200));
+      var p=res.cats.length?rest('POST','/rest/v1/categories?on_conflict=name',res.cats.map(function(n){return {name:n}}),'resolution=merge-duplicates,return=minimal'):Promise.resolve();
+      return batches.reduce(function(q,b){return q.then(function(){return rest('POST','/rest/v1/items?on_conflict=id',b.map(function(i){return itemRow(i)}),'resolution=merge-duplicates,return=minimal')})},p).then(function(){
+        db.items=db.items.concat(res.added);res.cats.forEach(function(c){db.categories.push(c)});render();
+        var box=$('#itemRes');
         if(box)box.innerHTML='<b class="good-text">'+esc(t('Added'))+': '+res.added.length+'</b>'+(res.skipped.length?'<br><b>'+esc(t('Skipped'))+': '+res.skipped.length+'</b><br>'+res.skipped.slice(0,20).map(esc).join('<br>')+(res.skipped.length>20?'<br>\u2026':''):'');
         toast(t('Added')+': '+res.added.length);
       }).catch(fail);
