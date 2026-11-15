@@ -5,6 +5,8 @@ var $=function(s,r){return (r||document).querySelector(s)};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
 var money=function(n){return '₹'+(Math.round(n*100)/100).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})};
 var r2=function(n){return Math.round(n*100)/100};
+/* Customer names: first letter of every word capital, the rest small (Dharamveer Gupta), whatever way it was typed */
+var titleCase=function(s){return String(s==null?'':s).trim().replace(/\s+/g,' ').toLowerCase().replace(/(^|[\s\-'\u2019.])(\p{L})/gu,function(m,a,b){return a+b.toUpperCase()})};
 var uid=function(){return Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4)};
 function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function nowTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
@@ -26,7 +28,10 @@ var HI={
 'Who is this bill for?':'यह बिल किसके लिए है?','Search customer by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No customers match.':'कोई ग्राहक नहीं मिला।',
 '+ New customer':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
 'GST is added at each item\'s rate.':'हर सामान की अपनी दर से जीएसटी जुड़ेगा।',
-'Pending':'बकाया','Paid':'जमा','Share PDF':'PDF शेयर करें','Download PDF':'PDF डाउनलोड करें','PDF downloaded. Attach it in WhatsApp.':'PDF डाउनलोड हो गया। इसे WhatsApp में जोड़ें।','PDF could not be created':'PDF नहीं बन सका',
+'Pending':'बकाया','Paid':'जमा','Quantity sold':'बिकी मात्रा','Pending today':'आज का बकाया','Yesterday':'कल','Last 7 days':'पिछले 7 दिन','This month':'इस महीने','All time':'सारा समय','All customers':'सभी ग्राहक','All payment modes':'सभी भुगतान तरीके','Min total':'कम से कम कुल','Max total':'ज़्यादा से ज़्यादा कुल','Sort by':'क्रम','Newest first':'नया पहले','Oldest first':'पुराना पहले',
+'Total: high to low':'कुल: ज़्यादा से कम','Total: low to high':'कुल: कम से ज़्यादा','Due: high to low':'बाकी: ज़्यादा से कम','Due: low to high':'बाकी: कम से ज़्यादा','Paid: high to low':'जमा: ज़्यादा से कम','Paid: low to high':'जमा: कम से ज़्यादा','Customer A to Z':'ग्राहक A से Z','Customer Z to A':'ग्राहक Z से A','Bill number: low to high':'बिल नंबर: कम से ज़्यादा','Bill number: high to low':'बिल नंबर: ज़्यादा से कम','Bin':'बिन','Moved to Bin':'बिन में डाला गया','Restored':'वापस आ गया','Delete forever':'हमेशा के लिए हटाएँ','Deleted on':'हटाने की तारीख','Days left':'बचे दिन','Type':'प्रकार','Deleted for good':'हमेशा के लिए हटा दिया','Delete customer':'ग्राहक हटाएँ',
+'Deleted items, customers and categories stay here for 30 days. You can restore them until then. After 30 days they are deleted for good.':'हटाए गए सामान, ग्राहक और श्रेणियाँ यहाँ 30 दिन रहते हैं। तब तक आप उन्हें वापस ला सकते हैं। 30 दिन बाद वे हमेशा के लिए हट जाते हैं।','Bills are never deleted. Use Cancel bill to cancel one.':'बिल कभी नहीं हटाए जाते। बिल रद्द करने के लिए "बिल रद्द करें" दबाएँ।','The Bin is empty.':'बिन खाली है।',
+'This customer still owes':'इस ग्राहक का बकाया है','Collect the payment first.':'पहले भुगतान ले लें।','Please check the bill. It is saved only when you press Confirm & save.':'कृपया बिल जाँच लें। "पक्का करें और सहेजें" दबाने पर ही यह सहेजा जाएगा।','edited':'बदला हुआ','By invoice':'बिल-वार','By date':'तारीख-वार','Time':'समय','Balance after':'इसके बाद बाकी','Total received':'कुल प्राप्त','No payments found.':'कोई भुगतान नहीं मिला।','Share PDF':'PDF शेयर करें','Download PDF':'PDF डाउनलोड करें','PDF downloaded. Attach it in WhatsApp.':'PDF डाउनलोड हो गया। इसे WhatsApp में जोड़ें।','PDF could not be created':'PDF नहीं बन सका',
 'Review bill':'बिल जाँचें','Please check the bill before saving.':'सहेजने से पहले बिल जाँच लें।','Back':'वापस','Confirm & save':'पक्का करें और सहेजें',
 'Import items from Excel':'Excel से सामान जोड़ें','Save your Excel sheet as CSV using the columns in the sample. Name and one price are needed. Then choose the file here.':'अपनी Excel शीट को नमूने के कॉलम के साथ CSV के रूप में सहेजें। नाम और एक कीमत ज़रूरी हैं। फिर फ़ाइल यहाँ चुनें।',
 'Import items':'सामान जोड़ें','no price':'कीमत नहीं है','item already exists':'सामान पहले से है','Manual unit needs the unit name and pieces':'मैनुअल इकाई के लिए इकाई का नाम और पीस चाहिए','Manual (own unit)':'मैनुअल (अपनी इकाई)','Unit name':'इकाई का नाम','Pieces in one unit':'एक इकाई में पीस','Price per unit (\u20B9)':'प्रति इकाई कीमत (\u20B9)','e.g. Set':'जैसे सेट',
@@ -140,7 +145,7 @@ function tc(c){return lang==='hi'?(HI[c]||tr(c)):c}
 
 /* ---------- data: Supabase cloud database (plain fetch, no library) ---------- */
 var DEFAULT_CATS=['Cosmetics','Bangles','Skin Care','Hair Accessories','Jewellery','Bindi & Sindoor','Mehndi','Perfume','Other'];
-var db={items:[],clients:[],bills:[],categories:[]};
+var db={items:[],clients:[],bills:[],categories:[],bin:[]};
 var legacy=null;
 function migrate(){
   db.items.forEach(function(i){if(!i.nameHi&&HN[i.name])i.nameHi=HN[i.name]});
@@ -176,6 +181,11 @@ function rest(method,path,body,prefer){
 }
 function upsert(table,row,key){return rest('POST','/rest/v1/'+table+'?on_conflict='+(key||'id'),row,'resolution=merge-duplicates,return=minimal')}
 function del(table,col,val){return rest('DELETE','/rest/v1/'+table+'?'+col+'=eq.'+encodeURIComponent(val),null,'return=minimal')}
+/* Bin: deleting only marks a row with a date; it can be restored for 30 days */
+function binSet(table,col,val,at){return rest('PATCH','/rest/v1/'+table+'?'+col+'=eq.'+encodeURIComponent(val),{deleted_at:at},'return=minimal')}
+function binDays(e){return Math.ceil((new Date(e.at).getTime()+30*86400000-Date.now())/86400000)}
+function toBin(type,id,name,data){db.bin.push({type:type,id:id,name:name,at:new Date().toISOString(),data:data})}
+function unbinCat(n){db.bin=db.bin.filter(function(e){return !(e.type==='category'&&e.id===n)})}
 function rpc(fn,args){return rest('POST','/rest/v1/rpc/'+fn,args)}
 function fetchAll(table,order){
   var out=[],step=1000;
@@ -188,17 +198,20 @@ function itemRow(i,skipStock){
   if(!skipStock)o.stock=(i.stock===''||i.stock==null)?null:i.stock;
   return o;
 }
-function rowClient(r){return {id:r.id,name:r.name,nameHi:r.name_hi||'',phone:r.phone||'',address:r.address||'',created:(r.created_at||'').slice(0,10)}}
+function rowClient(r){return {id:r.id,name:titleCase(r.name),nameHi:r.name_hi||'',phone:r.phone||'',address:r.address||'',created:(r.created_at||'').slice(0,10)}}
 function clientRow(c){return {id:c.id,name:c.name,name_hi:c.nameHi||'',phone:c.phone||'',address:c.address||''}}
 function rowPay(r){return {id:r.id,date:r.date,time:r.time,amount:+r.amount,mode:r.mode}}
-function rowBill(r,pays){return {id:r.id,no:r.no,date:r.date,time:r.time,clientId:r.client_id,clientName:r.client_name,clientNameHi:r.client_name_hi||'',clientPhone:r.client_phone||'',lines:r.lines||[],subtotal:+r.subtotal,discount:+r.discount,tax:+r.tax,total:+r.total,pay:r.pay,notes:r.notes||'',status:r.status,payments:pays||[]}}
+function rowBill(r,pays){return {id:r.id,no:r.no,date:r.date,time:r.time,clientId:r.client_id,clientName:r.client_id?titleCase(r.client_name):r.client_name,clientNameHi:r.client_name_hi||'',clientPhone:r.client_phone||'',lines:r.lines||[],subtotal:+r.subtotal,discount:+r.discount,tax:+r.tax,total:+r.total,pay:r.pay,notes:r.notes||'',status:r.status,payments:pays||[]}}
 function loadAll(){
   return Promise.all([fetchAll('items','name.asc'),fetchAll('categories','name.asc'),fetchAll('clients','name.asc'),fetchAll('bills','created_at.asc'),fetchAll('payments','created_at.asc')]).then(function(a){
     var pays={};a[4].forEach(function(p){(pays[p.bill_id]=pays[p.bill_id]||[]).push(rowPay(p))});
-    db.items=a[0].map(rowItem);db.categories=a[1].map(function(c){return c.name});db.clients=a[2].map(rowClient);
+    db.items=[];db.categories=[];db.clients=[];db.bin=[];
+    a[0].forEach(function(r){var o=rowItem(r);if(r.deleted_at)db.bin.push({type:'item',id:r.id,name:o.name,at:r.deleted_at,data:o});else db.items.push(o)});
+    a[1].forEach(function(c){if(c.deleted_at)db.bin.push({type:'category',id:c.name,name:c.name,at:c.deleted_at});else db.categories.push(c.name)});
+    a[2].forEach(function(r){var o=rowClient(r);if(r.deleted_at)db.bin.push({type:'client',id:r.id,name:o.name,at:r.deleted_at,data:o});else db.clients.push(o)});
     db.bills=a[3].map(function(b){return rowBill(b,pays[b.id])});
     migrate();
-    if(!db.categories.length&&!db.items.length){
+    if(!db.categories.length&&!db.items.length&&!db.bin.length){
       db.categories=DEFAULT_CATS.slice();
       return rest('POST','/rest/v1/categories?on_conflict=name',DEFAULT_CATS.map(function(n){return {name:n}}),'resolution=merge-duplicates,return=minimal').catch(function(){});
     }
@@ -223,7 +236,7 @@ function guard(btn,fn){
 function showLogin(msg){
   document.body.classList.add('out');
   setMenu(false);syncChrome();
-  db={items:[],clients:[],bills:[],categories:[]};
+  db={items:[],clients:[],bills:[],categories:[],bin:[]};
   $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
   $('#view').innerHTML='<form class="panel stack" id="lf" style="max-width:420px;margin:24px auto"><h2>'+esc(t('Sign in'))+'</h2>'+
     '<label>'+esc(t('Email'))+'<input id="lem" type="email" autocomplete="username" inputmode="email" required></label>'+
@@ -252,6 +265,7 @@ function startApp(){
   return loadAll().then(function(){
     document.body.classList.remove('out');
     detectLegacy();render();labelTables();
+    rpc('purge_bin',{}).catch(function(){});
   },function(e){
     if(e&&e.message==='not-signed-in'){showLogin();return}
     $('#view').innerHTML='<div class="panel stack" style="max-width:420px;margin:24px auto"><p>'+esc(t('Could not connect. Check your internet.'))+'</p><button class="primary" id="retry">'+esc(t('Try again'))+'</button></div>';
@@ -303,7 +317,7 @@ var itemById=function(id){return db.items.find(function(i){return i.id===id})};
 var clientById=function(id){return db.clients.find(function(c){return c.id===id})};
 
 /* ---------- billing state ---------- */
-var cur,filterCat='All',filterQty='All',query='',openBill=null,openLedger=null;
+var cur,filterCat='All',filterQty='All',query='',openBill=null,openLedger=null,openBack=null;
 function newBill(){cur={step:'client',addNew:false,more:false,gstOn:false,paidStr:'',lines:[],clientSel:null,dtype:'flat',dval:0,pay:'cash',notes:''}}
 newBill();
 function paidNow(c){var v=String(cur.paidStr||'').trim();if(v==='')return c.total;return Math.min(c.total,Math.max(0,r2(parseFloat(v)||0)))}
@@ -317,11 +331,15 @@ function calc(b){
 }
 
 /* ---------- views ---------- */
-var tabs=[['billing','New bill'],['bills','Bill history'],['pending','Pending'],['items','Items'],['clients','Customers'],['reports','Reports'],['backup','Backup']];
+var tabs=[['billing','New bill'],['bills','Bill history'],['payments','Payments'],['pending','Pending'],['items','Items'],['clients','Customers'],['reports','Reports'],['bin','Bin'],['backup','Backup']];
 function route(){var h=location.hash.replace('#','');return tabs.some(function(x){return x[0]===h})?h:'billing'}
 function render(){
   if(!auth){showLogin();return}
   var r=route();
+  if(r==='bills'&&lastRoute!=='bills'&&!hist.keep)hist=defaultHist();
+  if(r==='bills')hist.keep=false;
+  if(r==='payments'&&lastRoute!=='payments')payF=defaultPay();
+  lastRoute=r;
   document.documentElement.lang=lang==='hi'?'hi':'en';
   $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
   $('#l-en').className=lang==='en'?'on':'';$('#l-hi').className=lang==='hi'?'on':'';
@@ -331,7 +349,7 @@ function render(){
   v.innerHTML=legacyBanner();
   var imb=$('#imp');if(imb)imb.onclick=function(){importLegacy(imb)};
   var box=document.createElement('div');v.appendChild(box);
-  ({billing:viewBilling,bills:viewBills,pending:viewPending,items:viewItems,clients:viewClients,reports:viewReports,backup:viewBackup})[r](box);
+  ({billing:viewBilling,bills:viewBills,payments:viewPayments,pending:viewPending,items:viewItems,clients:viewClients,reports:viewReports,bin:viewBin,backup:viewBackup})[r](box);
 }
 window.addEventListener('hashchange',function(){if(route()==='billing'&&!cur.lines.length)cur.step='client';render()});
 function setMenu(open){$('#nav').classList.toggle('open',open);$('#scrim').hidden=!open;$('#menuBtn').setAttribute('aria-expanded',open?'true':'false')}
@@ -351,7 +369,7 @@ $('#nav').addEventListener('click',function(e){if(e.target.closest('a'))setMenu(
 $('#nav').addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.getAttribute('href')==='#billing'&&route()==='billing'&&!cur.lines.length){cur.step='client';render()}});
 function setLang(l){
   lang=l;try{localStorage.setItem(LKEY,l)}catch(e){}
-  render();if(!$('#modal').hidden){if(openBill)showBill(openBill);else if(openLedger)showLedger(openLedger)}
+  render();if(!$('#modal').hidden){if(openBill)showBill(openBill,openBack);else if(openLedger)showLedger(openLedger)}
 }
 $('#l-en').onclick=function(){setLang('en')};$('#l-hi').onclick=function(){setLang('hi')};
 
@@ -380,6 +398,7 @@ function qChipsHtml(items,active,attr){
   var kinds=qKinds(items);if(kinds.length<2)return '';
   return ['All'].concat(kinds).map(function(k){return '<button class="chip'+(k===active?' on':'')+'" '+attr+'="'+esc(k)+'">'+esc(k==='All'?t('All'):qLabel(k))+'</button>'}).join('');
 }
+function priceEdited(l){var it=itemById(l.id);return !!it&&Math.abs(l.price-unitPrice(it,l.unit||'pc'))>0.004}
 function dozOpt(l){
   var it=itemById(l.id);if(it&&du(it)==='custom'&&l.unit!=='doz')return '';
   return '<option value="doz"'+(l.unit==='doz'?' selected':'')+'>'+esc(t('Dozen (12 pcs)'))+'</option>';
@@ -444,11 +463,12 @@ function drawNew(){
   '<label class="grow">'+esc(t('Phone'))+'<input id="np" inputmode="numeric" autocomplete="off" placeholder="'+esc(t('10-digit number'))+'"><span class="note warn" id="nperr" hidden>'+esc(t('Phone number must be 10 digits'))+'</span></label></div>'+
   '<div class="row"><button class="primary" type="submit">'+esc(t('Continue'))+'</button><button type="button" id="nc">'+esc(t('Cancel'))+'</button></div></form>';
   $('#nn').focus();
+  $('#nn').onblur=function(){this.value=titleCase(this.value)};
   phoneInput('#np','#nperr');
   $('#nc').onclick=function(){cur.addNew=false;drawNew()};
   $('#nf').onsubmit=function(e){
     e.preventDefault();
-    var name=$('#nn').value.trim();if(!name){toast(t('Enter the customer name'));return}
+    var name=titleCase($('#nn').value);if(!name){toast(t('Enter the customer name'));return}
     var ph=cleanPhone($('#np').value);
     if(phoneErr(ph)){$('#nperr').hidden=false;$('#np').focus();toast(t('Phone number must be 10 digits'));return}
     var ex=ph&&db.clients.find(function(c){return c.phone===ph}),id;
@@ -481,7 +501,7 @@ function addLine(id){
 function drawBill(){
   var p=$('#billpanel');if(!p)return;
   var c=calc(cur),left=r2(c.total-paidNow(c)),showBreak=c.disc>0||(cur.gstOn&&c.tax>0);
-  var lines=cur.lines.length?cur.lines.map(function(l,i){return '<div class="line"><div style="min-width:0"><b>'+esc(nm(l))+'</b><div class="note">'+money(l.price)+' / '+esc(unitName(l.unit||'pc',1,l))+((l.factor||1)>1?' · '+l.qty+' × '+(l.factor||1)+' = '+(l.qty*(l.factor||1))+' '+esc(t('pcs')):'')+(cur.gstOn&&l.gst?' + '+l.gst+'% '+esc(t('GST')):'')+'</div><select class="unitsel" data-unit="'+i+'" aria-label="'+esc(t('Unit'))+'"><option value="pc"'+((l.unit||'pc')==='pc'?' selected':'')+'>'+esc(t('Piece'))+'</option>'+dozOpt(l)+customOpt(l)+'</select>'+stockWarn(l)+'</div>'+
+  var lines=cur.lines.length?cur.lines.map(function(l,i){return '<div class="line"><div style="min-width:0"><b>'+esc(nm(l))+'</b><div class="note">\u20B9<input class="priceinp" data-price="'+i+'" inputmode="decimal" value="'+l.price+'" aria-label="'+esc(t('Price'))+'"> / '+esc(unitName(l.unit||'pc',1,l))+((l.factor||1)>1?' · '+l.qty+' × '+(l.factor||1)+' = '+(l.qty*(l.factor||1))+' '+esc(t('pcs')):'')+(priceEdited(l)?' <span class="warn">('+esc(t('edited'))+')</span>':'')+(cur.gstOn&&l.gst?' + '+l.gst+'% '+esc(t('GST')):'')+'</div><select class="unitsel" data-unit="'+i+'" aria-label="'+esc(t('Unit'))+'"><option value="pc"'+((l.unit||'pc')==='pc'?' selected':'')+'>'+esc(t('Piece'))+'</option>'+dozOpt(l)+customOpt(l)+'</select>'+stockWarn(l)+'</div>'+
     '<div class="qty"><button class="small" data-dec="'+i+'" aria-label="'+esc(t('Decrease'))+'">−</button><input data-qty="'+i+'" inputmode="numeric" value="'+l.qty+'" aria-label="'+esc(t('Quantity'))+'"><button class="small" data-inc="'+i+'" aria-label="'+esc(t('Increase'))+'">+</button></div>'+
     '<div class="num">'+money(l.price*l.qty)+'</div><button class="small" data-rm="'+i+'" aria-label="'+esc(t('Remove'))+'">✕</button></div>'}).join(''):'<p class="muted">'+esc(t('Tap an item to add it to the bill.'))+'</p>';
   var more=cur.more?'<div class="stack" style="border-top:1px solid var(--line);padding-top:12px">'+
@@ -517,6 +537,8 @@ function drawBill(){
     drawBill();
   };
   $('#lines').onchange=function(e){
+    var pi=e.target.dataset.price;
+    if(pi!=null){var pv=parseFloat(String(e.target.value).replace(/,/g,''));if(pv>=0)cur.lines[+pi].price=r2(pv);cur.paidStr='';drawBill();return}
     var uu=e.target.dataset.unit;
     if(uu!=null){var l=cur.lines[+uu],it=itemById(l.id),prev=l.unit||'pc',nu=e.target.value;
       l.unit=nu;l.factor=it?unitFactor(it,nu):(nu==='doz'?12:(nu==='custom'?(l.factor||1):1));l.unitName=nu==='custom'?(it?it.unitName:l.unitName):'';
@@ -532,32 +554,18 @@ function drawBill(){
     $('#cartgo').onclick=function(){$('#billpanel').scrollIntoView({behavior:'smooth',block:'start'})};
   }
 }
-function reviewBill(){
-  if(!cur.lines.length)return;
-  var c0=cur.clientSel&&cur.clientSel!=='walkin'?clientById(cur.clientSel):null,tt=calc(cur),pd=paidNow(tt),left=r2(tt.total-pd);
-  if(left>0&&!c0){toast(t('Choose a customer to keep a pending amount'));return}
-  var rows=cur.lines.map(function(l){return '<tr><td>'+esc(nm(l))+'<div class="note">'+esc(qtyLabel(l))+' \u00D7 '+money(l.price)+'</div></td><td class="num">'+money(l.price*l.qty)+'</td></tr>'}).join('');
-  var tot=function(a,v,b){return '<tr><td'+(b?' style="font-weight:600"':'')+'>'+esc(a)+'</td><td class="num"'+(b?' style="font-weight:600"':'')+'>'+v+'</td></tr>'};
-  var m=$('#modal');openBill=null;openLedger=null;
-  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(t('Review bill'))+'"><h2>'+esc(t('Review bill'))+'</h2><p class="note">'+esc(t('Please check the bill before saving.'))+'</p>'+
-  '<p><span class="muted">'+esc(t('Customer'))+':</span> <b>'+esc(clientLabel())+'</b></p>'+
-  '<div class="tablewrap"><table style="min-width:0"><tbody>'+rows+
-  (tt.disc>0||(cur.gstOn&&tt.tax>0)?tot(t('Subtotal'),money(tt.sub)):'')+(tt.disc>0?tot(t('Discount'),'\u2212 '+money(tt.disc)):'')+(cur.gstOn&&tt.tax>0?tot(t('GST'),money(tt.tax)):'')+
-  tot(t('Total'),money(tt.total),true)+tot(t('Paid now'),money(pd))+tot(t('Balance left'),'<span class="'+(left>0?'warn':'')+'">'+money(left)+'</span>')+tot(t('Payment'),esc(t(cur.pay)))+
-  '</tbody></table></div><div class="row" style="margin-top:14px"><button type="button" id="rvback">'+esc(t('Back'))+'</button><button class="primary grow" type="button" id="rvok">'+esc(t('Confirm & save'))+'</button></div></div>';
-  m.hidden=false;
-  $('#rvback').onclick=closeModal;
-  $('#rvok').onclick=function(){closeModal();saveBill()};
-}
-function saveBill(){
-  if(!cur.lines.length)return;
+function makeBill(){
+  if(!cur.lines.length)return null;
   var cid=null,cname='Walk-in customer',cphone='';
   if(cur.clientSel&&cur.clientSel!=='walkin'){var c0=clientById(cur.clientSel);if(c0){cid=c0.id;cname=c0.name;cphone=c0.phone}}
   var tt=calc(cur),pd=paidNow(tt);
-  if(r2(tt.total-pd)>0&&!cid){toast(t('Choose a customer to keep a pending amount'));return}
-  var bill={id:uid(),date:today(),time:nowTime(),clientId:cid,clientName:cname,clientNameHi:(cid&&clientById(cid)&&clientById(cid).nameHi)||'',clientPhone:cphone,
+  if(r2(tt.total-pd)>0&&!cid){toast(t('Choose a customer to keep a pending amount'));return null}
+  return {id:uid(),date:today(),time:nowTime(),clientId:cid,clientName:cname,clientNameHi:(cid&&clientById(cid)&&clientById(cid).nameHi)||'',clientPhone:cphone,
     lines:cur.lines.map(function(l){return {itemId:l.id,name:l.name,nameHi:l.nameHi||'',price:l.price,gst:cur.gstOn?l.gst:0,unit:l.unit||'pc',unitName:l.unitName||'',factor:l.factor||1,qty:l.qty,total:r2(l.price*l.qty)}}),
     subtotal:tt.sub,discount:tt.disc,tax:tt.tax,total:tt.total,pay:cur.pay,notes:cur.notes,status:'paid',payments:pd>0?[{id:uid(),date:today(),time:nowTime(),amount:pd,mode:cur.pay}]:[]};
+}
+function commitBill(bill){
+  var d0=today(),t0=nowTime();bill.date=d0;bill.time=t0;(bill.payments||[]).forEach(function(p){p.date=d0;p.time=t0});
   guard($('#save'),function(){
     return rpc('create_bill',{b:bill}).then(function(r){
       bill.no=r.no;
@@ -566,6 +574,18 @@ function saveBill(){
       toast(t('Saved')+' '+bill.no);render();showBill(bill.id);
     }).catch(fail);
   });
+}
+function saveBill(){var b=makeBill();if(b)commitBill(b)}
+/* The bill is shown exactly as the receipt will look. Nothing is saved until Confirm & save is pressed. */
+function reviewBill(){
+  var bill=makeBill();if(!bill)return;
+  var m=$('#modal');openBill=null;openLedger=null;
+  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(t('Review bill'))+'"><h2>'+esc(t('Review bill'))+'</h2><p class="note">'+esc(t('Please check the bill. It is saved only when you press Confirm & save.'))+'</p>'+
+  '<pre class="receipt">'+esc(receiptText(Object.assign({},bill,{no:'\u2014'})))+'</pre>'+
+  '<div class="row stickybar"><button type="button" id="rvback">'+esc(t('Back'))+'</button><button class="primary grow" type="button" id="rvok">'+esc(t('Confirm & save'))+'</button></div></div>';
+  m.hidden=false;
+  $('#rvback').onclick=closeModal;
+  $('#rvok').onclick=function(){closeModal();commitBill(bill)};
 }
 function receiptText(b){
   var W=34,line=new Array(W+1).join('-'),out=[];
@@ -595,37 +615,23 @@ function paidOf(b){return r2((b.payments||[]).reduce(function(s,p){return s+p.am
 function dueOf(b){return b.status==='cancelled'?0:r2(Math.max(0,b.total-paidOf(b)))}
 function addPay(b,amt,mode){b.payments=b.payments||[];b.payments.push({id:uid(),date:today(),time:nowTime(),amount:r2(amt),mode:mode})}
 function modeSel(id){return '<select id="'+id+'">'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'">'+esc(t(m))+'</option>'}).join('')+'</select>'}
-function showBill(id){
+function showBill(id,back){
   var b=db.bills.find(function(x){return x.id===id});if(!b)return;
-  openBill=id;openLedger=null;var m=$('#modal'),due=dueOf(b);
+  openBill=id;openLedger=null;openBack=back||null;var m=$('#modal'),due=dueOf(b);
   var run=0,plist=(b.payments||[]).length?'<h3>'+esc(t('Payments'))+'</h3><div class="tablewrap"><table style="min-width:0"><thead><tr><th>#</th><th>'+esc(t('Date'))+'</th><th>'+esc(t('Payment'))+'</th><th class="num">'+esc(t('Amount'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th></tr></thead><tbody>'+b.payments.map(function(p,n){run=r2(run+p.amount);return '<tr><td>'+(n+1)+'</td><td>'+p.date+' <span class="muted">'+p.time+'</span></td><td>'+esc(t(p.mode))+'</td><td class="num">'+money(p.amount)+'</td><td class="num">'+money(Math.max(0,b.total-run))+'</td></tr>'}).join('')+'</tbody></table></div>':'';
-  var form=due>0?'<div class="stack" style="border-top:1px solid var(--line);padding-top:12px;margin-top:12px"><b>'+esc(t('Balance due'))+': <span class="warn">'+money(due)+'</span></b>'+
-    '<div class="row"><label class="grow">'+esc(t('Amount received now (₹)'))+'<input id="pa" inputmode="decimal" autocomplete="off"></label><label class="grow">'+esc(t('Payment'))+modeSel('pmm')+'</label></div>'+
-    '<div class="row"><span class="muted">'+esc(t('Balance after this payment'))+':</span> <b class="warn" id="pprev">'+money(due)+'</b><button class="small" type="button" id="pfullb">'+esc(t('Full balance'))+'</button></div><div class="note warn" id="perr" hidden></div>'+
-    '<button class="primary" id="prec">'+esc(t('Record payment'))+'</button><p class="note">'+esc(t('If the customer will pay the rest later, leave it. The balance stays in Pending until you record the payment.'))+'</p></div>':'';
-  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(b.no)+'"><div class="row" style="justify-content:space-between"><h2>'+esc(b.no)+(b.status==='cancelled'?' <span class="pill cancel">'+esc(t('Cancelled'))+'</span>':'')+'</h2><button class="small" id="mx">'+esc(t('Close'))+'</button></div>'+
-  '<div class="row" style="margin-top:8px">'+statusPill(b)+'<span class="note">'+esc(t('Paid'))+' '+money(paidOf(b))+' / '+money(b.total)+'</span></div><pre class="receipt">'+esc(receiptText(b))+'</pre>'+plist+form+'<div class="row" style="margin-top:12px"><button class="primary grow" id="msh">'+esc(t('Share PDF'))+'</button><button id="mdl">'+esc(t('Download PDF'))+'</button></div><div class="row" style="margin-top:8px"><button class="grow" id="mc">'+esc(t('Copy as text'))+'</button>'+
+  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(b.no)+'"><div class="row" style="justify-content:space-between"><div class="row" style="gap:10px;flex-wrap:nowrap">'+(back?'<button class="small" id="mback" type="button">\u2190 '+esc(t('Back'))+'</button>':'')+'<h2>'+esc(b.no)+(b.status==='cancelled'?' <span class="pill cancel">'+esc(t('Cancelled'))+'</span>':'')+'</h2></div><button class="small" id="mx">'+esc(t('Close'))+'</button></div>'+
+  '<div class="row" style="margin-top:8px">'+statusPill(b)+'<span class="note">'+esc(t('Paid'))+' '+money(paidOf(b))+' / '+money(b.total)+'</span></div><pre class="receipt">'+esc(receiptText(b))+'</pre>'+plist+'<div class="row" style="margin-top:12px"><button class="primary grow" id="msh">'+esc(t('Share PDF'))+'</button><button id="mdl">'+esc(t('Download PDF'))+'</button></div><div class="row" style="margin-top:8px"><button class="grow" id="mc">'+esc(t('Copy as text'))+'</button>'+
   (b.status!=='cancelled'?'<button class="danger" id="mk">'+esc(t('Cancel bill'))+'</button>':'')+'</div><p class="note">'+esc(t('Send the copied text on WhatsApp, or paste it into a printing app for your thermal printer.'))+'</p></div>';
   m.hidden=false;
   $('#mx').onclick=closeModal;
+  if(back)$('#mback').onclick=function(){back()};
   $('#mc').onclick=function(){copy(receiptText(b),t('Bill copied'))};
   $('#msh').onclick=function(){sharePdf(b)};
   $('#mdl').onclick=function(){var f=billPdf(b);if(f)saveBlob(f.blob,f.name)};
-  var pr=$('#prec');if(pr)pr.onclick=function(){
-    var amt=parseFloat($('#pa').value),pe=$('#perr');
-    if(!(amt>0)){pe.textContent=t('Enter the amount received first.');pe.hidden=false;$('#pa').focus();return}
-    if(amt>due+0.004){pe.textContent=t('More than the balance due')+': '+money(due);pe.hidden=false;$('#pa').focus();return}
-    var mode=$('#pmm').value,d0=today(),tm0=nowTime();
-    guard(pr,function(){return rpc('add_payment',{p_bill:b.id,p_amount:amt,p_mode:mode,p_date:d0,p_time:tm0}).then(function(r){b.payments=b.payments||[];b.payments.push({id:r.id,date:d0,time:tm0,amount:r2(amt),mode:mode});toast(t('Payment recorded'));showBill(id);render()}).catch(fail)});
-  };
-  var pa=$('#pa');if(pa){
-    pa.oninput=function(){$('#perr').hidden=true;var v=parseFloat(pa.value)||0,rest=Math.max(0,r2(due-v)),pv=$('#pprev');pv.textContent=money(rest);pv.className=rest>0?'warn':''};
-    $('#pfullb').onclick=function(){pa.value=due;pa.oninput()};
-  }
   var mk=$('#mk');if(mk)mk.onclick=function(){twice(mk,t('Tap again to cancel'),function(){
     rpc('cancel_bill',{p_bill:b.id}).then(function(){
       b.status='cancelled';b.lines.forEach(function(l){var it=itemById(l.itemId);if(it&&it.stock!==''&&it.stock!=null)it.stock+=Math.round(l.qty*(l.factor||1))});
-      toast(b.no+' '+t('cancelled'));showBill(id);render()}).catch(fail)})};
+      toast(b.no+' '+t('cancelled'));showBill(id,back);render()}).catch(fail)})};
 }
 /* PDF of a bill: named FirstName_date_invoice.pdf, shared through the phone's share sheet (WhatsApp etc.) or downloaded */
 function pdfName(b){
@@ -662,6 +668,10 @@ function sharePdf(b){
   }
   saveBlob(f.blob,f.name);toast(t('PDF downloaded. Attach it in WhatsApp.'));
 }
+function billAction(id){
+  var b=db.bills.find(function(x){return x.id===id});
+  if(b&&dueOf(b)>0&&b.clientId&&clientById(b.clientId))showLedger(b.clientId);else showBill(id);
+}
 function showLedger(cid){
   var c=clientById(cid);if(!c)return;
   openLedger=cid;openBill=null;var m=$('#modal');
@@ -673,10 +683,10 @@ function showLedger(cid){
   m.innerHTML='<div class="dialog wide" role="dialog" aria-label="'+esc(nm(c))+'"><div class="row" style="justify-content:space-between"><div><h2>'+esc(nm(c))+'</h2><div class="note">'+esc(c.phone||'')+'</div></div><button class="small" id="mx">'+esc(t('Close'))+'</button></div>'+
   '<div class="row" style="margin:12px 0"><h3>'+esc(t('Total pending'))+'</h3><span class="big '+(due>0?'warn':'')+'">'+money(due)+'</span></div>'+form+
   '<div class="tablewrap" style="margin-top:12px">'+(bills.length?'<table><thead><tr><th>'+esc(t('Date'))+'</th><th>'+esc(t('Invoice'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th></th></tr></thead><tbody>'+
-    bills.map(function(b){var d=dueOf(b);return '<tr><td>'+b.date+'</td><td><b>'+esc(b.no)+'</b> '+statusPill(b)+'</td><td class="num">'+money(b.total)+'</td><td class="num">'+money(paidOf(b))+'</td><td class="num'+(d>0?' warn':'')+'">'+money(d)+'</td><td><button class="small'+(d>0?' primary':'')+'" data-view="'+b.id+'">'+esc(d>0?t('Receive'):t('View'))+'</button></td></tr>'}).join('')+'</tbody></table>':'<p class="muted">'+esc(t('No bills yet. Save a bill from the New bill tab and it will appear here.'))+'</p>')+'</div></div>';
+    bills.map(function(b){var d=dueOf(b);return '<tr><td>'+b.date+'</td><td><b>'+esc(b.no)+'</b> '+statusPill(b)+'</td><td class="num">'+money(b.total)+'</td><td class="num">'+money(paidOf(b))+'</td><td class="num'+(d>0?' warn':'')+'">'+money(d)+'</td><td><button class="small" data-view="'+b.id+'">'+esc(t('View'))+'</button></td></tr>'}).join('')+'</tbody></table>':'<p class="muted">'+esc(t('No bills yet. Save a bill from the New bill tab and it will appear here.'))+'</p>')+'</div></div>';
   m.hidden=false;
   $('#mx').onclick=closeModal;
-  m.querySelector('.tablewrap').onclick=function(e){var v=e.target.closest('[data-view]');if(v)showBill(v.dataset.view)};
+  m.querySelector('.tablewrap').onclick=function(e){var v=e.target.closest('[data-view]');if(v)showBill(v.dataset.view,function(){showLedger(cid)})};
   var la=$('#la');if(la){
     la.oninput=function(){$('#lerr').hidden=true;var v=parseFloat(la.value)||0,rest=Math.max(0,r2(due-v)),pv=$('#lprev');pv.textContent=money(rest);pv.className=rest>0?'warn':''};
     $('#lfull').onclick=function(){la.value=due;la.oninput()};
@@ -688,6 +698,59 @@ function showLedger(cid){
     var mode=$('#lm').value;
     guard(lr,function(){return rpc('receive_client_payment',{p_client:cid,p_amount:amt,p_mode:mode,p_date:today(),p_time:nowTime()}).then(function(){return loadAll()}).then(function(){toast(t('Payment recorded'));showLedger(cid);render()}).catch(fail)});
   };
+}
+/* Payment history: every payment (part payment) with its invoice, date, time, mode and the balance left after it */
+function defaultPay(){var d=today();return {q:'',from:d,to:d,view:'invoice'}}
+var payF=defaultPay();
+function paymentRows(){
+  var rows=[];
+  db.bills.forEach(function(b){
+    var run=0,list=b.payments||[],n=list.length;
+    list.forEach(function(p,i){run=r2(run+p.amount);rows.push({b:b,p:p,i:i+1,n:n,after:Math.max(0,r2(b.total-run))})});
+  });
+  return rows;
+}
+function viewPayments(box){
+  box.innerHTML='<div class="stack"><div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="pq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(payF.q)+'"></label>'+
+  '<label>'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label>'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div>'+
+  '<div class="chips" id="prange"></div><div class="chips" id="pview"></div><div id="psum"></div></div><div id="plist" class="stack"></div></div>';
+  var upd=function(){payF.q=$('#pq').value;payF.from=$('#pf').value;payF.to=$('#pt').value;drawPayments()};
+  ['#pq','#pf','#pt'].forEach(function(x){$(x).addEventListener('input',upd)});
+  $('#pview').onclick=function(e){var b=e.target.closest('[data-pv]');if(b){payF.view=b.dataset.pv;drawPayments()}};
+  $('#prange').onclick=function(e){var b=e.target.closest('[data-rg]');if(!b)return;var r=histRange(b.dataset.rg);payF.from=r[0];payF.to=r[1];$('#pf').value=r[0];$('#pt').value=r[1];drawPayments()};
+  $('#plist').onclick=function(e){var v=e.target.closest('[data-view]');if(v)showBill(v.dataset.view)};
+  drawPayments();
+}
+function drawPayments(){
+  var q=payF.q.trim().toLowerCase();
+  var rows=paymentRows().filter(function(r){
+    if(payF.from&&r.p.date<payF.from)return false;if(payF.to&&r.p.date>payF.to)return false;
+    return !q||(r.b.clientName+' '+hn(r.b,'clientName','clientNameHi')+' '+r.b.clientPhone+' '+r.b.no).toLowerCase().indexOf(q)>-1;
+  });
+  var total=r2(rows.reduce(function(s2,r){return s2+r.p.amount},0));
+  $('#prange').innerHTML=[['today','Today'],['yesterday','Yesterday'],['week','Last 7 days'],['month','This month'],['all','All time']].map(function(r){var v=histRange(r[0]);return '<button class="chip'+(v[0]===payF.from&&v[1]===payF.to?' on':'')+'" data-rg="'+r[0]+'">'+esc(t(r[1]))+'</button>'}).join('');
+  $('#pview').innerHTML=[['invoice','By invoice'],['date','By date']].map(function(x){return '<button class="chip'+(payF.view===x[0]?' on':'')+'" data-pv="'+x[0]+'">'+esc(t(x[1]))+'</button>'}).join('');
+  $('#psum').innerHTML='<div class="row" style="gap:24px"><div><h3>'+esc(t('Total received'))+'</h3><div class="big">'+money(total)+'</div></div><div><h3>'+esc(t('Payments'))+'</h3><div class="big">'+rows.length+'</div></div></div>';
+  var out=$('#plist');
+  if(!rows.length){out.innerHTML='<div class="panel"><p class="muted">'+esc(t('No payments found.'))+'</p></div>';return}
+  var key=function(r){return r.p.date+' '+r.p.time};
+  if(payF.view==='date'){
+    rows.sort(function(a,b){return key(a)<key(b)?1:key(a)>key(b)?-1:0});
+    out.innerHTML='<div class="panel"><div class="tablewrap"><table><thead><tr><th>'+esc(t('Date'))+'</th><th>'+esc(t('Time'))+'</th><th>'+esc(t('Invoice'))+'</th><th>'+esc(t('Customer'))+'</th><th>'+esc(t('Payment'))+'</th><th class="num">'+esc(t('Amount'))+'</th><th class="num">'+esc(t('Balance after'))+'</th></tr></thead><tbody>'+
+    rows.map(function(r){return '<tr><td>'+r.p.date+'</td><td>'+r.p.time+'</td><td><button class="small" data-view="'+r.b.id+'">'+esc(r.b.no)+'</button> <span class="note">'+r.i+' / '+r.n+'</span></td><td>'+esc(nm(r.b,'clientName','clientNameHi'))+'</td><td>'+esc(t(r.p.mode))+'</td><td class="num">'+money(r.p.amount)+'</td><td class="num'+(r.after>0?' warn':'')+'">'+money(r.after)+'</td></tr>'}).join('')+'</tbody></table></div></div>';
+    return;
+  }
+  var groups={},order=[];
+  rows.forEach(function(r){var g=groups[r.b.id];if(!g){g=groups[r.b.id]={b:r.b,rows:[],last:''};order.push(g)}g.rows.push(r);if(key(r)>g.last)g.last=key(r)});
+  order.sort(function(a,b){return a.last<b.last?1:a.last>b.last?-1:0});
+  out.innerHTML=order.map(function(g){
+    var b=g.b,due=dueOf(b);
+    return '<div class="panel stack"><div class="row" style="justify-content:space-between;align-items:flex-start"><div><b>'+esc(b.no)+'</b> '+statusPill(b)+'<div class="note">'+esc(nm(b,'clientName','clientNameHi'))+(b.clientPhone?' \u00B7 '+esc(b.clientPhone):'')+' \u00B7 '+b.date+'</div></div>'+
+    '<div class="note" style="text-align:right">'+esc(t('Total'))+' '+money(b.total)+'<br>'+esc(t('Paid'))+' '+money(paidOf(b))+(due>0?'<br><span class="warn">'+esc(t('Unpaid'))+' '+money(due)+'</span>':'')+'</div></div>'+
+    '<div class="tablewrap"><table style="min-width:0"><thead><tr><th>#</th><th>'+esc(t('Date'))+'</th><th>'+esc(t('Time'))+'</th><th>'+esc(t('Payment'))+'</th><th class="num">'+esc(t('Amount'))+'</th><th class="num">'+esc(t('Balance after'))+'</th></tr></thead><tbody>'+
+    g.rows.map(function(r){return '<tr><td>'+r.i+' / '+r.n+'</td><td>'+r.p.date+'</td><td>'+r.p.time+'</td><td>'+esc(t(r.p.mode))+'</td><td class="num">'+money(r.p.amount)+'</td><td class="num'+(r.after>0?' warn':'')+'">'+money(r.after)+'</td></tr>'}).join('')+'</tbody></table></div>'+
+    '<div class="row"><button class="small" data-view="'+b.id+'">'+esc(t('View bill'))+'</button></div></div>';
+  }).join('');
 }
 function viewPending(box){
   var rows={},list=[];
@@ -705,31 +768,71 @@ function viewPending(box){
   cl.map(function(r){var c=clientById(r.id);return '<tr><td><b>'+esc(c?nm(c):'')+'</b>'+(c&&c.phone?'<div class="note">'+esc(c.phone)+'</div>':'')+'</td><td class="num">'+r.n+'</td><td class="num">'+money(r.total)+'</td><td class="num">'+money(r.paid)+'</td><td class="num warn">'+money(r.due)+'</td><td>'+r.oldest+'</td><td><button class="small" data-acct="'+r.id+'">'+esc(t('Account'))+'</button></td></tr>'}).join('')+'</tbody></table></div></div>'+
   '<div class="panel stack"><h2>'+esc(t('Pending invoices'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Date'))+'</th><th>'+esc(t('Invoice'))+'</th><th>'+esc(t('Customer'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th></th></tr></thead><tbody>'+
   list.map(function(b){return '<tr><td>'+b.date+'</td><td><b>'+esc(b.no)+'</b> '+statusPill(b)+'</td><td>'+esc(nm(b,'clientName','clientNameHi'))+'</td><td class="num">'+money(b.total)+'</td><td class="num">'+money(paidOf(b))+'</td><td class="num warn">'+money(dueOf(b))+'</td><td><button class="small primary" data-view="'+b.id+'">'+esc(t('Receive'))+'</button></td></tr>'}).join('')+'</tbody></table></div></div></div>';
-  box.onclick=function(e){var a=e.target.closest('[data-acct]'),v=e.target.closest('[data-view]');if(a)showLedger(a.dataset.acct);if(v)showBill(v.dataset.view)};
+  box.onclick=function(e){var a=e.target.closest('[data-acct]'),v=e.target.closest('[data-view]');if(a)showLedger(a.dataset.acct);if(v)billAction(v.dataset.view)};
 }
-function closeModal(){$('#modal').hidden=true;openBill=null;openLedger=null}
+function closeModal(){$('#modal').hidden=true;openBill=null;openLedger=null;openBack=null}
 $('#modal').addEventListener('click',function(e){if(e.target.id==='modal')closeModal()});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal();setMenu(false)}});
 
-/* Bill history */
-var hist={q:'',from:'',to:''};
+/* Bill history: filters (date, status, customer, payment mode, total) and sorting. Opens on today's date each time. */
+function isoDay(d){var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
+function defaultHist(){var d=today();return {q:'',from:d,to:d,status:'all',client:'all',mode:'all',min:'',max:'',sort:'date_desc',keep:false}}
+var hist=defaultHist(),lastRoute='';
+function billState(b){if(b.status==='cancelled')return 'cancelled';var d=dueOf(b),p=paidOf(b);return d<=0?'paid':(p>0?'part':'unpaid')}
+function histRange(k){
+  var t0=new Date(),d=function(n){var x=new Date();x.setDate(x.getDate()-n);return isoDay(x)};
+  if(k==='today')return [d(0),d(0)];if(k==='yesterday')return [d(1),d(1)];if(k==='week')return [d(6),d(0)];
+  if(k==='month')return [isoDay(new Date(t0.getFullYear(),t0.getMonth(),1)),d(0)];return ['',''];
+}
+var SORTS=[['date_desc','Newest first'],['date_asc','Oldest first'],['total_desc','Total: high to low'],['total_asc','Total: low to high'],['due_desc','Due: high to low'],['due_asc','Due: low to high'],['paid_desc','Paid: high to low'],['paid_asc','Paid: low to high'],['cust_asc','Customer A to Z'],['cust_desc','Customer Z to A'],['no_asc','Bill number: low to high'],['no_desc','Bill number: high to low']];
 function viewBills(box){
-  box.innerHTML='<div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="hq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(hist.q)+'"></label>'+
-  '<label>'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label>'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div><div id="hlist"></div></div>';
-  var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;drawHist()};
-  ['#hq','#hf','#ht'].forEach(function(s){$(s).addEventListener('input',upd)});
+  var seen={},custs=[];
+  db.bills.forEach(function(b){var k=b.clientId||'walkin';if(!seen[k]){seen[k]=1;custs.push({id:k,label:nm(b,'clientName','clientNameHi')})}});
+  custs.sort(function(a,c){return a.label.toLowerCase()<c.label.toLowerCase()?-1:1});
+  box.innerHTML='<div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="hq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(hist.q)+'"></label></div>'+
+  '<div class="chips" id="hrange"></div>'+
+  '<div class="row"><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label>'+
+  '<label class="grow">'+esc(t('Customer'))+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select></label></div>'+
+  '<div class="row"><label class="grow">'+esc(t('Payment'))+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select></label>'+
+  '<label class="grow sm">'+esc(t('Min total'))+'<input id="hmin" inputmode="decimal" value="'+esc(hist.min)+'"></label><label class="grow sm">'+esc(t('Max total'))+'<input id="hmax" inputmode="decimal" value="'+esc(hist.max)+'"></label>'+
+  '<label class="grow">'+esc(t('Sort by'))+'<select id="hs">'+SORTS.map(function(x){return '<option value="'+x[0]+'"'+(hist.sort===x[0]?' selected':'')+'>'+esc(t(x[1]))+'</option>'}).join('')+'</select></label></div>'+
+  '<div class="chips" id="hstat"></div><div id="hsum"></div><div id="hlist"></div></div>';
+  var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;hist.client=$('#hc').value;hist.mode=$('#hm').value;hist.min=$('#hmin').value;hist.max=$('#hmax').value;hist.sort=$('#hs').value;drawHist()};
+  ['#hq','#hf','#ht','#hc','#hm','#hmin','#hmax','#hs'].forEach(function(x){$(x).addEventListener('input',upd);$(x).addEventListener('change',upd)});
+  $('#hrange').onclick=function(e){var b=e.target.closest('[data-rg]');if(!b)return;var r=histRange(b.dataset.rg);hist.from=r[0];hist.to=r[1];$('#hf').value=r[0];$('#ht').value=r[1];drawHist()};
+  $('#hstat').onclick=function(e){var b=e.target.closest('[data-hs]');if(b){hist.status=b.dataset.hs;drawHist()}};
+  $('#hlist').onclick=function(e){
+    var th=e.target.closest('[data-sort]');
+    if(th){var k=th.dataset.sort,cur2=hist.sort.split('_');hist.sort=k+'_'+(cur2[0]===k&&cur2[1]==='desc'?'asc':'desc');$('#hs').value=SORTS.some(function(x){return x[0]===hist.sort})?hist.sort:'';drawHist();return}
+    var v=e.target.closest('[data-view]');if(v)billAction(v.dataset.view);
+  };
   drawHist();
 }
 function drawHist(){
-  var q=hist.q.trim().toLowerCase();
-  var list=db.bills.filter(function(b){
+  var q=hist.q.trim().toLowerCase(),min=parseFloat(hist.min),max=parseFloat(hist.max);
+  var base=db.bills.filter(function(b){
     if(hist.from&&b.date<hist.from)return false;if(hist.to&&b.date>hist.to)return false;
+    if(hist.client!=='all'&&(hist.client==='walkin'?!!b.clientId:b.clientId!==hist.client))return false;
+    if(hist.mode!=='all'&&b.pay!==hist.mode)return false;
+    if(min>=0&&b.total<min)return false;if(max>=0&&b.total>max)return false;
     return !q||(b.clientName+' '+hn(b,'clientName','clientNameHi')+' '+b.clientPhone+' '+b.no).toLowerCase().indexOf(q)>-1;
-  }).slice().reverse();
-  $('#hlist').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr><th>'+esc(t('Bill'))+'</th><th>'+esc(t('Date'))+'</th><th>'+esc(t('Customer'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Due'))+'</th><th></th></tr></thead><tbody>'+
+  });
+  var cnt={all:base.length,paid:0,part:0,unpaid:0,cancelled:0};base.forEach(function(b){cnt[billState(b)]++});
+  var list=base.filter(function(b){return hist.status==='all'||billState(b)===hist.status});
+  var sp=hist.sort.split('_'),key=sp[0],dir=sp[1]==='asc'?1:-1;
+  var val={date:function(b){return b.date+' '+b.time},no:function(b){return b.no},cust:function(b){return nm(b,'clientName','clientNameHi').toLowerCase()},total:function(b){return b.total},paid:function(b){return paidOf(b)},due:function(b){return dueOf(b)}}[key]||function(b){return b.date+' '+b.time};
+  list=list.slice().sort(function(a,b){var x=val(a),y=val(b);return x<y?-dir:x>y?dir:(a.no<b.no?1:-1)});
+  var rg=[['today','Today'],['yesterday','Yesterday'],['week','Last 7 days'],['month','This month'],['all','All time']];
+  $('#hrange').innerHTML=rg.map(function(r){var v=histRange(r[0]);return '<button class="chip'+(v[0]===hist.from&&v[1]===hist.to?' on':'')+'" data-rg="'+r[0]+'">'+esc(t(r[1]))+'</button>'}).join('');
+  $('#hstat').innerHTML=[['all','All'],['paid','Paid'],['part','Part paid'],['unpaid','Unpaid'],['cancelled','Cancelled']].map(function(x){return '<button class="chip'+(hist.status===x[0]?' on':'')+'" data-hs="'+x[0]+'">'+esc(t(x[1]))+' ('+cnt[x[0]]+')</button>'}).join('');
+  var live=list.filter(function(b){return b.status!=='cancelled'});
+  var sT=r2(live.reduce(function(s2,b){return s2+b.total},0)),sP=r2(live.reduce(function(s2,b){return s2+paidOf(b)},0)),sD=r2(live.reduce(function(s2,b){return s2+dueOf(b)},0));
+  $('#hsum').innerHTML='<div class="row" style="gap:20px"><div><h3>'+esc(t('Bills'))+'</h3><div class="big">'+list.length+'</div></div><div><h3>'+esc(t('Total'))+'</h3><div class="big">'+money(sT)+'</div></div><div><h3>'+esc(t('Paid'))+'</h3><div class="big">'+money(sP)+'</div></div><div><h3>'+esc(t('Due'))+'</h3><div class="big'+(sD>0?' warn':'')+'">'+money(sD)+'</div></div></div>';
+  var arrow=function(k){return key===k?(dir===1?' ▲':' ▼'):''};
+  var th=function(k,label,cls){return '<th'+(cls?' class="'+cls+'"':'')+' data-sort="'+k+'" style="cursor:pointer">'+esc(t(label))+arrow(k)+'</th>'};
+  $('#hlist').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr>'+th('no','Bill')+th('date','Date')+th('cust','Customer')+th('total','Total','num')+th('paid','Paid','num')+th('due','Due','num')+'<th></th></tr></thead><tbody>'+
     list.map(function(b){return '<tr><td><b>'+esc(b.no)+'</b> '+statusPill(b)+'</td><td>'+b.date+' <span class="muted">'+b.time+'</span></td><td>'+esc(nm(b,'clientName','clientNameHi'))+(b.clientPhone?'<div class="note">'+esc(b.clientPhone)+'</div>':'')+'</td><td class="num">'+money(b.total)+'</td><td class="num">'+money(paidOf(b))+'</td><td class="num'+(dueOf(b)>0?' warn':'')+'">'+money(dueOf(b))+'</td><td><button class="small'+(dueOf(b)>0?' primary':'')+'" data-view="'+b.id+'">'+esc(dueOf(b)>0?t('Receive'):t('View'))+'</button></td></tr>'}).join('')+'</tbody></table></div>'
     :'<p class="muted">'+esc(db.bills.length?t('No bills match this search.'):t('No bills yet. Save a bill from the New bill tab and it will appear here.'))+'</p>';
-  $('#hlist').onclick=function(e){var b=e.target.closest('[data-view]');if(b)showBill(b.dataset.view)};
 }
 
 /* Items */
@@ -775,7 +878,7 @@ function viewItems(box){
     $('#ncb').onclick=function(){
       var n=$('#ncn').value.trim();if(!n)return;
       if(allCats().indexOf(n)>=0)return;
-      guard($('#ncb'),function(){return upsert('categories',{name:n},'name').then(function(){db.categories.push(n);toast(t('Category added'));render()}).catch(fail)});
+      guard($('#ncb'),function(){return upsert('categories',{name:n,deleted_at:null},'name').then(function(){unbinCat(n);db.categories.push(n);toast(t('Category added'));render()}).catch(fail)});
     };
   }
   function drawItems(){
@@ -830,8 +933,8 @@ function viewItems(box){
     var id=$('#iid').value,old=id?itemById(id):null,rec=id?Object.assign({},old,o):Object.assign({id:uid()},o);
     var skipStock=!!old&&String(old.stock)===String(o.stock);
     guard($('#isave'),function(){
-      return upsert('items',itemRow(rec,skipStock)).then(function(){return newCat?upsert('categories',{name:cat},'name'):null}).then(function(){
-        if(newCat)db.categories.push(cat);
+      return upsert('items',itemRow(rec,skipStock)).then(function(){return newCat?upsert('categories',{name:cat,deleted_at:null},'name'):null}).then(function(){
+        if(newCat){unbinCat(cat);db.categories.push(cat)}
         if(id)Object.assign(old,rec);else db.items.push(rec);
         toast(t(id?'Item updated':'Item added'));render();
       }).catch(fail);
@@ -842,20 +945,28 @@ function viewItems(box){
     if(st){itemF.stock=st.dataset.st;drawItems()}
     if(ct){itemF.cat=ct.dataset.ct;drawItems()}
     if(qt){itemF.qty=qt.dataset.qt;drawItems()}
-    if(dc)twice(dc,t('Sure?'),function(){del('categories','name',dc.dataset.delcat).then(function(){db.categories=db.categories.filter(function(c){return c!==dc.dataset.delcat});if(itemF.cat===dc.dataset.delcat)itemF.cat='All';render()},fail)});
+    if(dc)twice(dc,t('Sure?'),function(){binSet('categories','name',dc.dataset.delcat,new Date().toISOString()).then(function(){db.categories=db.categories.filter(function(c){return c!==dc.dataset.delcat});toBin('category',dc.dataset.delcat,dc.dataset.delcat);if(itemF.cat===dc.dataset.delcat)itemF.cat='All';toast(t('Moved to Bin'));render()},fail)});
     if(ed){var i=itemById(ed.dataset.edit);$('#iid').value=i.id;$('#in').value=i.name;$('#inh').value=i.nameHi||HN[i.name]||'';fillCats(i.category);$('#ip').value=i.price;$('#idz').value=(i.dozenPrice===''||i.dozenPrice==null)?'':i.dozenPrice;$('#iu').value=i.unit||'pc';$('#iun').value=i.unitName||'';$('#iuq').value=(i.unitQty>1)?i.unitQty:'';$('#iup').value=(i.unitPrice===''||i.unitPrice==null)?'':i.unitPrice;syncCu();$('#ig').value=i.gst||'';$('#ih').value=i.hsn||'';$('#is').value=i.stock;$('#ititle').textContent=t('Edit item');$('#isave').textContent=t('Save changes');$('#icancel').hidden=false;$('#in').focus()}
-    if(dl)twice(dl,t('Sure?'),function(){del('items','id',dl.dataset.del).then(function(){db.items=db.items.filter(function(x){return x.id!==dl.dataset.del});toast(t('Item deleted'));render()},fail)});
+    if(dl)twice(dl,t('Sure?'),function(){binSet('items','id',dl.dataset.del,new Date().toISOString()).then(function(){var it=itemById(dl.dataset.del);db.items=db.items.filter(function(x){return x.id!==dl.dataset.del});if(it)toBin('item',it.id,it.name,it);toast(t('Moved to Bin'));render()},fail)});
   };
 }
 
 /* Clients */
+function deleteCustomer(id,btn){
+  var c=clientById(id);if(!c)return;
+  var due=r2(db.bills.filter(function(b){return b.clientId===id}).reduce(function(s2,b){return s2+dueOf(b)},0));
+  if(due>0){toast(t('This customer still owes')+' '+money(due)+'. '+t('Collect the payment first.'));return}
+  twice(btn,t('Sure?'),function(){
+    binSet('clients','id',id,new Date().toISOString()).then(function(){db.clients=db.clients.filter(function(x){return x.id!==id});toBin('client',id,c.name,c);toast(t('Moved to Bin'));render()},fail);
+  });
+}
 function viewClients(box){
   var stats={};db.bills.forEach(function(b){if(b.clientId&&b.status!=='cancelled'){var s=stats[b.clientId]||(stats[b.clientId]={n:0,t:0,d:0});s.n++;s.t+=b.total;s.d+=dueOf(b)}});
   box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Customers'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Name'))+'</th><th>'+esc(t('Phone'))+'</th><th class="num">'+esc(t('Bills'))+'</th><th class="num">'+esc(t('Spent'))+'</th><th class="num">'+esc(t('Pending'))+'</th><th></th></tr></thead><tbody>'+
   (db.clients.length?db.clients.map(function(c){var s=stats[c.id]||{n:0,t:0,d:0};return '<tr><td><b>'+esc(nm(c))+'</b>'+(c.address?'<div class="note">'+esc(c.address)+'</div>':'')+'</td><td>'+esc(c.phone)+'</td><td class="num">'+s.n+'</td><td class="num">'+money(s.t)+'</td><td class="num'+(s.d>0?' warn':'')+'">'+money(s.d)+'</td><td class="row"><button class="small" data-acct="'+c.id+'">'+esc(t('Account'))+'</button><button class="small" data-hist="'+esc(c.name)+'">'+esc(t('Bills'))+'</button><button class="small" data-edit="'+c.id+'">'+esc(t('Edit'))+'</button></td></tr>'}).join(''):'<tr><td colspan="6" class="muted">'+esc(t('No customers yet. They are added when you bill a new customer.'))+'</td></tr>')+
   '</tbody></table></div></div><form class="panel stack" id="cform"><h2 id="ctitle">'+esc(t('Add customer'))+'</h2><input type="hidden" id="cid">'+
   '<label>'+esc(t('Name (English)'))+'<input id="cn"></label><label>'+esc(t('Name (Hindi)'))+'<input id="cnh"></label><label>'+esc(t('Phone'))+'<input id="cp" inputmode="numeric" autocomplete="off" placeholder="'+esc(t('10-digit number'))+'"><span class="note warn" id="cperr" hidden>'+esc(t('Phone number must be 10 digits'))+'</span></label><label>'+esc(t('Address'))+'<input id="ca" placeholder="'+esc(t('Optional'))+'"></label>'+
-  '<div class="row"><button class="primary grow" type="submit" id="csave">'+esc(t('Add customer'))+'</button><button type="button" id="ccancel" hidden>'+esc(t('Cancel edit'))+'</button></div>'+
+  '<div class="row"><button class="primary grow" type="submit" id="csave">'+esc(t('Add customer'))+'</button><button type="button" id="ccancel" hidden>'+esc(t('Cancel edit'))+'</button><button type="button" class="danger" id="cdel" hidden>'+esc(t('Delete customer'))+'</button></div>'+
   '<p class="note">'+esc(t('Past bills keep the name they were saved with, even if you edit the customer later.'))+'</p><p class="note">'+esc(t('Type the name in English. In Hindi mode it is written in Hindi automatically. Fill the Hindi name only to correct the spelling.'))+'</p></form></div>'+
   '<div class="panel stack" id="importPanel" style="margin-top:16px"><h2>'+esc(t('Import customers from Excel'))+'</h2><p class="muted">'+esc(t('Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.'))+'</p>'+
   '<div class="row"><button id="csvSample" type="button">'+esc(t('Download sample CSV'))+'</button></div>'+
@@ -864,11 +975,12 @@ function viewClients(box){
   '<div class="row"><button class="primary" id="csvGo" type="button">'+esc(t('Import customers'))+'</button></div><div id="csvRes" class="note"></div></div>';
   $('#ccancel').onclick=function(){render()};
   $('#cn').oninput=function(){$('#cnh').placeholder=tr(this.value)};
+  $('#cn').onblur=function(){this.value=titleCase(this.value)};
   phoneInput('#cp','#cperr');
   wireImport();
   $('#cform').onsubmit=function(e){
     e.preventDefault();var id=$('#cid').value;
-    var o={name:$('#cn').value.trim(),nameHi:$('#cnh').value.trim(),phone:cleanPhone($('#cp').value),address:$('#ca').value.trim()};
+    var o={name:titleCase($('#cn').value),nameHi:$('#cnh').value.trim(),phone:cleanPhone($('#cp').value),address:$('#ca').value.trim()};
     if(!o.name)o.name=o.nameHi;if(!o.name){toast(t('Enter the customer name'));return}
     if(phoneErr(o.phone)){$('#cperr').hidden=false;$('#cp').focus();toast(t('Phone number must be 10 digits'));return}
     var dup=o.phone&&db.clients.find(function(c){return c.phone===o.phone&&c.id!==$('#cid').value});
@@ -878,30 +990,35 @@ function viewClients(box){
   };
   box.onclick=function(e){
     var ed=e.target.closest('[data-edit]'),h=e.target.closest('[data-hist]');
-    if(ed){var c=clientById(ed.dataset.edit);$('#cid').value=c.id;$('#cn').value=c.name;$('#cnh').value=c.nameHi||HN[c.name]||'';$('#cp').value=c.phone;$('#ca').value=c.address||'';$('#ctitle').textContent=t('Edit customer');$('#csave').textContent=t('Save changes');$('#ccancel').hidden=false;$('#cn').focus()}
+    if(ed){var c=clientById(ed.dataset.edit);$('#cid').value=c.id;$('#cn').value=c.name;$('#cnh').value=c.nameHi||HN[c.name]||'';$('#cp').value=c.phone;$('#ca').value=c.address||'';$('#ctitle').textContent=t('Edit customer');$('#csave').textContent=t('Save changes');$('#ccancel').hidden=false;$('#cdel').hidden=false;$('#cdel').onclick=function(){deleteCustomer(c.id,this)};$('#cn').focus()}
     var ac=e.target.closest('[data-acct]');if(ac)showLedger(ac.dataset.acct);
-    if(h){hist={q:h.dataset.hist,from:'',to:''};location.hash='bills'}
+    if(h){var hc=db.clients.find(function(x){return x.name===h.dataset.hist});hist=Object.assign(defaultHist(),{from:'',to:'',client:hc?hc.id:'all',q:hc?'':h.dataset.hist,keep:true});location.hash='bills'}
   };
 }
 
 /* Reports */
+function qtySold(u){
+  return Object.keys(u).sort(function(a,b){return a==='pc'?-1:b==='pc'?1:0}).map(function(k){var q=u[k];return q+' '+(k==='pc'?t(q===1?'pc':'pcs'):k==='doz'?t('dozen'):uLabel(k.slice(2)))}).join(', ');
+}
 function viewReports(box){
   var ok=db.bills.filter(function(b){return b.status!=='cancelled'});
-  var td=today(),day={},mon={},items={};
+  var td=today(),day={},mon={},items={},dayDue={},monDue={};
   ok.forEach(function(b){
-    day[b.date]=(day[b.date]||0)+b.total;var mk=b.date.slice(0,7);mon[mk]=(mon[mk]||0)+b.total;
-    b.lines.forEach(function(l){var s=items[l.name]||(items[l.name]={q:0,t:0,h:l.nameHi||HN[l.name]||''});s.q+=l.qty*(l.factor||1);s.t+=l.total});
+    day[b.date]=(day[b.date]||0)+b.total;var mk=b.date.slice(0,7);mon[mk]=(mon[mk]||0)+b.total;dayDue[b.date]=r2((dayDue[b.date]||0)+dueOf(b));monDue[mk]=r2((monDue[mk]||0)+dueOf(b));
+    b.lines.forEach(function(l){var s=items[l.name]||(items[l.name]={u:{},t:0,h:l.nameHi||HN[l.name]||''});var uk=(l.unit==='custom'&&l.unitName)?'c:'+l.unitName:(l.unit||'pc');s.u[uk]=(s.u[uk]||0)+l.qty;s.t+=l.total});
   });
   var todayBills=ok.filter(function(b){return b.date===td}),byPay={},collected=0;
   ok.forEach(function(b){(b.payments||[]).forEach(function(p){if(p.date===td){byPay[p.mode]=(byPay[p.mode]||0)+p.amount;collected+=p.amount}})});
   var days=Object.keys(day).sort().reverse().slice(0,14),maxD=Math.max.apply(null,days.map(function(d){return day[d]}).concat([1]));
   var il=Object.keys(items).sort(function(a,b){return items[b].t-items[a].t}),maxI=Math.max.apply(null,il.map(function(k){return items[k].t}).concat([1]));
+  var dueAll=r2(ok.reduce(function(s2,b){return s2+dueOf(b)},0)),dueToday=r2(todayBills.reduce(function(s2,b){return s2+dueOf(b)},0));
+  var pendCards='<div><h3>'+esc(t('Pending today'))+'</h3><div class="big'+(dueToday>0?' warn':'')+'">'+money(dueToday)+'</div></div><div><h3>'+esc(t('Total pending'))+'</h3><div class="big'+(dueAll>0?' warn':'')+'">'+money(dueAll)+'</div></div>';
   var tbl=function(head,rows){return rows.length?'<div class="tablewrap"><table><thead><tr>'+head+'</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>':'<p class="muted">'+esc(t('Nothing to show yet. Save a bill and the figures appear here.'))+'</p>'};
   box.innerHTML='<div class="stack"><div class="panel stack"><h2>'+esc(t('Today'))+', '+td+'</h2><div class="row" style="gap:24px"><div><h3>'+esc(t('Sales'))+'</h3><div class="big">'+money(todayBills.reduce(function(s,b){return s+b.total},0))+'</div></div><div><h3>'+esc(t('Bills'))+'</h3><div class="big">'+todayBills.length+'</div></div><div><h3>'+esc(t('Collected'))+'</h3><div class="big">'+money(collected)+'</div></div>'+
-  ['cash','UPI','card','other'].map(function(m){return '<div><h3>'+esc(t(m))+'</h3><div class="big">'+money(byPay[m]||0)+'</div></div>'}).join('')+'</div><p class="note">'+esc(t('At closing, check the cash and UPI figures against your drawer and your UPI app.'))+'</p></div>'+
-  '<div class="cols"><div class="panel stack"><h2>'+esc(t('Daily sales'))+'</h2>'+tbl('<th>'+esc(t('Date'))+'</th><th class="num">'+esc(t('Sales'))+'</th><th class="barcell"></th>',days.map(function(d){return '<tr><td>'+d+'</td><td class="num">'+money(day[d])+'</td><td><div class="bar" style="width:'+Math.round(day[d]/maxD*100)+'%"></div></td></tr>'}))+'</div>'+
-  '<div class="panel stack"><h2>'+esc(t('Monthly sales'))+'</h2>'+tbl('<th>'+esc(t('Month'))+'</th><th class="num">'+esc(t('Sales'))+'</th>',Object.keys(mon).sort().reverse().map(function(m){return '<tr><td>'+m+'</td><td class="num">'+money(mon[m])+'</td></tr>'}))+'</div></div>'+
-  '<div class="panel stack"><h2>'+esc(t('Item-wise sales'))+'</h2>'+tbl('<th>'+esc(t('Item'))+'</th><th class="num">'+esc(t('Pieces sold'))+'</th><th class="num">'+esc(t('Sales'))+'</th><th class="barcell"></th>',il.map(function(k){return '<tr><td>'+esc(lang==='hi'?(items[k].h||HN[k]||tr(k)):k)+'</td><td class="num">'+items[k].q+'</td><td class="num">'+money(items[k].t)+'</td><td><div class="bar" style="width:'+Math.round(items[k].t/maxI*100)+'%"></div></td></tr>'}))+'<p class="note">'+esc(t('Cancelled bills are left out of every figure.'))+'</p></div></div>';
+  ['cash','UPI','card','other'].map(function(m){return '<div><h3>'+esc(t(m))+'</h3><div class="big">'+money(byPay[m]||0)+'</div></div>'}).join('')+pendCards+'</div><p class="note">'+esc(t('At closing, check the cash and UPI figures against your drawer and your UPI app.'))+'</p></div>'+
+  '<div class="cols"><div class="panel stack"><h2>'+esc(t('Daily sales'))+'</h2>'+tbl('<th>'+esc(t('Date'))+'</th><th class="num">'+esc(t('Sales'))+'</th><th class="num">'+esc(t('Pending'))+'</th><th class="barcell"></th>',days.map(function(d){return '<tr><td>'+d+'</td><td class="num">'+money(day[d])+'</td><td class="num'+((dayDue[d]||0)>0?' warn':'')+'">'+money(dayDue[d]||0)+'</td><td><div class="bar" style="width:'+Math.round(day[d]/maxD*100)+'%"></div></td></tr>'}))+'</div>'+
+  '<div class="panel stack"><h2>'+esc(t('Monthly sales'))+'</h2>'+tbl('<th>'+esc(t('Month'))+'</th><th class="num">'+esc(t('Sales'))+'</th><th class="num">'+esc(t('Pending'))+'</th>',Object.keys(mon).sort().reverse().map(function(m){return '<tr><td>'+m+'</td><td class="num">'+money(mon[m])+'</td><td class="num'+((monDue[m]||0)>0?' warn':'')+'">'+money(monDue[m]||0)+'</td></tr>'}))+'</div></div>'+
+  '<div class="panel stack"><h2>'+esc(t('Item-wise sales'))+'</h2>'+tbl('<th>'+esc(t('Item'))+'</th><th class="num">'+esc(t('Quantity sold'))+'</th><th class="num">'+esc(t('Sales'))+'</th><th class="barcell"></th>',il.map(function(k){return '<tr><td>'+esc(lang==='hi'?(items[k].h||HN[k]||tr(k)):k)+'</td><td class="num">'+qtySold(items[k].u)+'</td><td class="num">'+money(items[k].t)+'</td><td><div class="bar" style="width:'+Math.round(items[k].t/maxI*100)+'%"></div></td></tr>'}))+'<p class="note">'+esc(t('Cancelled bills are left out of every figure.'))+'</p></div></div>';
 }
 
 /* Backup */
@@ -912,7 +1029,7 @@ function viewBackup(box){
   '<div class="panel stack"><h2>'+esc(t('Restore'))+'</h2><p class="muted">'+esc(t('Pick a saved backup file, or paste the backup text below. The backup is added to the database.'))+'</p>'+
   '<input type="file" id="bf" accept=".json,.txt,text/plain,application/json" aria-label="'+esc(t('Restore'))+'"><textarea id="rta" placeholder="'+esc(t('Paste backup text here'))+'" aria-label="'+esc(t('Paste backup text here'))+'"></textarea>'+
   '<div class="row"><button class="primary" id="rs">'+esc(t('Restore from text'))+'</button><button id="wipe">'+esc(t('Refresh data'))+'</button></div><p class="note">'+esc(t('Restoring adds the backup to the database. Items, customers and bills that already exist are skipped.'))+'</p></div></div>';
-  var data=function(){return JSON.stringify(db)};
+  var data=function(){return JSON.stringify(Object.assign({},db,{bin:[]}))};
   $('#bk').onclick=function(){copy(data(),t('Backup copied'))};
   $('#bshow').onclick=function(){var x=$('#bta');x.value=data();x.hidden=false;x.select()};
   $('#bf').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$('#rta').value=String(r.result)};r.readAsText(f)};
@@ -953,7 +1070,7 @@ function readCustomers(text){
   }
   var seen={};db.clients.forEach(function(c){if(c.phone)seen[c.phone]=1});
   rows.forEach(function(r,k){
-    var line=k+(hasHeader?2:1),name=(r[iN]||'').trim(),ph=cleanPhone(iP>=0?(r[iP]||''):''),ad=iA>=0?(r[iA]||'').trim():'';
+    var line=k+(hasHeader?2:1),name=titleCase(r[iN]||''),ph=cleanPhone(iP>=0?(r[iP]||''):''),ad=iA>=0?(r[iA]||'').trim():'';
     if(!name){res.skipped.push(t('Row')+' '+line+': '+t('no name'));return}
     if(phoneErr(ph)){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('mobile number must be 10 digits'));return}
     if(ph&&seen[ph]){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('mobile number already exists'));return}
@@ -1040,7 +1157,7 @@ function wireItemImport(){
     if(!res.added.length&&!res.skipped.length){toast(t('Choose a CSV file or paste the rows first'));return}
     guard($('#itemGo'),function(){
       var batches=[];for(var i=0;i<res.added.length;i+=200)batches.push(res.added.slice(i,i+200));
-      var p=res.cats.length?rest('POST','/rest/v1/categories?on_conflict=name',res.cats.map(function(n){return {name:n}}),'resolution=merge-duplicates,return=minimal'):Promise.resolve();
+      var p=res.cats.length?rest('POST','/rest/v1/categories?on_conflict=name',res.cats.map(function(n){return {name:n,deleted_at:null}}),'resolution=merge-duplicates,return=minimal'):Promise.resolve();
       return batches.reduce(function(q,b){return q.then(function(){return rest('POST','/rest/v1/items?on_conflict=id',b.map(function(i){return itemRow(i)}),'resolution=merge-duplicates,return=minimal')})},p).then(function(){
         db.items=db.items.concat(res.added);res.cats.forEach(function(c){db.categories.push(c)});render();
         var box=$('#itemRes');
@@ -1048,6 +1165,43 @@ function wireItemImport(){
         toast(t('Added')+': '+res.added.length);
       }).catch(fail);
     });
+  };
+}
+
+/* Bin: everything deleted stays here for 30 days and can be restored */
+var binF='all';
+function fmtDay(iso){var d=new Date(iso),p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
+function binTable(e){return e.type==='item'?'items':e.type==='client'?'clients':'categories'}
+function binCol(e){return e.type==='category'?'name':'id'}
+function viewBin(box){
+  var live=db.bin.filter(function(e){return binDays(e)>0});
+  var kinds=[['all','All'],['item','Items'],['client','Customers'],['category','Categories']];
+  var cnt=function(k){return k==='all'?live.length:live.filter(function(e){return e.type===k}).length};
+  var list=live.filter(function(e){return binF==='all'||e.type===binF}).sort(function(a,b){return a.at<b.at?1:-1});
+  var typeName=function(e){return e.type==='item'?t('Item'):e.type==='client'?t('Customer'):t('Category')};
+  var label=function(e){return e.type==='category'?tc(e.name):nm(e.data)};
+  box.innerHTML='<div class="panel stack"><h2>'+esc(t('Bin'))+'</h2><p class="muted">'+esc(t('Deleted items, customers and categories stay here for 30 days. You can restore them until then. After 30 days they are deleted for good.'))+'</p><p class="note">'+esc(t('Bills are never deleted. Use Cancel bill to cancel one.'))+'</p>'+
+  '<div class="chips">'+kinds.map(function(k){return '<button class="chip'+(binF===k[0]?' on':'')+'" data-bf="'+k[0]+'">'+esc(t(k[1]))+' ('+cnt(k[0])+')</button>'}).join('')+'</div>'+
+  (list.length?'<div class="tablewrap"><table><thead><tr><th>'+esc(t('Type'))+'</th><th>'+esc(t('Name'))+'</th><th>'+esc(t('Deleted on'))+'</th><th class="num">'+esc(t('Days left'))+'</th><th></th></tr></thead><tbody>'+
+    list.map(function(e,i){return '<tr><td>'+esc(typeName(e))+'</td><td><b>'+esc(label(e))+'</b>'+(e.type==='client'&&e.data.phone?'<div class="note">'+esc(e.data.phone)+'</div>':'')+'</td><td>'+fmtDay(e.at)+'</td><td class="num">'+binDays(e)+'</td><td class="row"><button class="small primary" data-rs="'+i+'">'+esc(t('Restore'))+'</button><button class="small danger" data-fd="'+i+'">'+esc(t('Delete forever'))+'</button></td></tr>'}).join('')+'</tbody></table></div>'
+   :'<p class="muted">'+esc(t('The Bin is empty.'))+'</p>')+'</div>';
+  box.onclick=function(ev){
+    var bf=ev.target.closest('[data-bf]'),rs=ev.target.closest('[data-rs]'),fd=ev.target.closest('[data-fd]');
+    if(bf){binF=bf.dataset.bf;render();return}
+    if(rs){
+      var e=list[+rs.dataset.rs];
+      guard(rs,function(){return binSet(binTable(e),binCol(e),e.id,null).then(function(){
+        db.bin=db.bin.filter(function(x){return x!==e});
+        if(e.type==='item'){db.items.push(e.data);db.items.sort(function(a,b){return a.name<b.name?-1:1})}
+        else if(e.type==='client'){db.clients.push(e.data);db.clients.sort(function(a,b){return a.name<b.name?-1:1})}
+        else db.categories.push(e.id);
+        toast(t('Restored')+': '+label(e));render();
+      }).catch(fail)});
+    }
+    if(fd){
+      var f=list[+fd.dataset.fd];
+      twice(fd,t('Sure?'),function(){del(binTable(f),binCol(f),f.id).then(function(){db.bin=db.bin.filter(function(x){return x!==f});toast(t('Deleted for good'));render()},fail)});
+    }
   };
 }
 
