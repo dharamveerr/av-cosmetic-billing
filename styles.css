@@ -139,3 +139,7 @@ pre.receipt{font:12px/1.5 ui-monospace,Menlo,'Noto Sans Devanagari',monospace;ba
     padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
     background:var(--surface);border-top:1px solid var(--line)}
 }
+
+body.out #nav,body.out #menuBtn{display:none}
+#nav #signout{margin-top:auto;color:var(--muted)}
+@media (min-width:821px){#nav #signout{margin-top:0;margin-left:8px}}

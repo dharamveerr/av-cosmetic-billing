@@ -1,11 +1,11 @@
-/* AV Cosmetics & Bangle Store - billing app. Plain JavaScript, no libraries. Data is saved in the browser (localStorage). */
+/* AV Cosmetics & Bangle Store - billing app. Plain JavaScript, no libraries. Data is saved in a Supabase cloud database. */
 (function(){
 var KEY='shopbill-v1',LKEY='shopbill-lang';
 var $=function(s,r){return (r||document).querySelector(s)};
 var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
 var money=function(n){return '₹'+(Math.round(n*100)/100).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})};
 var r2=function(n){return Math.round(n*100)/100};
-var uid=function(){return Math.random().toString(36).slice(2,9)};
+var uid=function(){return Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-4)};
 function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function nowTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
 
@@ -26,7 +26,13 @@ var HI={
 'Who is this bill for?':'यह बिल किसके लिए है?','Search client by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No clients match.':'कोई ग्राहक नहीं मिला।',
 '+ New client':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
 'GST is added at each item\'s rate.':'हर सामान की अपनी दर से जीएसटी जुड़ेगा।',
-'Pending':'बकाया','Paid':'जमा','View bill':'बिल देखें','Enter amount':'राशि लिखें','Amount received now (\u20B9)':'अभी प्राप्त राशि (\u20B9)','Enter the amount received first.':'पहले प्राप्त राशि लिखें।','More than the balance due':'बाकी रकम से ज़्यादा',
+'Pending':'बकाया','Paid':'जमा','Sign in':'साइन इन','Sign out':'साइन आउट','Email':'ईमेल','Password':'पासवर्ड','Wrong email or password':'ईमेल या पासवर्ड गलत है','Could not connect. Check your internet.':'कनेक्ट नहीं हो सका। इंटरनेट जाँचें।',
+'Only people added by the shop owner can sign in.':'सिर्फ़ दुकान मालिक द्वारा जोड़े गए लोग ही साइन इन कर सकते हैं।','Loading\u2026':'लोड हो रहा है\u2026','Try again':'फिर कोशिश करें','Could not save. Check your internet and try again.':'सहेजा नहीं जा सका। इंटरनेट जाँचकर फिर कोशिश करें।',
+'This number is already used by another client':'यह नंबर किसी और ग्राहक का है','Data found on this phone.':'इस फ़ोन पर डेटा मिला।','Import it into the cloud database once, so every phone can see it.':'इसे एक बार क्लाउड डेटाबेस में जोड़ें, ताकि हर फ़ोन पर दिखे।',
+'Import into cloud':'क्लाउड में जोड़ें','Imported':'जोड़ा गया','Add this backup to the database?':'यह बैकअप डेटाबेस में जोड़ें?','Refresh data':'डेटा ताज़ा करें','Data refreshed':'डेटा ताज़ा हुआ',
+'Restoring adds the backup to the database. Items, clients and bills that already exist are skipped.':'बैकअप वापस लाने पर वह डेटाबेस में जुड़ता है। जो सामान, ग्राहक और बिल पहले से हैं उन्हें छोड़ दिया जाता है।',
+'Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains client phone numbers, so keep it private.':'आपका डेटा क्लाउड डेटाबेस में सहेजा जाता है। जिन्हें आप जोड़ेंगे वे साइन इन करके इसे देख सकेंगे। बैकअप में ग्राहकों के फ़ोन नंबर हैं, इसे निजी रखें।',
+'Pick a saved backup file, or paste the backup text below. The backup is added to the database.':'सहेजी हुई बैकअप फ़ाइल चुनें, या नीचे बैकअप टेक्स्ट पेस्ट करें। बैकअप डेटाबेस में जुड़ जाएगा।','View bill':'बिल देखें','Enter amount':'राशि लिखें','Amount received now (\u20B9)':'अभी प्राप्त राशि (\u20B9)','Enter the amount received first.':'पहले प्राप्त राशि लिखें।','More than the balance due':'बाकी रकम से ज़्यादा',
 'If the customer will pay the rest later, leave it. The balance stays in Pending until you record the payment.':'अगर ग्राहक बाकी रकम बाद में देगा तो कुछ न करें। भुगतान दर्ज करने तक यह बकाया में रहेगा।','10-digit number':'10 अंक का नंबर','Phone number must be 10 digits':'फ़ोन नंबर 10 अंकों का होना चाहिए','This number already belongs to':'यह नंबर पहले से इनका है','Skin Care':'त्वचा की देखभाल','Hair Accessories':'हेयर एक्सेसरीज़','Jewellery':'ज्वैलरी','Bindi & Sindoor':'बिंदी और सिंदूर','Mehndi':'मेहंदी','Perfume':'परफ्यूम','Other':'अन्य',
 'In stock':'स्टॉक में','Low stock':'कम स्टॉक','Out of stock':'स्टॉक खत्म','Categories':'श्रेणियाँ','Add category':'श्रेणी जोड़ें','New category name':'नई श्रेणी का नाम','Choose a category':'श्रेणी चुनें',
 '+ Add new category\u2026':'+ नई श्रेणी जोड़ें\u2026','Category added':'श्रेणी जुड़ गई','No items in this view.':'इस फ़िल्टर में कोई सामान नहीं।','Only':'सिर्फ़','in stock':'स्टॉक में',
@@ -126,30 +132,156 @@ function hn(o,k,h){k=k||'name';h=h||'nameHi';return o[h]||HN[o[k]]||tr(o[k])}
 function nm(o,k,h){k=k||'name';return lang==='hi'?hn(o,k,h):o[k]}
 function tc(c){return lang==='hi'?(HI[c]||tr(c)):c}
 
-/* ---------- data ---------- */
-function seed(){
-  var it=function(n,c,p,g,h,s){return {id:uid(),name:n,category:c,price:p,gst:g,hsn:h,stock:s,active:true}};
-  return {example:true,counter:0,
-    items:[it('Matte Lipstick','Cosmetics',349,18,'3304',24),it('Kajal Pencil','Cosmetics',129,18,'3304',40),
-      it('Compact Powder','Cosmetics',249,18,'3304',18),it('Nail Polish','Cosmetics',99,18,'3304',60),
-      it('Face Cream 50g','Cosmetics',185,18,'3304',15),it('Glass Bangles (set of 12)','Bangles',150,3,'7018',30),
-      it('Silk Thread Bangles (pair)','Bangles',220,3,'7117',22),it('Kundan Bangle','Bangles',480,3,'7117',9),
-      it('Lac Bangles (set of 6)','Bangles',260,3,'7117',14)],
-    clients:[{id:uid(),name:'Priya Sharma',phone:'9876500011',address:'Lajpat Nagar',created:today()},
-      {id:uid(),name:'Anita Verma',phone:'9876500022',address:'',created:today()}],
-    bills:[]};
-}
-function load(){try{var s=localStorage.getItem(KEY);if(s){var d=JSON.parse(s);if(d&&d.items&&d.bills)return d}}catch(e){}return seed()}
+/* ---------- data: Supabase cloud database (plain fetch, no library) ---------- */
 var DEFAULT_CATS=['Cosmetics','Bangles','Skin Care','Hair Accessories','Jewellery','Bindi & Sindoor','Mehndi','Perfume','Other'];
-var db=load();
+var db={items:[],clients:[],bills:[],categories:[]};
+var legacy=null;
 function migrate(){
-  if(!db.categories)db.categories=DEFAULT_CATS.slice();
   db.items.forEach(function(i){if(!i.nameHi&&HN[i.name])i.nameHi=HN[i.name]});
   db.clients.forEach(function(c){if(!c.nameHi&&HN[c.name])c.nameHi=HN[c.name]});
-  db.bills.forEach(function(b){if(!b.payments)b.payments=[{id:uid(),date:b.date,time:b.time,amount:b.total,mode:b.pay||'cash'}]});
 }
-migrate();
-function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
+function save(){}  /* every change is sent to the database as it happens */
+
+var CFG=window.AV_CONFIG||{},AKEY='shopbill-auth',auth=null;
+try{auth=JSON.parse(localStorage.getItem(AKEY))}catch(e){}
+function setAuth(a){auth=a;try{if(a)localStorage.setItem(AKEY,JSON.stringify(a));else localStorage.removeItem(AKEY)}catch(e){}}
+function sessionFrom(j,email){return {access_token:j.access_token,refresh_token:j.refresh_token,expires_at:Math.floor(Date.now()/1000)+(j.expires_in||3600),email:(j.user&&j.user.email)||email||''}}
+function authFetch(grant,body){
+  return fetch(CFG.url+'/auth/v1/token?grant_type='+grant,{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json'},body:JSON.stringify(body)})
+    .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error_description||j.msg||j.message||'Sign in failed');return j})});
+}
+function signIn(email,pw){return authFetch('password',{email:email,password:pw}).then(function(j){setAuth(sessionFrom(j,email))})}
+function getToken(){
+  if(!auth)return Promise.reject(new Error('not-signed-in'));
+  if(auth.expires_at-60>Date.now()/1000)return Promise.resolve(auth.access_token);
+  return authFetch('refresh_token',{refresh_token:auth.refresh_token}).then(function(j){setAuth(sessionFrom(j,auth.email));return auth.access_token},function(){setAuth(null);throw new Error('not-signed-in')});
+}
+function rest(method,path,body,prefer){
+  return getToken().then(function(tok){
+    var h={apikey:CFG.key,Authorization:'Bearer '+tok,'Content-Type':'application/json'};if(prefer)h.Prefer=prefer;
+    return fetch(CFG.url+path,{method:method,headers:h,body:body==null?undefined:JSON.stringify(body)});
+  }).then(function(r){
+    return r.text().then(function(tx){
+      var j=null;try{j=tx?JSON.parse(tx):null}catch(e){}
+      if(!r.ok){if(r.status===401){setAuth(null);throw new Error('not-signed-in')}throw new Error((j&&(j.message||j.error_description))||('Error '+r.status))}
+      return j;
+    });
+  });
+}
+function upsert(table,row,key){return rest('POST','/rest/v1/'+table+'?on_conflict='+(key||'id'),row,'resolution=merge-duplicates,return=minimal')}
+function del(table,col,val){return rest('DELETE','/rest/v1/'+table+'?'+col+'=eq.'+encodeURIComponent(val),null,'return=minimal')}
+function rpc(fn,args){return rest('POST','/rest/v1/rpc/'+fn,args)}
+function fetchAll(table,order){
+  var out=[],step=1000;
+  function page(from){return rest('GET','/rest/v1/'+table+'?select=*&order='+order+'&limit='+step+'&offset='+from).then(function(rows){out=out.concat(rows);return rows.length===step?page(from+step):out})}
+  return page(0);
+}
+function rowItem(r){return {id:r.id,name:r.name,nameHi:r.name_hi||'',category:r.category||'',price:+r.price,dozenPrice:r.dozen_price==null?'':+r.dozen_price,unit:r.unit||'pc',gst:+r.gst||0,hsn:r.hsn||'',stock:r.stock==null?'':r.stock,active:r.active!==false}}
+function itemRow(i,skipStock){
+  var o={id:i.id,name:i.name,name_hi:i.nameHi||'',category:i.category||'',price:i.price,dozen_price:(i.dozenPrice===''||i.dozenPrice==null)?null:i.dozenPrice,unit:i.unit||'pc',gst:i.gst||0,hsn:i.hsn||'',active:i.active!==false};
+  if(!skipStock)o.stock=(i.stock===''||i.stock==null)?null:i.stock;
+  return o;
+}
+function rowClient(r){return {id:r.id,name:r.name,nameHi:r.name_hi||'',phone:r.phone||'',address:r.address||'',created:(r.created_at||'').slice(0,10)}}
+function clientRow(c){return {id:c.id,name:c.name,name_hi:c.nameHi||'',phone:c.phone||'',address:c.address||''}}
+function rowPay(r){return {id:r.id,date:r.date,time:r.time,amount:+r.amount,mode:r.mode}}
+function rowBill(r,pays){return {id:r.id,no:r.no,date:r.date,time:r.time,clientId:r.client_id,clientName:r.client_name,clientNameHi:r.client_name_hi||'',clientPhone:r.client_phone||'',lines:r.lines||[],subtotal:+r.subtotal,discount:+r.discount,tax:+r.tax,total:+r.total,pay:r.pay,notes:r.notes||'',status:r.status,payments:pays||[]}}
+function loadAll(){
+  return Promise.all([fetchAll('items','name.asc'),fetchAll('categories','name.asc'),fetchAll('clients','name.asc'),fetchAll('bills','created_at.asc'),fetchAll('payments','created_at.asc')]).then(function(a){
+    var pays={};a[4].forEach(function(p){(pays[p.bill_id]=pays[p.bill_id]||[]).push(rowPay(p))});
+    db.items=a[0].map(rowItem);db.categories=a[1].map(function(c){return c.name});db.clients=a[2].map(rowClient);
+    db.bills=a[3].map(function(b){return rowBill(b,pays[b.id])});
+    migrate();
+    if(!db.categories.length&&!db.items.length){
+      db.categories=DEFAULT_CATS.slice();
+      return rest('POST','/rest/v1/categories?on_conflict=name',DEFAULT_CATS.map(function(n){return {name:n}}),'resolution=merge-duplicates,return=minimal').catch(function(){});
+    }
+  });
+}
+function fail(e){
+  if(e&&e.message==='not-signed-in'){showLogin();return}
+  var m=e&&e.message?e.message:'';
+  if(/clients_phone_uq|duplicate key/i.test(m)){toast(t('This number is already used by another client'));return}
+  if(/More than the balance due/i.test(m)){toast(t('More than the balance due'));return}
+  toast(t('Could not save. Check your internet and try again.'));
+}
+function guard(btn,fn){
+  if(btn&&btn.dataset.busy)return;
+  if(btn){btn.dataset.busy='1';btn.disabled=true}
+  var done=function(){if(btn&&btn.isConnected){delete btn.dataset.busy;btn.disabled=false}};
+  var p;try{p=fn()}catch(e){done();throw e}
+  return Promise.resolve(p).then(done,function(e){done();throw e});
+}
+
+/* ---------- sign in, sign out, refresh ---------- */
+function showLogin(msg){
+  document.body.classList.add('out');
+  setMenu(false);
+  db={items:[],clients:[],bills:[],categories:[]};
+  $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
+  $('#view').innerHTML='<form class="panel stack" id="lf" style="max-width:420px;margin:24px auto"><h2>'+esc(t('Sign in'))+'</h2>'+
+    '<label>'+esc(t('Email'))+'<input id="lem" type="email" autocomplete="username" inputmode="email" required></label>'+
+    '<label>'+esc(t('Password'))+'<input id="lpw" type="password" autocomplete="current-password" required></label>'+
+    '<div class="note warn" id="lmsg"'+(msg?'':' hidden')+'>'+esc(msg||'')+'</div>'+
+    '<button class="primary" type="submit" id="lgo">'+esc(t('Sign in'))+'</button>'+
+    '<p class="note">'+esc(t('Only people added by the shop owner can sign in.'))+'</p></form>';
+  $('#lf').onsubmit=function(e){
+    e.preventDefault();
+    var go=$('#lgo'),em=$('#lem').value.trim(),pw=$('#lpw').value;
+    guard(go,function(){
+      return signIn(em,pw).then(startApp).catch(function(err){
+        var m=$('#lmsg');if(!m)return;
+        m.textContent=/network|fetch/i.test(err.message)?t('Could not connect. Check your internet.'):t('Wrong email or password');m.hidden=false;
+      });
+    });
+  };
+}
+function signOut(){
+  var tk=auth&&auth.access_token;
+  if(tk)fetch(CFG.url+'/auth/v1/logout',{method:'POST',headers:{apikey:CFG.key,Authorization:'Bearer '+tk}}).catch(function(){});
+  setAuth(null);cur&&newBill();showLogin();
+}
+function startApp(){
+  $('#view').innerHTML='<p class="muted" style="text-align:center;margin-top:40px">'+esc(t('Loading…'))+'</p>';
+  return loadAll().then(function(){
+    document.body.classList.remove('out');
+    detectLegacy();render();labelTables();
+  },function(e){
+    if(e&&e.message==='not-signed-in'){showLogin();return}
+    $('#view').innerHTML='<div class="panel stack" style="max-width:420px;margin:24px auto"><p>'+esc(t('Could not connect. Check your internet.'))+'</p><button class="primary" id="retry">'+esc(t('Try again'))+'</button></div>';
+    $('#retry').onclick=startApp;
+  });
+}
+function softRefresh(){
+  if(!auth||document.hidden||!$('#modal').hidden)return;
+  var ae=document.activeElement;if(ae&&/^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName))return;
+  if(route()==='billing'&&cur&&(cur.lines.length||cur.addNew))return;
+  loadAll().then(render,function(){});
+}
+setInterval(softRefresh,120000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)softRefresh()});
+
+/* data saved on this phone by the older offline version */
+function detectLegacy(){
+  legacy=null;
+  try{
+    var ls=JSON.parse(localStorage.getItem(KEY));
+    if(ls&&Array.isArray(ls.bills)&&Array.isArray(ls.items)&&(ls.bills.length||!ls.example))legacy=ls;
+  }catch(e){}
+}
+function legacyBanner(){
+  if(!legacy)return '';
+  return '<div class="banner"><b>'+esc(t('Data found on this phone.'))+'</b> '+esc(t('Import it into the cloud database once, so every phone can see it.'))+' <button class="small primary" id="imp">'+esc(t('Import into cloud'))+'</button></div>';
+}
+function importLegacy(btn){
+  guard(btn,function(){
+    return rpc('import_backup',{d:legacy}).then(function(r){
+      try{localStorage.setItem(KEY+'-imported',localStorage.getItem(KEY));localStorage.removeItem(KEY)}catch(e){}
+      legacy=null;return loadAll().then(function(){toast(t('Imported')+': '+r.bills+' '+t('Bills')+', '+r.items+' '+t('Items')+', '+r.clients+' '+t('Clients'));render()});
+    }).catch(fail);
+  });
+}
+
 var toastT;
 function toast(m){var x=$('#toast');x.textContent=m;x.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){x.hidden=true},2200)}
 function copy(text,done){
@@ -182,13 +314,15 @@ function calc(b){
 var tabs=[['billing','New bill'],['bills','Bill history'],['pending','Pending'],['items','Items'],['clients','Clients'],['reports','Reports'],['backup','Backup']];
 function route(){var h=location.hash.replace('#','');return tabs.some(function(x){return x[0]===h})?h:'billing'}
 function render(){
+  if(!auth){showLogin();return}
   var r=route();
   document.documentElement.lang=lang==='hi'?'hi':'en';
   $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
   $('#l-en').className=lang==='en'?'on':'';$('#l-hi').className=lang==='hi'?'on':'';
-  $('#nav').innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'" class="'+(x[0]===r?'on':'')+'">'+esc(t(x[1]))+'</a>'}).join('');
+  $('#nav').innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'" class="'+(x[0]===r?'on':'')+'">'+esc(t(x[1]))+'</a>'}).join('')+'<a href="#" id="signout">'+esc(t('Sign out'))+'</a>';
   var v=$('#view');
-  v.innerHTML=db.example?'<div class="banner"><b>'+esc(t('Example data loaded.'))+'</b> '+esc(t('The items and clients below are samples. Edit them in Items and Clients, or clear all examples in Backup.'))+'</div>':'';
+  v.innerHTML=legacyBanner();
+  var imb=$('#imp');if(imb)imb.onclick=function(){importLegacy(imb)};
   var box=document.createElement('div');v.appendChild(box);
   ({billing:viewBilling,bills:viewBills,pending:viewPending,items:viewItems,clients:viewClients,reports:viewReports,backup:viewBackup})[r](box);
 }
@@ -196,6 +330,7 @@ window.addEventListener('hashchange',function(){if(route()==='billing'&&!cur.lin
 function setMenu(open){$('#nav').classList.toggle('open',open);$('#scrim').hidden=!open;$('#menuBtn').setAttribute('aria-expanded',open?'true':'false')}
 $('#menuBtn').onclick=function(){setMenu(!$('#nav').classList.contains('open'))};
 $('#scrim').onclick=function(){setMenu(false)};
+$('#nav').addEventListener('click',function(e){var so=e.target.closest('#signout');if(so){e.preventDefault();signOut()}});
 $('#nav').addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false)});
 $('#nav').addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.getAttribute('href')==='#billing'&&route()==='billing'&&!cur.lines.length){cur.step='client';render()}});
 function setLang(l){
@@ -271,8 +406,9 @@ function drawNew(){
     var ph=cleanPhone($('#np').value);
     if(phoneErr(ph)){$('#nperr').hidden=false;$('#np').focus();toast(t('Phone number must be 10 digits'));return}
     var ex=ph&&db.clients.find(function(c){return c.phone===ph}),id;
-    if(ex)id=ex.id;else{var c={id:uid(),name:name,phone:ph,address:'',created:today()};db.clients.push(c);id=c.id;save()}
-    cur.clientSel=id;cur.step='items';cur.addNew=false;render();
+    if(ex){cur.clientSel=ex.id;cur.step='items';cur.addNew=false;render();return}
+    var c={id:uid(),name:name,phone:ph,address:'',created:today()};
+    guard($('#nf button[type=submit]'),function(){return upsert('clients',clientRow(c)).then(function(){db.clients.push(c);cur.clientSel=c.id;cur.step='items';cur.addNew=false;render()}).catch(fail)});
   };
 }
 function drawGrid(){
@@ -352,13 +488,17 @@ function saveBill(){
   if(cur.clientSel&&cur.clientSel!=='walkin'){var c0=clientById(cur.clientSel);if(c0){cid=c0.id;cname=c0.name;cphone=c0.phone}}
   var tt=calc(cur),pd=paidNow(tt);
   if(r2(tt.total-pd)>0&&!cid){toast(t('Choose a client to keep a pending amount'));return}
-  db.counter++;
-  var bill={id:uid(),no:'INV-'+String(db.counter).padStart(4,'0'),date:today(),time:nowTime(),clientId:cid,clientName:cname,clientNameHi:(cid&&clientById(cid)&&clientById(cid).nameHi)||'',clientPhone:cphone,
+  var bill={id:uid(),date:today(),time:nowTime(),clientId:cid,clientName:cname,clientNameHi:(cid&&clientById(cid)&&clientById(cid).nameHi)||'',clientPhone:cphone,
     lines:cur.lines.map(function(l){return {itemId:l.id,name:l.name,nameHi:l.nameHi||'',price:l.price,gst:cur.gstOn?l.gst:0,unit:l.unit||'pc',factor:l.factor||1,qty:l.qty,total:r2(l.price*l.qty)}}),
     subtotal:tt.sub,discount:tt.disc,tax:tt.tax,total:tt.total,pay:cur.pay,notes:cur.notes,status:'paid',payments:pd>0?[{id:uid(),date:today(),time:nowTime(),amount:pd,mode:cur.pay}]:[]};
-  bill.lines.forEach(function(l){var it=itemById(l.itemId);if(it&&it.stock!==''&&it.stock!=null)it.stock=Math.max(0,it.stock-l.qty*(l.factor||1))});
-  db.bills.push(bill);save();newBill();
-  toast(t('Saved')+' '+bill.no);render();showBill(bill.id);
+  guard($('#save'),function(){
+    return rpc('create_bill',{b:bill}).then(function(r){
+      bill.no=r.no;
+      bill.lines.forEach(function(l){var it=itemById(l.itemId);if(it&&it.stock!==''&&it.stock!=null)it.stock=Math.max(0,it.stock-Math.round(l.qty*(l.factor||1)))});
+      db.bills.push(bill);newBill();
+      toast(t('Saved')+' '+bill.no);render();showBill(bill.id);
+    }).catch(fail);
+  });
 }
 function receiptText(b){
   var W=34,line=new Array(W+1).join('-'),out=[];
@@ -406,15 +546,17 @@ function showBill(id){
     var amt=parseFloat($('#pa').value),pe=$('#perr');
     if(!(amt>0)){pe.textContent=t('Enter the amount received first.');pe.hidden=false;$('#pa').focus();return}
     if(amt>due+0.004){pe.textContent=t('More than the balance due')+': '+money(due);pe.hidden=false;$('#pa').focus();return}
-    addPay(b,amt,$('#pmm').value);save();toast(t('Payment recorded'));showBill(id);render();
+    var mode=$('#pmm').value,d0=today(),tm0=nowTime();
+    guard(pr,function(){return rpc('add_payment',{p_bill:b.id,p_amount:amt,p_mode:mode,p_date:d0,p_time:tm0}).then(function(r){b.payments=b.payments||[];b.payments.push({id:r.id,date:d0,time:tm0,amount:r2(amt),mode:mode});toast(t('Payment recorded'));showBill(id);render()}).catch(fail)});
   };
   var pa=$('#pa');if(pa){
     pa.oninput=function(){$('#perr').hidden=true;var v=parseFloat(pa.value)||0,rest=Math.max(0,r2(due-v)),pv=$('#pprev');pv.textContent=money(rest);pv.className=rest>0?'warn':''};
     $('#pfullb').onclick=function(){pa.value=due;pa.oninput()};
   }
   var mk=$('#mk');if(mk)mk.onclick=function(){twice(mk,t('Tap again to cancel'),function(){
-    b.status='cancelled';b.lines.forEach(function(l){var it=itemById(l.itemId);if(it&&it.stock!==''&&it.stock!=null)it.stock+=l.qty*(l.factor||1)});
-    save();toast(b.no+' '+t('cancelled'));showBill(id);render()})};
+    rpc('cancel_bill',{p_bill:b.id}).then(function(){
+      b.status='cancelled';b.lines.forEach(function(l){var it=itemById(l.itemId);if(it&&it.stock!==''&&it.stock!=null)it.stock+=Math.round(l.qty*(l.factor||1))});
+      toast(b.no+' '+t('cancelled'));showBill(id);render()}).catch(fail)})};
 }
 function showLedger(cid){
   var c=clientById(cid);if(!c)return;
@@ -439,9 +581,8 @@ function showLedger(cid){
     var amt=parseFloat($('#la').value),le=$('#lerr');
     if(!(amt>0)){le.textContent=t('Enter the amount received first.');le.hidden=false;$('#la').focus();return}
     if(amt>due+0.004){le.textContent=t('More than the balance due')+': '+money(due);le.hidden=false;$('#la').focus();return}
-    var left=amt,mode=$('#lm').value;
-    bills.forEach(function(b){var d=dueOf(b);if(left>0&&d>0){var x=Math.min(left,d);addPay(b,x,mode);left=r2(left-x)}});
-    save();toast(t('Payment recorded'));showLedger(cid);render();
+    var mode=$('#lm').value;
+    guard(lr,function(){return rpc('receive_client_payment',{p_client:cid,p_amount:amt,p_mode:mode,p_date:today(),p_time:nowTime()}).then(function(){return loadAll()}).then(function(){toast(t('Payment recorded'));showLedger(cid);render()}).catch(fail)});
   };
 }
 function viewPending(box){
@@ -523,8 +664,8 @@ function viewItems(box){
       '<div class="row"><input class="grow" id="ncn" placeholder="'+esc(t('New category name'))+'" aria-label="'+esc(t('New category name'))+'"><button id="ncb">'+esc(t('Add category'))+'</button></div>';
     $('#ncb').onclick=function(){
       var n=$('#ncn').value.trim();if(!n)return;
-      if(allCats().indexOf(n)<0){db.categories.push(n);save()}
-      toast(t('Category added'));render();
+      if(allCats().indexOf(n)>=0)return;
+      guard($('#ncb'),function(){return upsert('categories',{name:n},'name').then(function(){db.categories.push(n);toast(t('Category added'));render()}).catch(fail)});
     };
   }
   function drawItems(){
@@ -564,21 +705,27 @@ function viewItems(box){
     var cat=$('#ic').value;
     if(cat==='__new__')cat=$('#icn').value.trim();
     if(!cat){toast(t('Choose a category'));return}
-    if(db.categories.indexOf(cat)<0)db.categories.push(cat);
+    var newCat=db.categories.indexOf(cat)<0;
     var st=$('#is').value.trim();
     var o={name:$('#in').value.trim(),nameHi:$('#inh').value.trim(),unit:$('#iu').value,dozenPrice:dp>=0?dp:'',category:cat,price:price,gst:parseFloat($('#ig').value)||0,hsn:$('#ih').value.trim(),stock:st===''?'':parseInt(st,10),active:true};
     if(!o.name)o.name=o.nameHi;if(!o.name){toast(t('Enter the item name'));return}
-    var id=$('#iid').value;
-    if(id){Object.assign(itemById(id),o);toast(t('Item updated'))}else{o.id=uid();db.items.push(o);toast(t('Item added'))}
-    save();render();
+    var id=$('#iid').value,old=id?itemById(id):null,rec=id?Object.assign({},old,o):Object.assign({id:uid()},o);
+    var skipStock=!!old&&String(old.stock)===String(o.stock);
+    guard($('#isave'),function(){
+      return upsert('items',itemRow(rec,skipStock)).then(function(){return newCat?upsert('categories',{name:cat},'name'):null}).then(function(){
+        if(newCat)db.categories.push(cat);
+        if(id)Object.assign(old,rec);else db.items.push(rec);
+        toast(t(id?'Item updated':'Item added'));render();
+      }).catch(fail);
+    });
   };
   box.onclick=function(e){
     var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]'),st=e.target.closest('[data-st]'),ct=e.target.closest('[data-ct]'),dc=e.target.closest('[data-delcat]');
     if(st){itemF.stock=st.dataset.st;drawItems()}
     if(ct){itemF.cat=ct.dataset.ct;drawItems()}
-    if(dc)twice(dc,t('Sure?'),function(){db.categories=db.categories.filter(function(c){return c!==dc.dataset.delcat});if(itemF.cat===dc.dataset.delcat)itemF.cat='All';save();render()});
+    if(dc)twice(dc,t('Sure?'),function(){del('categories','name',dc.dataset.delcat).then(function(){db.categories=db.categories.filter(function(c){return c!==dc.dataset.delcat});if(itemF.cat===dc.dataset.delcat)itemF.cat='All';render()},fail)});
     if(ed){var i=itemById(ed.dataset.edit);$('#iid').value=i.id;$('#in').value=i.name;$('#inh').value=i.nameHi||HN[i.name]||'';fillCats(i.category);$('#ip').value=i.price;$('#idz').value=(i.dozenPrice===''||i.dozenPrice==null)?'':i.dozenPrice;$('#iu').value=i.unit||'pc';$('#ig').value=i.gst||'';$('#ih').value=i.hsn||'';$('#is').value=i.stock;$('#ititle').textContent=t('Edit item');$('#isave').textContent=t('Save changes');$('#icancel').hidden=false;$('#in').focus()}
-    if(dl)twice(dl,t('Sure?'),function(){db.items=db.items.filter(function(x){return x.id!==dl.dataset.del});save();toast(t('Item deleted'));render()});
+    if(dl)twice(dl,t('Sure?'),function(){del('items','id',dl.dataset.del).then(function(){db.items=db.items.filter(function(x){return x.id!==dl.dataset.del});toast(t('Item deleted'));render()},fail)});
   };
 }
 
@@ -601,8 +748,8 @@ function viewClients(box){
     if(phoneErr(o.phone)){$('#cperr').hidden=false;$('#cp').focus();toast(t('Phone number must be 10 digits'));return}
     var dup=o.phone&&db.clients.find(function(c){return c.phone===o.phone&&c.id!==$('#cid').value});
     if(dup){toast(t('This number already belongs to')+' '+nm(dup));return}
-    if(id){Object.assign(clientById(id),o);toast(t('Client updated'))}else{o.id=uid();o.created=today();db.clients.push(o);toast(t('Client added'))}
-    save();render();
+    var rec=id?Object.assign({},clientById(id),o):Object.assign({id:uid(),created:today()},o);
+    guard($('#csave'),function(){return upsert('clients',clientRow(rec)).then(function(){if(id)Object.assign(clientById(id),rec);else db.clients.push(rec);toast(t(id?'Client updated':'Client added'));render()}).catch(fail)});
   };
   box.onclick=function(e){
     var ed=e.target.closest('[data-edit]'),h=e.target.closest('[data-hist]');
@@ -636,19 +783,19 @@ function viewReports(box){
 function viewBackup(box){
   box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Back up'))+'</h2><p class="muted">'+esc(t('Copy all items, clients and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.'))+'</p>'+
   '<div class="row"><button class="primary" id="bk">'+esc(t('Copy backup'))+'</button><button id="bshow">'+esc(t('Show backup text'))+'</button></div><textarea id="bta" hidden readonly aria-label="'+esc(t('Show backup text'))+'"></textarea>'+
-  '<p class="note">'+esc(t('Your data is saved in this browser only. Clearing browser data or resetting the phone erases it. The backup contains client phone numbers, so keep it private.'))+'</p></div>'+
-  '<div class="panel stack"><h2>'+esc(t('Restore'))+'</h2><p class="muted">'+esc(t('Pick a saved backup file, or paste the backup text below. This replaces everything now in the app.'))+'</p>'+
+  '<p class="note">'+esc(t('Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains client phone numbers, so keep it private.'))+'</p></div>'+
+  '<div class="panel stack"><h2>'+esc(t('Restore'))+'</h2><p class="muted">'+esc(t('Pick a saved backup file, or paste the backup text below. The backup is added to the database.'))+'</p>'+
   '<input type="file" id="bf" accept=".json,.txt,text/plain,application/json" aria-label="'+esc(t('Restore'))+'"><textarea id="rta" placeholder="'+esc(t('Paste backup text here'))+'" aria-label="'+esc(t('Paste backup text here'))+'"></textarea>'+
-  '<div class="row"><button class="primary" id="rs">'+esc(t('Restore from text'))+'</button><button class="danger" id="wipe">'+esc(t('Clear example data'))+'</button></div><p class="note">'+esc(t('Clear example data removes the sample items and clients and keeps your own bills.'))+'</p></div></div>';
+  '<div class="row"><button class="primary" id="rs">'+esc(t('Restore from text'))+'</button><button id="wipe">'+esc(t('Refresh data'))+'</button></div><p class="note">'+esc(t('Restoring adds the backup to the database. Items, clients and bills that already exist are skipped.'))+'</p></div></div>';
   var data=function(){return JSON.stringify(db)};
   $('#bk').onclick=function(){copy(data(),t('Backup copied'))};
   $('#bshow').onclick=function(){var x=$('#bta');x.value=data();x.hidden=false;x.select()};
   $('#bf').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$('#rta').value=String(r.result)};r.readAsText(f)};
-  $('#rs').onclick=function(){var b=$('#rs');twice(b,t('Replace all data?'),function(){
-    try{var d=JSON.parse($('#rta').value);if(!d||!Array.isArray(d.items)||!Array.isArray(d.bills)||!Array.isArray(d.clients))throw 0;db=d;migrate();save();toast(t('Backup restored'));render()}catch(x){toast(t('That text is not a valid backup'))}})};
-  $('#wipe').onclick=function(){var b=$('#wipe');twice(b,t('Remove sample data?'),function(){
-    var used={};db.bills.forEach(function(x){x.lines.forEach(function(l){used[l.itemId]=1});if(x.clientId)used[x.clientId]=1});
-    db.items=db.items.filter(function(i){return used[i.id]});db.clients=db.clients.filter(function(c){return used[c.id]});db.example=false;save();toast(t('Sample data removed'));render()})};
+  $('#rs').onclick=function(){var b=$('#rs');twice(b,t('Add this backup to the database?'),function(){
+    var d;try{d=JSON.parse($('#rta').value);if(!d||!Array.isArray(d.items)||!Array.isArray(d.bills)||!Array.isArray(d.clients))throw 0}catch(x){toast(t('That text is not a valid backup'));return}
+    guard(b,function(){return rpc('import_backup',{d:d}).then(function(r){return loadAll().then(function(){toast(t('Imported')+': '+r.bills+' '+t('Bills')+', '+r.items+' '+t('Items')+', '+r.clients+' '+t('Clients'));render()})}).catch(fail)});
+  })};
+  $('#wipe').onclick=function(){guard($('#wipe'),function(){return loadAll().then(function(){toast(t('Data refreshed'));render()}).catch(fail)})};
 }
 
 /* Label every table cell with its column name so phones can show each row as a card */
@@ -660,6 +807,5 @@ function labelTables(){
   });
 }
 new MutationObserver(labelTables).observe(document.body,{childList:true,subtree:true});
-render();
-labelTables();
+if(auth)startApp();else showLogin();
 })();
