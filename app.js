@@ -28,7 +28,7 @@ var HI={
 'Who is this bill for?':'यह बिल किसके लिए है?','Search customer by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No customers match.':'कोई ग्राहक नहीं मिला।',
 '+ New customer':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
 'GST is added at each item\'s rate.':'हर सामान की अपनी दर से जीएसटी जुड़ेगा।',
-'Pending':'बकाया','Paid':'जमा','Quantity sold':'बिकी मात्रा','Pending today':'आज का बकाया','Yesterday':'कल','Last 7 days':'पिछले 7 दिन','This month':'इस महीने','All time':'सारा समय','All customers':'सभी ग्राहक','All payment modes':'सभी भुगतान तरीके','Min total':'कम से कम कुल','Max total':'ज़्यादा से ज़्यादा कुल','Sort by':'क्रम','Newest first':'नया पहले','Oldest first':'पुराना पहले',
+'Pending':'बकाया','Paid':'जमा','Custom date':'अपनी तारीख','Quantity sold':'बिकी मात्रा','Pending today':'आज का बकाया','Yesterday':'कल','Last 7 days':'पिछले 7 दिन','This month':'इस महीने','All time':'सारा समय','All customers':'सभी ग्राहक','All payment modes':'सभी भुगतान तरीके','Min total':'कम से कम कुल','Max total':'ज़्यादा से ज़्यादा कुल','Sort by':'क्रम','Newest first':'नया पहले','Oldest first':'पुराना पहले',
 'Total: high to low':'कुल: ज़्यादा से कम','Total: low to high':'कुल: कम से ज़्यादा','Due: high to low':'बाकी: ज़्यादा से कम','Due: low to high':'बाकी: कम से ज़्यादा','Paid: high to low':'जमा: ज़्यादा से कम','Paid: low to high':'जमा: कम से ज़्यादा','Customer A to Z':'ग्राहक A से Z','Customer Z to A':'ग्राहक Z से A','Bill number: low to high':'बिल नंबर: कम से ज़्यादा','Bill number: high to low':'बिल नंबर: ज़्यादा से कम','Bin':'बिन','Moved to Bin':'बिन में डाला गया','Restored':'वापस आ गया','Delete forever':'हमेशा के लिए हटाएँ','Deleted on':'हटाने की तारीख','Days left':'बचे दिन','Type':'प्रकार','Deleted for good':'हमेशा के लिए हटा दिया','Delete customer':'ग्राहक हटाएँ',
 'Deleted items, customers and categories stay here for 30 days. You can restore them until then. After 30 days they are deleted for good.':'हटाए गए सामान, ग्राहक और श्रेणियाँ यहाँ 30 दिन रहते हैं। तब तक आप उन्हें वापस ला सकते हैं। 30 दिन बाद वे हमेशा के लिए हट जाते हैं।','Bills are never deleted. Use Cancel bill to cancel one.':'बिल कभी नहीं हटाए जाते। बिल रद्द करने के लिए "बिल रद्द करें" दबाएँ।','The Bin is empty.':'बिन खाली है।',
 'This customer still owes':'इस ग्राहक का बकाया है','Collect the payment first.':'पहले भुगतान ले लें।','Please check the bill. It is saved only when you press Confirm & save.':'कृपया बिल जाँच लें। "पक्का करें और सहेजें" दबाने पर ही यह सहेजा जाएगा।','edited':'बदला हुआ','By invoice':'बिल-वार','By date':'तारीख-वार','Time':'समय','Balance after':'इसके बाद बाकी','Total received':'कुल प्राप्त','No payments found.':'कोई भुगतान नहीं मिला।','Share PDF':'PDF शेयर करें','Download PDF':'PDF डाउनलोड करें','PDF downloaded. Attach it in WhatsApp.':'PDF डाउनलोड हो गया। इसे WhatsApp में जोड़ें।','PDF could not be created':'PDF नहीं बन सका',
@@ -700,7 +700,7 @@ function showLedger(cid){
   };
 }
 /* Payment history: every payment (part payment) with its invoice, date, time, mode and the balance left after it */
-function defaultPay(){var d=today();return {q:'',from:d,to:d,view:'invoice'}}
+function defaultPay(){var d=today();return {q:'',from:d,to:d,custom:false,view:'invoice'}}
 var payF=defaultPay();
 function paymentRows(){
   var rows=[];
@@ -711,13 +711,16 @@ function paymentRows(){
   return rows;
 }
 function viewPayments(box){
-  box.innerHTML='<div class="stack"><div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="pq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(payF.q)+'"></label>'+
-  '<label>'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label>'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div>'+
-  '<div class="chips" id="prange"></div><div class="chips" id="pview"></div><div id="psum"></div></div><div id="plist" class="stack"></div></div>';
+  box.innerHTML='<div class="stack"><div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="pq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(payF.q)+'"></label></div>'+
+  '<div class="chips" id="prange"></div><div class="row" id="pcustom"'+(payF.custom?'':' hidden')+'><label class="grow">'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label class="grow">'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div><div class="chips" id="pview"></div><div id="psum"></div></div><div id="plist" class="stack"></div></div>';
   var upd=function(){payF.q=$('#pq').value;payF.from=$('#pf').value;payF.to=$('#pt').value;drawPayments()};
   ['#pq','#pf','#pt'].forEach(function(x){$(x).addEventListener('input',upd)});
   $('#pview').onclick=function(e){var b=e.target.closest('[data-pv]');if(b){payF.view=b.dataset.pv;drawPayments()}};
-  $('#prange').onclick=function(e){var b=e.target.closest('[data-rg]');if(!b)return;var r=histRange(b.dataset.rg);payF.from=r[0];payF.to=r[1];$('#pf').value=r[0];$('#pt').value=r[1];drawPayments()};
+  $('#prange').onclick=function(e){
+    var b=e.target.closest('[data-rg]');if(!b)return;
+    if(b.dataset.rg==='custom'){payF.custom=true;$('#pcustom').hidden=false;drawPayments();return}
+    var r=histRange(b.dataset.rg);payF.custom=false;payF.from=r[0];payF.to=r[1];$('#pf').value=r[0];$('#pt').value=r[1];$('#pcustom').hidden=true;drawPayments();
+  };
   $('#plist').onclick=function(e){var v=e.target.closest('[data-view]');if(v)showBill(v.dataset.view)};
   drawPayments();
 }
@@ -728,7 +731,7 @@ function drawPayments(){
     return !q||(r.b.clientName+' '+hn(r.b,'clientName','clientNameHi')+' '+r.b.clientPhone+' '+r.b.no).toLowerCase().indexOf(q)>-1;
   });
   var total=r2(rows.reduce(function(s2,r){return s2+r.p.amount},0));
-  $('#prange').innerHTML=[['today','Today'],['yesterday','Yesterday'],['week','Last 7 days'],['month','This month'],['all','All time']].map(function(r){var v=histRange(r[0]);return '<button class="chip'+(v[0]===payF.from&&v[1]===payF.to?' on':'')+'" data-rg="'+r[0]+'">'+esc(t(r[1]))+'</button>'}).join('');
+  $('#prange').innerHTML=[['today','Today'],['yesterday','Yesterday'],['week','Last 7 days'],['month','This month'],['all','All time']].map(function(r){var v=histRange(r[0]);return '<button class="chip'+(!payF.custom&&v[0]===payF.from&&v[1]===payF.to?' on':'')+'" data-rg="'+r[0]+'">'+esc(t(r[1]))+'</button>'}).join('')+'<button class="chip'+(payF.custom?' on':'')+'" data-rg="custom">'+esc(t('Custom date'))+'</button>';
   $('#pview').innerHTML=[['invoice','By invoice'],['date','By date']].map(function(x){return '<button class="chip'+(payF.view===x[0]?' on':'')+'" data-pv="'+x[0]+'">'+esc(t(x[1]))+'</button>'}).join('');
   $('#psum').innerHTML='<div class="row" style="gap:24px"><div><h3>'+esc(t('Total received'))+'</h3><div class="big">'+money(total)+'</div></div><div><h3>'+esc(t('Payments'))+'</h3><div class="big">'+rows.length+'</div></div></div>';
   var out=$('#plist');
@@ -776,7 +779,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal(
 
 /* Bill history: filters (date, status, customer, payment mode, total) and sorting. Opens on today's date each time. */
 function isoDay(d){var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
-function defaultHist(){var d=today();return {q:'',from:d,to:d,status:'all',client:'all',mode:'all',min:'',max:'',sort:'date_desc',keep:false}}
+function defaultHist(){var d=today();return {q:'',from:d,to:d,custom:false,status:'all',client:'all',mode:'all',min:'',max:'',sort:'date_desc',keep:false}}
 var hist=defaultHist(),lastRoute='';
 function billState(b){if(b.status==='cancelled')return 'cancelled';var d=dueOf(b),p=paidOf(b);return d<=0?'paid':(p>0?'part':'unpaid')}
 function histRange(k){
@@ -791,19 +794,25 @@ function viewBills(box){
   custs.sort(function(a,c){return a.label.toLowerCase()<c.label.toLowerCase()?-1:1});
   box.innerHTML='<div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="hq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(hist.q)+'"></label></div>'+
   '<div class="chips" id="hrange"></div>'+
-  '<div class="row"><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label>'+
-  '<label class="grow">'+esc(t('Customer'))+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select></label></div>'+
+  '<div class="row" id="hcustom"'+(hist.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div>'+
+  '<div class="row"><label class="grow">'+esc(t('Customer'))+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select></label></div>'+
   '<div class="row"><label class="grow">'+esc(t('Payment'))+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select></label>'+
   '<label class="grow sm">'+esc(t('Min total'))+'<input id="hmin" inputmode="decimal" value="'+esc(hist.min)+'"></label><label class="grow sm">'+esc(t('Max total'))+'<input id="hmax" inputmode="decimal" value="'+esc(hist.max)+'"></label>'+
-  '<label class="grow">'+esc(t('Sort by'))+'<select id="hs">'+SORTS.map(function(x){return '<option value="'+x[0]+'"'+(hist.sort===x[0]?' selected':'')+'>'+esc(t(x[1]))+'</option>'}).join('')+'</select></label></div>'+
+  '</div><div class="chips sortbar" id="hsort"></div>'+
   '<div class="chips" id="hstat"></div><div id="hsum"></div><div id="hlist"></div></div>';
-  var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;hist.client=$('#hc').value;hist.mode=$('#hm').value;hist.min=$('#hmin').value;hist.max=$('#hmax').value;hist.sort=$('#hs').value;drawHist()};
-  ['#hq','#hf','#ht','#hc','#hm','#hmin','#hmax','#hs'].forEach(function(x){$(x).addEventListener('input',upd);$(x).addEventListener('change',upd)});
-  $('#hrange').onclick=function(e){var b=e.target.closest('[data-rg]');if(!b)return;var r=histRange(b.dataset.rg);hist.from=r[0];hist.to=r[1];$('#hf').value=r[0];$('#ht').value=r[1];drawHist()};
+  var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;hist.client=$('#hc').value;hist.mode=$('#hm').value;hist.min=$('#hmin').value;hist.max=$('#hmax').value;drawHist()};
+  ['#hq','#hf','#ht','#hc','#hm','#hmin','#hmax'].forEach(function(x){$(x).addEventListener('input',upd);$(x).addEventListener('change',upd)});
+  $('#hrange').onclick=function(e){
+    var b=e.target.closest('[data-rg]');if(!b)return;
+    if(b.dataset.rg==='custom'){hist.custom=true;$('#hcustom').hidden=false;drawHist();return}
+    var r=histRange(b.dataset.rg);hist.custom=false;hist.from=r[0];hist.to=r[1];$('#hf').value=r[0];$('#ht').value=r[1];$('#hcustom').hidden=true;drawHist();
+  };
+  var sortBy=function(k){var c2=hist.sort.split('_');hist.sort=k+'_'+(c2[0]===k&&c2[1]==='desc'?'asc':'desc');drawHist()};
+  $('#hsort').onclick=function(e){var b=e.target.closest('[data-sort]');if(b)sortBy(b.dataset.sort)};
   $('#hstat').onclick=function(e){var b=e.target.closest('[data-hs]');if(b){hist.status=b.dataset.hs;drawHist()}};
   $('#hlist').onclick=function(e){
     var th=e.target.closest('[data-sort]');
-    if(th){var k=th.dataset.sort,cur2=hist.sort.split('_');hist.sort=k+'_'+(cur2[0]===k&&cur2[1]==='desc'?'asc':'desc');$('#hs').value=SORTS.some(function(x){return x[0]===hist.sort})?hist.sort:'';drawHist();return}
+    if(th){sortBy(th.dataset.sort);return}
     var v=e.target.closest('[data-view]');if(v)billAction(v.dataset.view);
   };
   drawHist();
@@ -823,7 +832,8 @@ function drawHist(){
   var val={date:function(b){return b.date+' '+b.time},no:function(b){return b.no},cust:function(b){return nm(b,'clientName','clientNameHi').toLowerCase()},total:function(b){return b.total},paid:function(b){return paidOf(b)},due:function(b){return dueOf(b)}}[key]||function(b){return b.date+' '+b.time};
   list=list.slice().sort(function(a,b){var x=val(a),y=val(b);return x<y?-dir:x>y?dir:(a.no<b.no?1:-1)});
   var rg=[['today','Today'],['yesterday','Yesterday'],['week','Last 7 days'],['month','This month'],['all','All time']];
-  $('#hrange').innerHTML=rg.map(function(r){var v=histRange(r[0]);return '<button class="chip'+(v[0]===hist.from&&v[1]===hist.to?' on':'')+'" data-rg="'+r[0]+'">'+esc(t(r[1]))+'</button>'}).join('');
+  $('#hrange').innerHTML=rg.map(function(r){var v=histRange(r[0]);return '<button class="chip'+(!hist.custom&&v[0]===hist.from&&v[1]===hist.to?' on':'')+'" data-rg="'+r[0]+'">'+esc(t(r[1]))+'</button>'}).join('')+'<button class="chip'+(hist.custom?' on':'')+'" data-rg="custom">'+esc(t('Custom date'))+'</button>';
+  $('#hsort').innerHTML=[['no','Bill'],['date','Date'],['cust','Customer'],['total','Total'],['paid','Paid'],['due','Due']].map(function(x){return '<button class="chip'+(key===x[0]?' on':'')+'" data-sort="'+x[0]+'">'+esc(t(x[1]))+(key===x[0]?(dir===1?' \u25B2':' \u25BC'):'')+'</button>'}).join('');
   $('#hstat').innerHTML=[['all','All'],['paid','Paid'],['part','Part paid'],['unpaid','Unpaid'],['cancelled','Cancelled']].map(function(x){return '<button class="chip'+(hist.status===x[0]?' on':'')+'" data-hs="'+x[0]+'">'+esc(t(x[1]))+' ('+cnt[x[0]]+')</button>'}).join('');
   var live=list.filter(function(b){return b.status!=='cancelled'});
   var sT=r2(live.reduce(function(s2,b){return s2+b.total},0)),sP=r2(live.reduce(function(s2,b){return s2+paidOf(b)},0)),sD=r2(live.reduce(function(s2,b){return s2+dueOf(b)},0));
