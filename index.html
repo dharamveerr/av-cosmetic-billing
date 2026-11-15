@@ -4,17 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AV Cosmetics &amp; Bangle Store</title>
+<script>try{var th=localStorage.getItem("shopbill-theme");if(th==="dark"||th==="light")document.documentElement.setAttribute("data-theme",th)}catch(e){}</script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="wrap">
   <header>
     <div class="brand"><button id="menuBtn" class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav">&#9776;</button><h1 id="ttl"></h1></div>
-    <div class="tools">
-      <nav id="nav"></nav>
-      <div class="lang" role="group" aria-label="Language / भाषा"><button id="l-en">English</button><button id="l-hi">हिन्दी</button></div>
+    <div class="actions">
+      <div class="lang" role="group" aria-label="Language / भाषा"><button id="l-en" type="button" title="English" aria-label="English">EN</button><button id="l-hi" type="button" title="हिन्दी" aria-label="हिन्दी">हि</button></div>
+      <button id="themeBtn" class="icon-btn" type="button"></button>
+      <button id="signoutBtn" type="button">Sign out</button>
     </div>
   </header>
+  <nav id="nav"></nav>
   <div id="view"></div>
 </div>
 <div id="scrim" class="scrim" hidden></div>

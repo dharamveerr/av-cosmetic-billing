@@ -12,26 +12,28 @@ function nowTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+
 /* ---------- language ---------- */
 var HI={
 'AV Cosmetics & Bangle Store':'एवी कॉस्मेटिक्स और बैंगल स्टोर','Billing Desk':'बिलिंग डेस्क',
-'New bill':'नया बिल','Bill history':'बिल इतिहास','Items':'सामान','Clients':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
+'New bill':'नया बिल','Bill history':'बिल इतिहास','Items':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
 'Example data loaded.':'नमूना डेटा लोड है।',
-'The items and clients below are samples. Edit them in Items and Clients, or clear all examples in Backup.':'नीचे दिए सामान और ग्राहक नमूने हैं। इन्हें सामान और ग्राहक टैब में बदलें, या बैकअप टैब से सभी नमूने हटाएँ।',
+'The items and customers below are samples. Edit them in Items and Customers, or clear all examples in Backup.':'नीचे दिए सामान और ग्राहक नमूने हैं। इन्हें सामान और ग्राहक टैब में बदलें, या बैकअप टैब से सभी नमूने हटाएँ।',
 'Search items by name':'नाम से सामान खोजें','All':'सभी','out of stock':'स्टॉक खत्म','left':'बचे',
 'No items match. Add items in the Items tab.':'कोई सामान नहीं मिला। सामान टैब में सामान जोड़ें।',
-'Current bill':'वर्तमान बिल','Client':'ग्राहक','Walk-in customer':'सामान्य ग्राहक','+ New client…':'+ नया ग्राहक…',
-'Name':'नाम','Client name':'ग्राहक का नाम','Phone':'फ़ोन','Phone number':'फ़ोन नंबर',
+'Current bill':'वर्तमान बिल','Customer':'ग्राहक','Walk-in customer':'सामान्य ग्राहक','+ New customer…':'+ नया ग्राहक…',
+'Name':'नाम','Customer name':'ग्राहक का नाम','Phone':'फ़ोन','Phone number':'फ़ोन नंबर',
 'Decrease':'घटाएँ','Increase':'बढ़ाएँ','Quantity':'मात्रा','Remove':'हटाएँ',
 'Tap an item to add it to the bill.':'बिल में जोड़ने के लिए सामान पर टैप करें।',
 'Discount':'छूट','Flat ₹':'सीधी ₹','Percent %':'प्रतिशत %','Amount':'राशि','Payment':'भुगतान',
 'cash':'नकद','UPI':'UPI','card':'कार्ड','other':'अन्य','Notes':'टिप्पणी','Optional':'वैकल्पिक',
-'Who is this bill for?':'यह बिल किसके लिए है?','Search client by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No clients match.':'कोई ग्राहक नहीं मिला।',
-'+ New client':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
+'Who is this bill for?':'यह बिल किसके लिए है?','Search customer by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No customers match.':'कोई ग्राहक नहीं मिला।',
+'+ New customer':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
 'GST is added at each item\'s rate.':'हर सामान की अपनी दर से जीएसटी जुड़ेगा।',
-'Pending':'बकाया','Paid':'जमा','Sign in':'साइन इन','Sign out':'साइन आउट','Email':'ईमेल','Password':'पासवर्ड','Wrong email or password':'ईमेल या पासवर्ड गलत है','Could not connect. Check your internet.':'कनेक्ट नहीं हो सका। इंटरनेट जाँचें।',
+'Pending':'बकाया','Paid':'जमा','Import customers from Excel':'Excel से ग्राहक जोड़ें','Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.':'अपनी Excel शीट को CSV के रूप में सहेजें, जिसमें Name, Mobile Number और Address कॉलम हों। फिर फ़ाइल यहाँ चुनें।',
+'Download sample CSV':'नमूना CSV डाउनलोड करें','Import customers':'ग्राहक जोड़ें','Or paste the rows here':'या पंक्तियाँ यहाँ पेस्ट करें','Row':'पंक्ति','no name':'नाम नहीं है','mobile number must be 10 digits':'मोबाइल नंबर 10 अंकों का होना चाहिए','mobile number already exists':'मोबाइल नंबर पहले से है',
+'Choose a CSV file or paste the rows first':'पहले CSV फ़ाइल चुनें या पंक्तियाँ पेस्ट करें','Added':'जोड़े गए','Skipped':'छोड़े गए','Switch to light mode':'लाइट मोड चालू करें','Switch to dark mode':'डार्क मोड चालू करें','Sign in':'साइन इन','Sign out':'साइन आउट','Email':'ईमेल','Password':'पासवर्ड','Wrong email or password':'ईमेल या पासवर्ड गलत है','Could not connect. Check your internet.':'कनेक्ट नहीं हो सका। इंटरनेट जाँचें।',
 'Only people added by the shop owner can sign in.':'सिर्फ़ दुकान मालिक द्वारा जोड़े गए लोग ही साइन इन कर सकते हैं।','Loading\u2026':'लोड हो रहा है\u2026','Try again':'फिर कोशिश करें','Could not save. Check your internet and try again.':'सहेजा नहीं जा सका। इंटरनेट जाँचकर फिर कोशिश करें।',
-'This number is already used by another client':'यह नंबर किसी और ग्राहक का है','Data found on this phone.':'इस फ़ोन पर डेटा मिला।','Import it into the cloud database once, so every phone can see it.':'इसे एक बार क्लाउड डेटाबेस में जोड़ें, ताकि हर फ़ोन पर दिखे।',
+'This number is already used by another customer':'यह नंबर किसी और ग्राहक का है','Data found on this phone.':'इस फ़ोन पर डेटा मिला।','Import it into the cloud database once, so every phone can see it.':'इसे एक बार क्लाउड डेटाबेस में जोड़ें, ताकि हर फ़ोन पर दिखे।',
 'Import into cloud':'क्लाउड में जोड़ें','Imported':'जोड़ा गया','Add this backup to the database?':'यह बैकअप डेटाबेस में जोड़ें?','Refresh data':'डेटा ताज़ा करें','Data refreshed':'डेटा ताज़ा हुआ',
-'Restoring adds the backup to the database. Items, clients and bills that already exist are skipped.':'बैकअप वापस लाने पर वह डेटाबेस में जुड़ता है। जो सामान, ग्राहक और बिल पहले से हैं उन्हें छोड़ दिया जाता है।',
-'Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains client phone numbers, so keep it private.':'आपका डेटा क्लाउड डेटाबेस में सहेजा जाता है। जिन्हें आप जोड़ेंगे वे साइन इन करके इसे देख सकेंगे। बैकअप में ग्राहकों के फ़ोन नंबर हैं, इसे निजी रखें।',
+'Restoring adds the backup to the database. Items, customers and bills that already exist are skipped.':'बैकअप वापस लाने पर वह डेटाबेस में जुड़ता है। जो सामान, ग्राहक और बिल पहले से हैं उन्हें छोड़ दिया जाता है।',
+'Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains customer phone numbers, so keep it private.':'आपका डेटा क्लाउड डेटाबेस में सहेजा जाता है। जिन्हें आप जोड़ेंगे वे साइन इन करके इसे देख सकेंगे। बैकअप में ग्राहकों के फ़ोन नंबर हैं, इसे निजी रखें।',
 'Pick a saved backup file, or paste the backup text below. The backup is added to the database.':'सहेजी हुई बैकअप फ़ाइल चुनें, या नीचे बैकअप टेक्स्ट पेस्ट करें। बैकअप डेटाबेस में जुड़ जाएगा।','View bill':'बिल देखें','Enter amount':'राशि लिखें','Amount received now (\u20B9)':'अभी प्राप्त राशि (\u20B9)','Enter the amount received first.':'पहले प्राप्त राशि लिखें।','More than the balance due':'बाकी रकम से ज़्यादा',
 'If the customer will pay the rest later, leave it. The balance stays in Pending until you record the payment.':'अगर ग्राहक बाकी रकम बाद में देगा तो कुछ न करें। भुगतान दर्ज करने तक यह बकाया में रहेगा।','10-digit number':'10 अंक का नंबर','Phone number must be 10 digits':'फ़ोन नंबर 10 अंकों का होना चाहिए','This number already belongs to':'यह नंबर पहले से इनका है','Skin Care':'त्वचा की देखभाल','Hair Accessories':'हेयर एक्सेसरीज़','Jewellery':'ज्वैलरी','Bindi & Sindoor':'बिंदी और सिंदूर','Mehndi':'मेहंदी','Perfume':'परफ्यूम','Other':'अन्य',
 'In stock':'स्टॉक में','Low stock':'कम स्टॉक','Out of stock':'स्टॉक खत्म','Categories':'श्रेणियाँ','Add category':'श्रेणी जोड़ें','New category name':'नई श्रेणी का नाम','Choose a category':'श्रेणी चुनें',
@@ -41,19 +43,19 @@ var HI={
 'Price per piece (\u20B9)':'कीमत प्रति पीस (\u20B9)','Price per dozen (\u20B9)':'कीमत प्रति दर्जन (\u20B9)','Sold by default in':'आमतौर पर बिकता है','Stock (pieces)':'स्टॉक (पीस)','Pieces sold':'बिके पीस',
 '1 dozen = 12 pieces. Fill one price and the other is worked out. Fill both to set a special dozen price.':'1 दर्जन = 12 पीस। एक कीमत भरें, दूसरी अपने आप निकल जाएगी। दर्जन का अलग भाव रखना हो तो दोनों भरें।','Paid':'जमा','Paid now':'अभी जमा','Balance left':'बाकी रकम','Full':'पूरा','Balance due':'बाकी','Due':'बाकी','Unpaid':'बाकी','Payments':'भुगतान विवरण','Amount received':'प्राप्त राशि',
 'Record payment':'भुगतान दर्ज करें','Receive payment':'भुगतान लें','Applied to the oldest unpaid bills first.':'सबसे पुराने बकाया बिलों में पहले जुड़ेगा।','Account':'खाता','Total pending':'कुल बकाया',
-'Clients with pending':'बकाया वाले ग्राहक','Pending bills':'बकाया बिल','Invoice':'बिल नंबर','Oldest':'सबसे पुराना','Pending invoices':'बकाया बिल सूची','Pending by client':'ग्राहक-वार बकाया',
-'No pending amounts. Every bill is fully paid.':'कोई बकाया नहीं। सभी बिल पूरे चुकाए गए हैं।','Choose a client to keep a pending amount':'बकाया रखने के लिए ग्राहक चुनें',
+'Customers with pending':'बकाया वाले ग्राहक','Pending bills':'बकाया बिल','Invoice':'बिल नंबर','Oldest':'सबसे पुराना','Pending invoices':'बकाया बिल सूची','Pending by customer':'ग्राहक-वार बकाया',
+'No pending amounts. Every bill is fully paid.':'कोई बकाया नहीं। सभी बिल पूरे चुकाए गए हैं।','Choose a customer to keep a pending amount':'बकाया रखने के लिए ग्राहक चुनें',
 'Enter a valid amount':'सही राशि लिखें','Payment recorded':'भुगतान दर्ज हुआ','Collected':'वसूली',
 'Cosmetics':'कॉस्मेटिक्स','Bangles':'चूड़ियाँ','Name (English)':'नाम (अंग्रेज़ी)','Name (Hindi)':'नाम (हिन्दी)','Enter the item name':'सामान का नाम लिखें',
 'Type the name in English. In Hindi mode it is written in Hindi automatically. Fill the Hindi name only to correct the spelling.':'नाम अंग्रेज़ी में लिखें। हिन्दी मोड में वह अपने आप हिन्दी में दिखेगा। स्पेलिंग सुधारनी हो तभी हिन्दी नाम भरें।',
 'Subtotal':'उप-योग','GST':'जीएसटी','Total':'कुल','Save bill':'बिल सहेजें','Clear':'साफ़ करें',
-'Enter the client name':'ग्राहक का नाम लिखें','Saved':'सहेजा गया',
+'Enter the customer name':'ग्राहक का नाम लिखें','Saved':'सहेजा गया',
 'Tax invoice / cash memo':'कर चालान / कैश मेमो','Bill':'बिल','CANCELLED':'रद्द','Paid by':'भुगतान','Thank you, visit again':'धन्यवाद, फिर पधारें','TOTAL':'कुल',
 'Cancelled':'रद्द','cancelled':'रद्द हुआ','Close':'बंद करें','Copy as text':'टेक्स्ट कॉपी करें','Cancel bill':'बिल रद्द करें',
 'Tap again to cancel':'रद्द करने के लिए फिर टैप करें','Bill copied':'बिल कॉपी हुआ','Copied':'कॉपी हुआ',
 'Send the copied text on WhatsApp, or paste it into a printing app for your thermal printer.':'कॉपी किया टेक्स्ट WhatsApp पर भेजें, या थर्मल प्रिंटर के प्रिंटिंग ऐप में पेस्ट करें।',
 'Select the text and copy it':'टेक्स्ट चुनकर कॉपी करें',
-'Search':'खोजें','Client name, phone or bill number':'ग्राहक का नाम, फ़ोन या बिल नंबर','From':'से','To':'तक','Date':'तारीख','View':'देखें',
+'Search':'खोजें','Customer name, phone or bill number':'ग्राहक का नाम, फ़ोन या बिल नंबर','From':'से','To':'तक','Date':'तारीख','View':'देखें',
 'No bills match this search.':'इस खोज से कोई बिल नहीं मिला।',
 'No bills yet. Save a bill from the New bill tab and it will appear here.':'अभी कोई बिल नहीं है। नया बिल टैब से बिल सहेजें, वह यहाँ दिखेगा।',
 'Item master':'सामान सूची','Item':'सामान','Category':'श्रेणी','Price':'कीमत','Stock':'स्टॉक','Edit':'बदलें','Delete':'हटाएँ',
@@ -62,21 +64,21 @@ var HI={
 'Price (₹)':'कीमत (₹)','GST rate %':'जीएसटी दर %','HSN code':'HSN कोड','Cancel edit':'बदलाव रद्द करें','Save changes':'बदलाव सहेजें','Edit item':'सामान बदलें',
 'Changing a price here never changes old bills. They keep the price they were billed at.':'यहाँ कीमत बदलने से पुराने बिल नहीं बदलते। वे उसी कीमत पर रहते हैं जिस पर बने थे।',
 'Enter a valid price':'सही कीमत लिखें','Item updated':'सामान अपडेट हुआ','Item added':'सामान जुड़ गया','Sure?':'पक्का?','Item deleted':'सामान हटाया गया',
-'Bills':'बिल','Spent':'खर्च','Address':'पता','Add client':'ग्राहक जोड़ें','Edit client':'ग्राहक बदलें','Client updated':'ग्राहक अपडेट हुआ','Client added':'ग्राहक जुड़ गया',
-'No clients yet. They are added when you bill a new client.':'अभी कोई ग्राहक नहीं है। नए ग्राहक का बिल बनाने पर वे जुड़ जाते हैं।',
-'Past bills keep the name they were saved with, even if you edit the client later.':'ग्राहक को बाद में बदलने पर भी पुराने बिल में वही नाम रहता है जिससे वे सहेजे गए थे।',
+'Bills':'बिल','Spent':'खर्च','Address':'पता','Add customer':'ग्राहक जोड़ें','Edit customer':'ग्राहक बदलें','Customer updated':'ग्राहक अपडेट हुआ','Customer added':'ग्राहक जुड़ गया',
+'No customers yet. They are added when you bill a new customer.':'अभी कोई ग्राहक नहीं है। नए ग्राहक का बिल बनाने पर वे जुड़ जाते हैं।',
+'Past bills keep the name they were saved with, even if you edit the customer later.':'ग्राहक को बाद में बदलने पर भी पुराने बिल में वही नाम रहता है जिससे वे सहेजे गए थे।',
 'Today':'आज','Sales':'बिक्री','Daily sales':'दैनिक बिक्री','Monthly sales':'मासिक बिक्री','Month':'महीना','Item-wise sales':'सामान-वार बिक्री','Qty sold':'बिकी मात्रा',
 'At closing, check the cash and UPI figures against your drawer and your UPI app.':'दुकान बंद करते समय नकद और UPI के आँकड़े अपने गल्ले और UPI ऐप से मिलाएँ।',
 'Nothing to show yet. Save a bill and the figures appear here.':'अभी दिखाने को कुछ नहीं है। बिल सहेजें, आँकड़े यहाँ दिखेंगे।',
 'Cancelled bills are left out of every figure.':'रद्द बिल किसी भी आँकड़े में शामिल नहीं हैं।',
-'Back up':'बैकअप लें','Copy all items, clients and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.':'सारा सामान, ग्राहक और बिल एक टेक्स्ट के रूप में कॉपी करें। इसे नोट या फ़ाइल में पेस्ट करके Google Drive या कंप्यूटर पर रखें। हफ़्ते में कम से कम एक बार करें।',
+'Back up':'बैकअप लें','Copy all items, customers and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.':'सारा सामान, ग्राहक और बिल एक टेक्स्ट के रूप में कॉपी करें। इसे नोट या फ़ाइल में पेस्ट करके Google Drive या कंप्यूटर पर रखें। हफ़्ते में कम से कम एक बार करें।',
 'Copy backup':'बैकअप कॉपी करें','Show backup text':'बैकअप टेक्स्ट दिखाएँ','Backup copied':'बैकअप कॉपी हुआ',
-'Your data is saved in this browser only. Clearing browser data or resetting the phone erases it. The backup contains client phone numbers, so keep it private.':'आपका डेटा सिर्फ़ इसी ब्राउज़र में सहेजा गया है। ब्राउज़र डेटा साफ़ करने या फ़ोन रीसेट करने पर यह मिट जाएगा। बैकअप में ग्राहकों के फ़ोन नंबर हैं, इसे निजी रखें।',
+'Your data is saved in this browser only. Clearing browser data or resetting the phone erases it. The backup contains customer phone numbers, so keep it private.':'आपका डेटा सिर्फ़ इसी ब्राउज़र में सहेजा गया है। ब्राउज़र डेटा साफ़ करने या फ़ोन रीसेट करने पर यह मिट जाएगा। बैकअप में ग्राहकों के फ़ोन नंबर हैं, इसे निजी रखें।',
 'Restore':'वापस लाएँ','Pick a saved backup file, or paste the backup text below. This replaces everything now in the app.':'सहेजी हुई बैकअप फ़ाइल चुनें, या नीचे बैकअप टेक्स्ट पेस्ट करें। इससे ऐप का मौजूदा सारा डेटा बदल जाएगा।',
 'Paste backup text here':'बैकअप टेक्स्ट यहाँ पेस्ट करें','Restore from text':'टेक्स्ट से वापस लाएँ','Replace all data?':'सारा डेटा बदलें?',
 'Backup restored':'बैकअप वापस आ गया','That text is not a valid backup':'यह टेक्स्ट सही बैकअप नहीं है',
 'Clear example data':'नमूना डेटा हटाएँ','Remove sample data?':'नमूना डेटा हटाएँ?','Sample data removed':'नमूना डेटा हटा दिया',
-'Clear example data removes the sample items and clients and keeps your own bills.':'नमूना डेटा हटाने से नमूना सामान और ग्राहक हट जाते हैं, आपके अपने बिल बने रहते हैं।'
+'Clear example data removes the sample items and customers and keeps your own bills.':'नमूना डेटा हटाने से नमूना सामान और ग्राहक हट जाते हैं, आपके अपने बिल बने रहते हैं।'
 };
 var lang='en';
 try{var sl=localStorage.getItem(LKEY);if(sl==='hi'||sl==='en')lang=sl}catch(e){}
@@ -201,7 +203,7 @@ function loadAll(){
 function fail(e){
   if(e&&e.message==='not-signed-in'){showLogin();return}
   var m=e&&e.message?e.message:'';
-  if(/clients_phone_uq|duplicate key/i.test(m)){toast(t('This number is already used by another client'));return}
+  if(/clients_phone_uq|duplicate key/i.test(m)){toast(t('This number is already used by another customer'));return}
   if(/More than the balance due/i.test(m)){toast(t('More than the balance due'));return}
   toast(t('Could not save. Check your internet and try again.'));
 }
@@ -216,7 +218,7 @@ function guard(btn,fn){
 /* ---------- sign in, sign out, refresh ---------- */
 function showLogin(msg){
   document.body.classList.add('out');
-  setMenu(false);
+  setMenu(false);syncChrome();
   db={items:[],clients:[],bills:[],categories:[]};
   $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
   $('#view').innerHTML='<form class="panel stack" id="lf" style="max-width:420px;margin:24px auto"><h2>'+esc(t('Sign in'))+'</h2>'+
@@ -277,7 +279,7 @@ function importLegacy(btn){
   guard(btn,function(){
     return rpc('import_backup',{d:legacy}).then(function(r){
       try{localStorage.setItem(KEY+'-imported',localStorage.getItem(KEY));localStorage.removeItem(KEY)}catch(e){}
-      legacy=null;return loadAll().then(function(){toast(t('Imported')+': '+r.bills+' '+t('Bills')+', '+r.items+' '+t('Items')+', '+r.clients+' '+t('Clients'));render()});
+      legacy=null;return loadAll().then(function(){toast(t('Imported')+': '+r.bills+' '+t('Bills')+', '+r.items+' '+t('Items')+', '+r.clients+' '+t('Customers'));render()});
     }).catch(fail);
   });
 }
@@ -311,7 +313,7 @@ function calc(b){
 }
 
 /* ---------- views ---------- */
-var tabs=[['billing','New bill'],['bills','Bill history'],['pending','Pending'],['items','Items'],['clients','Clients'],['reports','Reports'],['backup','Backup']];
+var tabs=[['billing','New bill'],['bills','Bill history'],['pending','Pending'],['items','Items'],['clients','Customers'],['reports','Reports'],['backup','Backup']];
 function route(){var h=location.hash.replace('#','');return tabs.some(function(x){return x[0]===h})?h:'billing'}
 function render(){
   if(!auth){showLogin();return}
@@ -319,7 +321,8 @@ function render(){
   document.documentElement.lang=lang==='hi'?'hi':'en';
   $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
   $('#l-en').className=lang==='en'?'on':'';$('#l-hi').className=lang==='hi'?'on':'';
-  $('#nav').innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'" class="'+(x[0]===r?'on':'')+'">'+esc(t(x[1]))+'</a>'}).join('')+'<a href="#" id="signout">'+esc(t('Sign out'))+'</a>';
+  $('#nav').innerHTML=tabs.map(function(x){return '<a href="#'+x[0]+'" class="'+(x[0]===r?'on':'')+'">'+esc(t(x[1]))+'</a>'}).join('');
+  syncChrome();
   var v=$('#view');
   v.innerHTML=legacyBanner();
   var imb=$('#imp');if(imb)imb.onclick=function(){importLegacy(imb)};
@@ -330,7 +333,16 @@ window.addEventListener('hashchange',function(){if(route()==='billing'&&!cur.lin
 function setMenu(open){$('#nav').classList.toggle('open',open);$('#scrim').hidden=!open;$('#menuBtn').setAttribute('aria-expanded',open?'true':'false')}
 $('#menuBtn').onclick=function(){setMenu(!$('#nav').classList.contains('open'))};
 $('#scrim').onclick=function(){setMenu(false)};
-$('#nav').addEventListener('click',function(e){var so=e.target.closest('#signout');if(so){e.preventDefault();signOut()}});
+function effTheme(){var a=document.documentElement.getAttribute('data-theme');if(a==='dark'||a==='light')return a;return window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+function syncChrome(){
+  var th=effTheme(),tb=$('#themeBtn'),so=$('#signoutBtn');
+  so.textContent=t('Sign out');
+  tb.textContent=th==='dark'?'\u2600\uFE0E':'\u263E';
+  tb.title=tb.ariaLabel=t(th==='dark'?'Switch to light mode':'Switch to dark mode');
+  tb.setAttribute('aria-label',tb.title);
+}
+$('#themeBtn').onclick=function(){var n=effTheme()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('shopbill-theme',n)}catch(e){}syncChrome()};
+$('#signoutBtn').onclick=function(){signOut()};
 $('#nav').addEventListener('click',function(e){if(e.target.closest('a'))setMenu(false)});
 $('#nav').addEventListener('click',function(e){var a=e.target.closest('a');if(a&&a.getAttribute('href')==='#billing'&&route()==='billing'&&!cur.lines.length){cur.step='client';render()}});
 function setLang(l){
@@ -377,7 +389,7 @@ function viewBilling(box){
 }
 function drawClientStep(box){
   box.innerHTML='<div class="panel stack" style="max-width:640px;margin:0 auto"><h2>'+esc(t('Who is this bill for?'))+'</h2>'+
-  '<input id="cq" placeholder="'+esc(t('Search client by name or phone'))+'" value="'+esc(cq)+'" aria-label="'+esc(t('Search client by name or phone'))+'">'+
+  '<input id="cq" placeholder="'+esc(t('Search customer by name or phone'))+'" value="'+esc(cq)+'" aria-label="'+esc(t('Search customer by name or phone'))+'">'+
   '<div class="stack" id="clist" style="gap:6px"></div><div id="newc"></div></div>';
   $('#cq').addEventListener('input',function(e){cq=e.target.value;drawClist()});
   drawClist();drawNew();
@@ -387,14 +399,14 @@ function drawClist(){
   var list=db.clients.filter(function(c){return !q||(c.name+' '+hn(c)+' '+c.phone).toLowerCase().indexOf(q)>-1});
   var h='<button class="tile" data-pick="walkin"><b>'+esc(nm({name:'Walk-in customer'}))+'</b></button>'+
     list.map(function(c){return '<button class="tile" data-pick="'+c.id+'"><b>'+esc(nm(c))+'</b>'+(c.phone?'<span>'+esc(c.phone)+'</span>':'')+'</button>'}).join('');
-  if(q&&!list.length)h+='<p class="muted">'+esc(t('No clients match.'))+'</p>';
+  if(q&&!list.length)h+='<p class="muted">'+esc(t('No customers match.'))+'</p>';
   $('#clist').innerHTML=h;
   $('#clist').onclick=function(e){var b=e.target.closest('[data-pick]');if(b){cur.clientSel=b.dataset.pick;cur.step='items';render()}};
 }
 function drawNew(){
   var n=$('#newc');
-  if(!cur.addNew){n.innerHTML='<button id="addnew">'+esc(t('+ New client'))+'</button>';$('#addnew').onclick=function(){cur.addNew=true;drawNew()};return}
-  n.innerHTML='<form class="stack" id="nf" style="border-top:1px solid var(--line);padding-top:12px"><div class="row"><label class="grow">'+esc(t('Name'))+'<input id="nn" placeholder="'+esc(t('Client name'))+'"></label>'+
+  if(!cur.addNew){n.innerHTML='<button id="addnew">'+esc(t('+ New customer'))+'</button>';$('#addnew').onclick=function(){cur.addNew=true;drawNew()};return}
+  n.innerHTML='<form class="stack" id="nf" style="border-top:1px solid var(--line);padding-top:12px"><div class="row"><label class="grow">'+esc(t('Name'))+'<input id="nn" placeholder="'+esc(t('Customer name'))+'"></label>'+
   '<label class="grow">'+esc(t('Phone'))+'<input id="np" inputmode="numeric" autocomplete="off" placeholder="'+esc(t('10-digit number'))+'"><span class="note warn" id="nperr" hidden>'+esc(t('Phone number must be 10 digits'))+'</span></label></div>'+
   '<div class="row"><button class="primary" type="submit">'+esc(t('Continue'))+'</button><button type="button" id="nc">'+esc(t('Cancel'))+'</button></div></form>';
   $('#nn').focus();
@@ -402,7 +414,7 @@ function drawNew(){
   $('#nc').onclick=function(){cur.addNew=false;drawNew()};
   $('#nf').onsubmit=function(e){
     e.preventDefault();
-    var name=$('#nn').value.trim();if(!name){toast(t('Enter the client name'));return}
+    var name=$('#nn').value.trim();if(!name){toast(t('Enter the customer name'));return}
     var ph=cleanPhone($('#np').value);
     if(phoneErr(ph)){$('#nperr').hidden=false;$('#np').focus();toast(t('Phone number must be 10 digits'));return}
     var ex=ph&&db.clients.find(function(c){return c.phone===ph}),id;
@@ -419,7 +431,7 @@ function drawGrid(){
   var list=db.items.filter(function(i){return i.active&&(filterCat==='All'||i.category===filterCat)&&(!q||(i.name+' '+hn(i)).toLowerCase().indexOf(q)>-1)});
   $('#grid').innerHTML=list.length?list.map(function(i){
     var has=i.stock!==''&&i.stock!=null,out=has&&i.stock<=0;
-    return '<button class="tile" data-add="'+i.id+'"'+(out?' disabled':'')+'><b>'+esc(nm(i))+'</b><span>'+esc(tc(i.category))+(has?' · '+(out?esc(t('out of stock')):i.stock+' '+esc(t('pcs'))+' '+esc(t('left'))):'')+'</span><span class="price">'+money(unitPrice(i,i.unit||'pc'))+' / '+esc(t(i.unit==='doz'?'dozen':'pc'))+'</span></button>';
+    return '<button class="tile'+(out?' out':'')+'" data-add="'+i.id+'"><b>'+esc(nm(i))+'</b><span>'+esc(tc(i.category))+(has?' · '+(out?esc(t('out of stock')):i.stock+' '+esc(t('pcs'))+' '+esc(t('left'))):'')+'</span><span class="price">'+money(unitPrice(i,i.unit||'pc'))+' / '+esc(t(i.unit==='doz'?'dozen':'pc'))+'</span></button>';
   }).join(''):'<p class="muted">'+esc(t('No items match. Add items in the Items tab.'))+'</p>';
   $('#grid').onclick=function(e){var b=e.target.closest('[data-add]');if(b)addLine(b.dataset.add)};
 }
@@ -487,7 +499,7 @@ function saveBill(){
   var cid=null,cname='Walk-in customer',cphone='';
   if(cur.clientSel&&cur.clientSel!=='walkin'){var c0=clientById(cur.clientSel);if(c0){cid=c0.id;cname=c0.name;cphone=c0.phone}}
   var tt=calc(cur),pd=paidNow(tt);
-  if(r2(tt.total-pd)>0&&!cid){toast(t('Choose a client to keep a pending amount'));return}
+  if(r2(tt.total-pd)>0&&!cid){toast(t('Choose a customer to keep a pending amount'));return}
   var bill={id:uid(),date:today(),time:nowTime(),clientId:cid,clientName:cname,clientNameHi:(cid&&clientById(cid)&&clientById(cid).nameHi)||'',clientPhone:cphone,
     lines:cur.lines.map(function(l){return {itemId:l.id,name:l.name,nameHi:l.nameHi||'',price:l.price,gst:cur.gstOn?l.gst:0,unit:l.unit||'pc',factor:l.factor||1,qty:l.qty,total:r2(l.price*l.qty)}}),
     subtotal:tt.sub,discount:tt.disc,tax:tt.tax,total:tt.total,pay:cur.pay,notes:cur.notes,status:'paid',payments:pd>0?[{id:uid(),date:today(),time:nowTime(),amount:pd,mode:cur.pay}]:[]};
@@ -505,7 +517,7 @@ function receiptText(b){
   var c=function(s){var p=Math.max(0,Math.floor((W-s.length)/2));return new Array(p+1).join(' ')+s};
   var lr=function(a,z){var sp=Math.max(1,W-a.length-z.length);return a+new Array(sp+1).join(' ')+z};
   var m=function(n){return (Math.round(n*100)/100).toFixed(2)};
-  out.push(c(lang==='hi'?'एवी कॉस्मेटिक्स और बैंगल स्टोर':'AV COSMETICS & BANGLE STORE'),c(t('Tax invoice / cash memo')),line,lr(t('Bill')+': '+b.no,b.date),lr(t('Client')+': '+nm(b,'clientName','clientNameHi'),b.time));
+  out.push(c(lang==='hi'?'एवी कॉस्मेटिक्स और बैंगल स्टोर':'AV COSMETICS & BANGLE STORE'),c(t('Tax invoice / cash memo')),line,lr(t('Bill')+': '+b.no,b.date),lr(t('Customer')+': '+nm(b,'clientName','clientNameHi'),b.time));
   if(b.clientPhone)out.push(t('Phone')+': '+b.clientPhone);
   if(b.status==='cancelled')out.push('*** '+t('CANCELLED')+' ***');
   out.push(line);
@@ -596,10 +608,10 @@ function viewPending(box){
   var sum=r2(cl.reduce(function(s,r){return s+r.due},0));
   list.sort(function(a,b){return (a.date+a.time)<(b.date+b.time)?-1:1});
   if(!list.length){box.innerHTML='<div class="panel"><p class="muted">'+esc(t('No pending amounts. Every bill is fully paid.'))+'</p></div>';return}
-  box.innerHTML='<div class="stack"><div class="panel row" style="gap:32px"><div><h3>'+esc(t('Total pending'))+'</h3><div class="big warn">'+money(sum)+'</div></div><div><h3>'+esc(t('Clients with pending'))+'</h3><div class="big">'+cl.length+'</div></div><div><h3>'+esc(t('Pending bills'))+'</h3><div class="big">'+list.length+'</div></div></div>'+
-  '<div class="panel stack"><h2>'+esc(t('Pending by client'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Client'))+'</th><th class="num">'+esc(t('Pending bills'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th>'+esc(t('Oldest'))+'</th><th></th></tr></thead><tbody>'+
+  box.innerHTML='<div class="stack"><div class="panel row" style="gap:32px"><div><h3>'+esc(t('Total pending'))+'</h3><div class="big warn">'+money(sum)+'</div></div><div><h3>'+esc(t('Customers with pending'))+'</h3><div class="big">'+cl.length+'</div></div><div><h3>'+esc(t('Pending bills'))+'</h3><div class="big">'+list.length+'</div></div></div>'+
+  '<div class="panel stack"><h2>'+esc(t('Pending by customer'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Customer'))+'</th><th class="num">'+esc(t('Pending bills'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th>'+esc(t('Oldest'))+'</th><th></th></tr></thead><tbody>'+
   cl.map(function(r){var c=clientById(r.id);return '<tr><td><b>'+esc(c?nm(c):'')+'</b>'+(c&&c.phone?'<div class="note">'+esc(c.phone)+'</div>':'')+'</td><td class="num">'+r.n+'</td><td class="num">'+money(r.total)+'</td><td class="num">'+money(r.paid)+'</td><td class="num warn">'+money(r.due)+'</td><td>'+r.oldest+'</td><td><button class="small" data-acct="'+r.id+'">'+esc(t('Account'))+'</button></td></tr>'}).join('')+'</tbody></table></div></div>'+
-  '<div class="panel stack"><h2>'+esc(t('Pending invoices'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Date'))+'</th><th>'+esc(t('Invoice'))+'</th><th>'+esc(t('Client'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th></th></tr></thead><tbody>'+
+  '<div class="panel stack"><h2>'+esc(t('Pending invoices'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Date'))+'</th><th>'+esc(t('Invoice'))+'</th><th>'+esc(t('Customer'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th></th></tr></thead><tbody>'+
   list.map(function(b){return '<tr><td>'+b.date+'</td><td><b>'+esc(b.no)+'</b> '+statusPill(b)+'</td><td>'+esc(nm(b,'clientName','clientNameHi'))+'</td><td class="num">'+money(b.total)+'</td><td class="num">'+money(paidOf(b))+'</td><td class="num warn">'+money(dueOf(b))+'</td><td><button class="small primary" data-view="'+b.id+'">'+esc(t('Receive'))+'</button></td></tr>'}).join('')+'</tbody></table></div></div></div>';
   box.onclick=function(e){var a=e.target.closest('[data-acct]'),v=e.target.closest('[data-view]');if(a)showLedger(a.dataset.acct);if(v)showBill(v.dataset.view)};
 }
@@ -610,7 +622,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal(
 /* Bill history */
 var hist={q:'',from:'',to:''};
 function viewBills(box){
-  box.innerHTML='<div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="hq" placeholder="'+esc(t('Client name, phone or bill number'))+'" value="'+esc(hist.q)+'"></label>'+
+  box.innerHTML='<div class="panel stack"><div class="row"><label class="grow">'+esc(t('Search'))+'<input id="hq" placeholder="'+esc(t('Customer name, phone or bill number'))+'" value="'+esc(hist.q)+'"></label>'+
   '<label>'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label>'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div><div id="hlist"></div></div>';
   var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;drawHist()};
   ['#hq','#hf','#ht'].forEach(function(s){$(s).addEventListener('input',upd)});
@@ -622,7 +634,7 @@ function drawHist(){
     if(hist.from&&b.date<hist.from)return false;if(hist.to&&b.date>hist.to)return false;
     return !q||(b.clientName+' '+hn(b,'clientName','clientNameHi')+' '+b.clientPhone+' '+b.no).toLowerCase().indexOf(q)>-1;
   }).slice().reverse();
-  $('#hlist').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr><th>'+esc(t('Bill'))+'</th><th>'+esc(t('Date'))+'</th><th>'+esc(t('Client'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Due'))+'</th><th></th></tr></thead><tbody>'+
+  $('#hlist').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr><th>'+esc(t('Bill'))+'</th><th>'+esc(t('Date'))+'</th><th>'+esc(t('Customer'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Due'))+'</th><th></th></tr></thead><tbody>'+
     list.map(function(b){return '<tr><td><b>'+esc(b.no)+'</b> '+statusPill(b)+'</td><td>'+b.date+' <span class="muted">'+b.time+'</span></td><td>'+esc(nm(b,'clientName','clientNameHi'))+(b.clientPhone?'<div class="note">'+esc(b.clientPhone)+'</div>':'')+'</td><td class="num">'+money(b.total)+'</td><td class="num">'+money(paidOf(b))+'</td><td class="num'+(dueOf(b)>0?' warn':'')+'">'+money(dueOf(b))+'</td><td><button class="small'+(dueOf(b)>0?' primary':'')+'" data-view="'+b.id+'">'+esc(dueOf(b)>0?t('Receive'):t('View'))+'</button></td></tr>'}).join('')+'</tbody></table></div>'
     :'<p class="muted">'+esc(db.bills.length?t('No bills match this search.'):t('No bills yet. Save a bill from the New bill tab and it will appear here.'))+'</p>';
   $('#hlist').onclick=function(e){var b=e.target.closest('[data-view]');if(b)showBill(b.dataset.view)};
@@ -732,28 +744,34 @@ function viewItems(box){
 /* Clients */
 function viewClients(box){
   var stats={};db.bills.forEach(function(b){if(b.clientId&&b.status!=='cancelled'){var s=stats[b.clientId]||(stats[b.clientId]={n:0,t:0,d:0});s.n++;s.t+=b.total;s.d+=dueOf(b)}});
-  box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Clients'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Name'))+'</th><th>'+esc(t('Phone'))+'</th><th class="num">'+esc(t('Bills'))+'</th><th class="num">'+esc(t('Spent'))+'</th><th class="num">'+esc(t('Pending'))+'</th><th></th></tr></thead><tbody>'+
-  (db.clients.length?db.clients.map(function(c){var s=stats[c.id]||{n:0,t:0,d:0};return '<tr><td><b>'+esc(nm(c))+'</b>'+(c.address?'<div class="note">'+esc(c.address)+'</div>':'')+'</td><td>'+esc(c.phone)+'</td><td class="num">'+s.n+'</td><td class="num">'+money(s.t)+'</td><td class="num'+(s.d>0?' warn':'')+'">'+money(s.d)+'</td><td class="row"><button class="small" data-acct="'+c.id+'">'+esc(t('Account'))+'</button><button class="small" data-hist="'+esc(c.name)+'">'+esc(t('Bills'))+'</button><button class="small" data-edit="'+c.id+'">'+esc(t('Edit'))+'</button></td></tr>'}).join(''):'<tr><td colspan="6" class="muted">'+esc(t('No clients yet. They are added when you bill a new client.'))+'</td></tr>')+
-  '</tbody></table></div></div><form class="panel stack" id="cform"><h2 id="ctitle">'+esc(t('Add client'))+'</h2><input type="hidden" id="cid">'+
+  box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Customers'))+'</h2><div class="tablewrap"><table><thead><tr><th>'+esc(t('Name'))+'</th><th>'+esc(t('Phone'))+'</th><th class="num">'+esc(t('Bills'))+'</th><th class="num">'+esc(t('Spent'))+'</th><th class="num">'+esc(t('Pending'))+'</th><th></th></tr></thead><tbody>'+
+  (db.clients.length?db.clients.map(function(c){var s=stats[c.id]||{n:0,t:0,d:0};return '<tr><td><b>'+esc(nm(c))+'</b>'+(c.address?'<div class="note">'+esc(c.address)+'</div>':'')+'</td><td>'+esc(c.phone)+'</td><td class="num">'+s.n+'</td><td class="num">'+money(s.t)+'</td><td class="num'+(s.d>0?' warn':'')+'">'+money(s.d)+'</td><td class="row"><button class="small" data-acct="'+c.id+'">'+esc(t('Account'))+'</button><button class="small" data-hist="'+esc(c.name)+'">'+esc(t('Bills'))+'</button><button class="small" data-edit="'+c.id+'">'+esc(t('Edit'))+'</button></td></tr>'}).join(''):'<tr><td colspan="6" class="muted">'+esc(t('No customers yet. They are added when you bill a new customer.'))+'</td></tr>')+
+  '</tbody></table></div></div><form class="panel stack" id="cform"><h2 id="ctitle">'+esc(t('Add customer'))+'</h2><input type="hidden" id="cid">'+
   '<label>'+esc(t('Name (English)'))+'<input id="cn"></label><label>'+esc(t('Name (Hindi)'))+'<input id="cnh"></label><label>'+esc(t('Phone'))+'<input id="cp" inputmode="numeric" autocomplete="off" placeholder="'+esc(t('10-digit number'))+'"><span class="note warn" id="cperr" hidden>'+esc(t('Phone number must be 10 digits'))+'</span></label><label>'+esc(t('Address'))+'<input id="ca" placeholder="'+esc(t('Optional'))+'"></label>'+
-  '<div class="row"><button class="primary grow" type="submit" id="csave">'+esc(t('Add client'))+'</button><button type="button" id="ccancel" hidden>'+esc(t('Cancel edit'))+'</button></div>'+
-  '<p class="note">'+esc(t('Past bills keep the name they were saved with, even if you edit the client later.'))+'</p><p class="note">'+esc(t('Type the name in English. In Hindi mode it is written in Hindi automatically. Fill the Hindi name only to correct the spelling.'))+'</p></form></div>';
+  '<div class="row"><button class="primary grow" type="submit" id="csave">'+esc(t('Add customer'))+'</button><button type="button" id="ccancel" hidden>'+esc(t('Cancel edit'))+'</button></div>'+
+  '<p class="note">'+esc(t('Past bills keep the name they were saved with, even if you edit the customer later.'))+'</p><p class="note">'+esc(t('Type the name in English. In Hindi mode it is written in Hindi automatically. Fill the Hindi name only to correct the spelling.'))+'</p></form></div>'+
+  '<div class="panel stack" id="importPanel" style="margin-top:16px"><h2>'+esc(t('Import customers from Excel'))+'</h2><p class="muted">'+esc(t('Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.'))+'</p>'+
+  '<div class="row"><button id="csvSample" type="button">'+esc(t('Download sample CSV'))+'</button></div>'+
+  '<input type="file" id="csvFile" accept=".csv,text/csv,text/plain" aria-label="CSV">'+
+  '<textarea id="csvText" placeholder="'+esc(t('Or paste the rows here'))+'" aria-label="'+esc(t('Or paste the rows here'))+'" style="min-height:120px"></textarea>'+
+  '<div class="row"><button class="primary" id="csvGo" type="button">'+esc(t('Import customers'))+'</button></div><div id="csvRes" class="note"></div></div>';
   $('#ccancel').onclick=function(){render()};
   $('#cn').oninput=function(){$('#cnh').placeholder=tr(this.value)};
   phoneInput('#cp','#cperr');
+  wireImport();
   $('#cform').onsubmit=function(e){
     e.preventDefault();var id=$('#cid').value;
     var o={name:$('#cn').value.trim(),nameHi:$('#cnh').value.trim(),phone:cleanPhone($('#cp').value),address:$('#ca').value.trim()};
-    if(!o.name)o.name=o.nameHi;if(!o.name){toast(t('Enter the client name'));return}
+    if(!o.name)o.name=o.nameHi;if(!o.name){toast(t('Enter the customer name'));return}
     if(phoneErr(o.phone)){$('#cperr').hidden=false;$('#cp').focus();toast(t('Phone number must be 10 digits'));return}
     var dup=o.phone&&db.clients.find(function(c){return c.phone===o.phone&&c.id!==$('#cid').value});
     if(dup){toast(t('This number already belongs to')+' '+nm(dup));return}
     var rec=id?Object.assign({},clientById(id),o):Object.assign({id:uid(),created:today()},o);
-    guard($('#csave'),function(){return upsert('clients',clientRow(rec)).then(function(){if(id)Object.assign(clientById(id),rec);else db.clients.push(rec);toast(t(id?'Client updated':'Client added'));render()}).catch(fail)});
+    guard($('#csave'),function(){return upsert('clients',clientRow(rec)).then(function(){if(id)Object.assign(clientById(id),rec);else db.clients.push(rec);toast(t(id?'Customer updated':'Customer added'));render()}).catch(fail)});
   };
   box.onclick=function(e){
     var ed=e.target.closest('[data-edit]'),h=e.target.closest('[data-hist]');
-    if(ed){var c=clientById(ed.dataset.edit);$('#cid').value=c.id;$('#cn').value=c.name;$('#cnh').value=c.nameHi||HN[c.name]||'';$('#cp').value=c.phone;$('#ca').value=c.address||'';$('#ctitle').textContent=t('Edit client');$('#csave').textContent=t('Save changes');$('#ccancel').hidden=false;$('#cn').focus()}
+    if(ed){var c=clientById(ed.dataset.edit);$('#cid').value=c.id;$('#cn').value=c.name;$('#cnh').value=c.nameHi||HN[c.name]||'';$('#cp').value=c.phone;$('#ca').value=c.address||'';$('#ctitle').textContent=t('Edit customer');$('#csave').textContent=t('Save changes');$('#ccancel').hidden=false;$('#cn').focus()}
     var ac=e.target.closest('[data-acct]');if(ac)showLedger(ac.dataset.acct);
     if(h){hist={q:h.dataset.hist,from:'',to:''};location.hash='bills'}
   };
@@ -781,21 +799,81 @@ function viewReports(box){
 
 /* Backup */
 function viewBackup(box){
-  box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Back up'))+'</h2><p class="muted">'+esc(t('Copy all items, clients and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.'))+'</p>'+
+  box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Back up'))+'</h2><p class="muted">'+esc(t('Copy all items, customers and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.'))+'</p>'+
   '<div class="row"><button class="primary" id="bk">'+esc(t('Copy backup'))+'</button><button id="bshow">'+esc(t('Show backup text'))+'</button></div><textarea id="bta" hidden readonly aria-label="'+esc(t('Show backup text'))+'"></textarea>'+
-  '<p class="note">'+esc(t('Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains client phone numbers, so keep it private.'))+'</p></div>'+
+  '<p class="note">'+esc(t('Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains customer phone numbers, so keep it private.'))+'</p></div>'+
   '<div class="panel stack"><h2>'+esc(t('Restore'))+'</h2><p class="muted">'+esc(t('Pick a saved backup file, or paste the backup text below. The backup is added to the database.'))+'</p>'+
   '<input type="file" id="bf" accept=".json,.txt,text/plain,application/json" aria-label="'+esc(t('Restore'))+'"><textarea id="rta" placeholder="'+esc(t('Paste backup text here'))+'" aria-label="'+esc(t('Paste backup text here'))+'"></textarea>'+
-  '<div class="row"><button class="primary" id="rs">'+esc(t('Restore from text'))+'</button><button id="wipe">'+esc(t('Refresh data'))+'</button></div><p class="note">'+esc(t('Restoring adds the backup to the database. Items, clients and bills that already exist are skipped.'))+'</p></div></div>';
+  '<div class="row"><button class="primary" id="rs">'+esc(t('Restore from text'))+'</button><button id="wipe">'+esc(t('Refresh data'))+'</button></div><p class="note">'+esc(t('Restoring adds the backup to the database. Items, customers and bills that already exist are skipped.'))+'</p></div></div>';
   var data=function(){return JSON.stringify(db)};
   $('#bk').onclick=function(){copy(data(),t('Backup copied'))};
   $('#bshow').onclick=function(){var x=$('#bta');x.value=data();x.hidden=false;x.select()};
   $('#bf').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$('#rta').value=String(r.result)};r.readAsText(f)};
   $('#rs').onclick=function(){var b=$('#rs');twice(b,t('Add this backup to the database?'),function(){
     var d;try{d=JSON.parse($('#rta').value);if(!d||!Array.isArray(d.items)||!Array.isArray(d.bills)||!Array.isArray(d.clients))throw 0}catch(x){toast(t('That text is not a valid backup'));return}
-    guard(b,function(){return rpc('import_backup',{d:d}).then(function(r){return loadAll().then(function(){toast(t('Imported')+': '+r.bills+' '+t('Bills')+', '+r.items+' '+t('Items')+', '+r.clients+' '+t('Clients'));render()})}).catch(fail)});
+    guard(b,function(){return rpc('import_backup',{d:d}).then(function(r){return loadAll().then(function(){toast(t('Imported')+': '+r.bills+' '+t('Bills')+', '+r.items+' '+t('Items')+', '+r.clients+' '+t('Customers'));render()})}).catch(fail)});
   })};
   $('#wipe').onclick=function(){guard($('#wipe'),function(){return loadAll().then(function(){toast(t('Data refreshed'));render()}).catch(fail)})};
+}
+
+/* Customer import: parse a CSV file (Name, Mobile Number, Address) */
+var SAMPLE_CSV='Name,Mobile Number,Address\r\nPriya Sharma,9876500011,Lajpat Nagar\r\nAnita Verma,9876500022,\r\n';
+function parseCSV(text){
+  text=String(text||'').replace(/^\uFEFF/,'');
+  var first=text.split(/\r?\n/)[0]||'';
+  var delim=[',',';','\t'].map(function(d){return [d,first.split(d).length]}).sort(function(a,b){return b[1]-a[1]})[0][0];
+  var rows=[],row=[],cell='',q=false,i,c,has=function(r){return r.some(function(x){return x.trim()!==''})};
+  for(i=0;i<text.length;i++){
+    c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){cell+='"';i++}else q=false}else cell+=c}
+    else if(c==='"')q=true;
+    else if(c===delim){row.push(cell);cell=''}
+    else if(c==='\n'||c==='\r'){if(c==='\r'&&text[i+1]==='\n')i++;row.push(cell);cell='';if(has(row))rows.push(row);row=[]}
+    else cell+=c;
+  }
+  row.push(cell);if(has(row))rows.push(row);
+  return rows;
+}
+function readCustomers(text){
+  var rows=parseCSV(text),res={added:[],skipped:[]};
+  if(!rows.length)return res;
+  var h=rows[0].map(function(x){return x.trim().toLowerCase()});
+  var hasHeader=h.some(function(x){return /name|mobile|phone|address/.test(x)});
+  var iN=0,iP=1,iA=2;
+  if(hasHeader){
+    iN=h.findIndex(function(x){return /name/.test(x)});iP=h.findIndex(function(x){return /mobile|phone|number/.test(x)});iA=h.findIndex(function(x){return /address/.test(x)});
+    if(iN<0)iN=0;rows=rows.slice(1);
+  }
+  var seen={};db.clients.forEach(function(c){if(c.phone)seen[c.phone]=1});
+  rows.forEach(function(r,k){
+    var line=k+(hasHeader?2:1),name=(r[iN]||'').trim(),ph=cleanPhone(iP>=0?(r[iP]||''):''),ad=iA>=0?(r[iA]||'').trim():'';
+    if(!name){res.skipped.push(t('Row')+' '+line+': '+t('no name'));return}
+    if(phoneErr(ph)){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('mobile number must be 10 digits'));return}
+    if(ph&&seen[ph]){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('mobile number already exists'));return}
+    if(ph)seen[ph]=1;
+    res.added.push({id:uid(),name:name,nameHi:'',phone:ph,address:ad,created:today()});
+  });
+  return res;
+}
+function wireImport(){
+  $('#csvSample').onclick=function(){
+    var b=new Blob(['\uFEFF'+SAMPLE_CSV],{type:'text/csv;charset=utf-8'}),u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u;a.download='customers-sample.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000);
+  };
+  $('#csvFile').onchange=function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){$('#csvText').value=String(r.result)};r.readAsText(f)};
+  $('#csvGo').onclick=function(){
+    var res=readCustomers($('#csvText').value);
+    if(!res.added.length&&!res.skipped.length){toast(t('Choose a CSV file or paste the rows first'));return}
+    guard($('#csvGo'),function(){
+      var batches=[];for(var i=0;i<res.added.length;i+=200)batches.push(res.added.slice(i,i+200));
+      return batches.reduce(function(p,b){return p.then(function(){return rest('POST','/rest/v1/clients?on_conflict=id',b.map(clientRow),'resolution=merge-duplicates,return=minimal')})},Promise.resolve()).then(function(){
+        db.clients=db.clients.concat(res.added);render();
+        var box=$('#csvRes');
+        if(box)box.innerHTML='<b class="good-text">'+esc(t('Added'))+': '+res.added.length+'</b>'+(res.skipped.length?'<br><b>'+esc(t('Skipped'))+': '+res.skipped.length+'</b><br>'+res.skipped.slice(0,20).map(esc).join('<br>')+(res.skipped.length>20?'<br>\u2026':''):'');
+        toast(t('Added')+': '+res.added.length);
+      }).catch(fail);
+    });
+  };
 }
 
 /* Label every table cell with its column name so phones can show each row as a card */
