@@ -303,7 +303,7 @@ var itemById=function(id){return db.items.find(function(i){return i.id===id})};
 var clientById=function(id){return db.clients.find(function(c){return c.id===id})};
 
 /* ---------- billing state ---------- */
-var cur,filterCat='All',query='',openBill=null,openLedger=null;
+var cur,filterCat='All',filterQty='All',query='',openBill=null,openLedger=null;
 function newBill(){cur={step:'client',addNew:false,more:false,gstOn:false,paidStr:'',lines:[],clientSel:null,dtype:'flat',dval:0,pay:'cash',notes:''}}
 newBill();
 function paidNow(c){var v=String(cur.paidStr||'').trim();if(v==='')return c.total;return Math.min(c.total,Math.max(0,r2(parseFloat(v)||0)))}
@@ -368,6 +368,18 @@ function stockWarn(l){
   var it=itemById(l.id);if(!it||it.stock===''||it.stock==null)return '';
   return l.qty*(l.factor||1)>it.stock?'<div class="note warn">'+esc(t('Only'))+' '+it.stock+' '+esc(t('pcs'))+' '+esc(t('in stock'))+'</div>':'';
 }
+/* "Quantity categories": how an item is sold by default (Piece, Dozen, or its own unit such as Set) */
+function qKind(i){var u=du(i);return u==='custom'?'c:'+i.unitName:u}
+function qLabel(k){return k==='pc'?t('Piece'):k==='doz'?(lang==='hi'?t('dozen'):'Dozen'):uLabel(k.slice(2))}
+function qKinds(items){
+  var seen={},out=[];items.forEach(function(i){var k=qKind(i);if(!seen[k]){seen[k]=1;out.push(k)}});
+  var rank=function(k){return k==='pc'?0:k==='doz'?1:2};
+  return out.sort(function(a,b){return rank(a)-rank(b)||(a<b?-1:1)});
+}
+function qChipsHtml(items,active,attr){
+  var kinds=qKinds(items);if(kinds.length<2)return '';
+  return ['All'].concat(kinds).map(function(k){return '<button class="chip'+(k===active?' on':'')+'" '+attr+'="'+esc(k)+'">'+esc(k==='All'?t('All'):qLabel(k))+'</button>'}).join('');
+}
 function dozPrice(i){return i.dozenPrice!==''&&i.dozenPrice!=null?i.dozenPrice:r2(i.price*12)}
 function hasCustom(i){return !!(i&&i.unitName&&(i.unitQty||1)>1)}
 function customPrice(i){return i.unitPrice!==''&&i.unitPrice!=null?i.unitPrice:r2(i.price*(i.unitQty||1))}
@@ -388,7 +400,7 @@ function clientLabel(){
 function viewBilling(box){
   if(cur.step==='client'){drawClientStep(box);return}
   box.innerHTML='<div class="stack"><div class="panel row" style="justify-content:space-between"><div><span class="muted">'+esc(t('Bill for'))+':</span> <b>'+esc(clientLabel())+'</b></div><button class="small" id="chg">'+esc(t('Change'))+'</button></div>'+
-  '<div class="cols"><div class="panel stack"><input id="q" placeholder="'+esc(t('Search items by name'))+'" value="'+esc(query)+'" aria-label="'+esc(t('Search items by name'))+'"><div class="chips" id="cats"></div><div class="grid" id="grid"></div></div>'+
+  '<div class="cols"><div class="panel stack"><input id="q" placeholder="'+esc(t('Search items by name'))+'" value="'+esc(query)+'" aria-label="'+esc(t('Search items by name'))+'"><div class="chips" id="cats"></div><div class="chips" id="qcats"></div><div class="grid" id="grid"></div></div>'+
   '<div class="panel stack" id="billpanel"></div></div></div><div class="cartbar" id="cartbar" hidden></div>';
   $('#chg').onclick=function(){cur.step='client';render()};
   $('#q').addEventListener('input',function(e){query=e.target.value;drawGrid()});
@@ -440,8 +452,12 @@ function drawGrid(){
   var cats=['All'].concat(Array.from(new Set(db.items.filter(function(i){return i.active}).map(function(i){return i.category}))));
   $('#cats').innerHTML=cats.map(function(c){return '<button class="chip'+(c===filterCat?' on':'')+'" data-cat="'+esc(c)+'">'+esc(tc(c))+'</button>'}).join('');
   $('#cats').onclick=function(e){var b=e.target.closest('[data-cat]');if(b){filterCat=b.dataset.cat;drawGrid()}};
+  var act=db.items.filter(function(i){return i.active});
+  if(filterQty!=='All'&&!act.some(function(i){return qKind(i)===filterQty}))filterQty='All';
+  $('#qcats').innerHTML=qChipsHtml(act,filterQty,'data-qty');
+  $('#qcats').onclick=function(e){var b=e.target.closest('[data-qty]');if(b){filterQty=b.dataset.qty;drawGrid()}};
   var q=query.trim().toLowerCase();
-  var list=db.items.filter(function(i){return i.active&&(filterCat==='All'||i.category===filterCat)&&(!q||(i.name+' '+hn(i)).toLowerCase().indexOf(q)>-1)});
+  var list=db.items.filter(function(i){return i.active&&(filterCat==='All'||i.category===filterCat)&&(filterQty==='All'||qKind(i)===filterQty)&&(!q||(i.name+' '+hn(i)).toLowerCase().indexOf(q)>-1)});
   $('#grid').innerHTML=list.length?list.map(function(i){
     var has=i.stock!==''&&i.stock!=null,out=has&&i.stock<=0;
     return '<button class="tile'+(out?' out':'')+'" data-add="'+i.id+'"><b>'+esc(nm(i))+'</b><span>'+esc(tc(i.category))+(has?' · '+(out?esc(t('out of stock')):i.stock+' '+esc(t('pcs'))+' '+esc(t('left'))):'')+'</span><span class="price">'+money(unitPrice(i,du(i)))+' / '+esc(unitName(du(i),1,i))+'</span></button>';
@@ -708,7 +724,7 @@ function drawHist(){
 }
 
 /* Items */
-var itemF={q:'',cat:'All',stock:'all'};
+var itemF={q:'',cat:'All',qty:'All',stock:'all'};
 function stockState(i){if(i.stock===''||i.stock==null)return 'na';if(i.stock<=0)return 'out';if(i.stock<=5)return 'low';return 'in'}
 function allCats(){
   var out=[];(db.categories||[]).concat(db.items.map(function(i){return i.category})).forEach(function(c){if(c&&out.indexOf(c)<0)out.push(c)});
@@ -717,7 +733,7 @@ function allCats(){
 function viewItems(box){
   box.innerHTML='<div class="cols"><div class="stack"><div class="panel stack"><h2>'+esc(t('Item master'))+'</h2>'+
   '<input id="fq" placeholder="'+esc(t('Search items by name'))+'" value="'+esc(itemF.q)+'" aria-label="'+esc(t('Search items by name'))+'">'+
-  '<div class="chips" id="schips"></div><div class="chips" id="cchips"></div><div id="itable"></div></div></div>'+
+  '<div class="chips" id="schips"></div><div class="chips" id="cchips"></div><div class="chips" id="qchips"></div><div id="itable"></div></div></div>'+
   '<div class="stack"><form class="panel stack" id="iform"><h2 id="ititle">'+esc(t('Add item'))+'</h2><input type="hidden" id="iid">'+
   '<label>'+esc(t('Name (English)'))+'<input id="in" placeholder="Eyeliner"></label>'+
   '<label>'+esc(t('Name (Hindi)'))+'<input id="inh" placeholder="आईलाइनर"></label>'+
@@ -758,9 +774,12 @@ function viewItems(box){
     db.items.forEach(function(i){var s=stockState(i);if(s==='in'||s==='low')cnt.in++;if(s==='low')cnt.low++;if(s==='out')cnt.out++});
     $('#schips').innerHTML=[['all','All'],['in','In stock'],['low','Low stock'],['out','Out of stock']].map(function(x){return '<button class="chip'+(itemF.stock===x[0]?' on':'')+'" data-st="'+x[0]+'">'+esc(t(x[1]))+' ('+cnt[x[0]]+')</button>'}).join('');
     $('#cchips').innerHTML=['All'].concat(allCats()).map(function(c){return '<button class="chip'+(itemF.cat===c?' on':'')+'" data-ct="'+esc(c)+'">'+esc(tc(c))+'</button>'}).join('');
+    if(itemF.qty!=='All'&&!db.items.some(function(i){return qKind(i)===itemF.qty}))itemF.qty='All';
+    $('#qchips').innerHTML=qChipsHtml(db.items,itemF.qty,'data-qt');
     var q=itemF.q.trim().toLowerCase();
     var list=db.items.filter(function(i){
       if(itemF.cat!=='All'&&i.category!==itemF.cat)return false;
+      if(itemF.qty!=='All'&&qKind(i)!==itemF.qty)return false;
       var st=stockState(i);
       if(itemF.stock==='in'&&st!=='in'&&st!=='low')return false;
       if(itemF.stock==='low'&&st!=='low')return false;
@@ -809,9 +828,10 @@ function viewItems(box){
     });
   };
   box.onclick=function(e){
-    var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]'),st=e.target.closest('[data-st]'),ct=e.target.closest('[data-ct]'),dc=e.target.closest('[data-delcat]');
+    var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]'),st=e.target.closest('[data-st]'),ct=e.target.closest('[data-ct]'),qt=e.target.closest('[data-qt]'),dc=e.target.closest('[data-delcat]');
     if(st){itemF.stock=st.dataset.st;drawItems()}
     if(ct){itemF.cat=ct.dataset.ct;drawItems()}
+    if(qt){itemF.qty=qt.dataset.qt;drawItems()}
     if(dc)twice(dc,t('Sure?'),function(){del('categories','name',dc.dataset.delcat).then(function(){db.categories=db.categories.filter(function(c){return c!==dc.dataset.delcat});if(itemF.cat===dc.dataset.delcat)itemF.cat='All';render()},fail)});
     if(ed){var i=itemById(ed.dataset.edit);$('#iid').value=i.id;$('#in').value=i.name;$('#inh').value=i.nameHi||HN[i.name]||'';fillCats(i.category);$('#ip').value=i.price;$('#idz').value=(i.dozenPrice===''||i.dozenPrice==null)?'':i.dozenPrice;$('#iu').value=i.unit||'pc';$('#iun').value=i.unitName||'';$('#iuq').value=(i.unitQty>1)?i.unitQty:'';$('#iup').value=(i.unitPrice===''||i.unitPrice==null)?'':i.unitPrice;syncCu();$('#ig').value=i.gst||'';$('#ih').value=i.hsn||'';$('#is').value=i.stock;$('#ititle').textContent=t('Edit item');$('#isave').textContent=t('Save changes');$('#icancel').hidden=false;$('#in').focus()}
     if(dl)twice(dl,t('Sure?'),function(){del('items','id',dl.dataset.del).then(function(){db.items=db.items.filter(function(x){return x.id!==dl.dataset.del});toast(t('Item deleted'));render()},fail)});
