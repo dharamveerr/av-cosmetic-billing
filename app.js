@@ -26,7 +26,8 @@ var HI={
 'Who is this bill for?':'यह बिल किसके लिए है?','Search customer by name or phone':'नाम या फ़ोन से ग्राहक खोजें','No customers match.':'कोई ग्राहक नहीं मिला।',
 '+ New customer':'+ नया ग्राहक','Continue':'आगे बढ़ें','Cancel':'रद्द करें','Bill for':'बिल किसका','Change':'बदलें','More options':'और विकल्प','Fewer options':'कम विकल्प','Add GST':'जीएसटी जोड़ें',
 'GST is added at each item\'s rate.':'हर सामान की अपनी दर से जीएसटी जुड़ेगा।',
-'Pending':'बकाया','Paid':'जमा','Import customers from Excel':'Excel से ग्राहक जोड़ें','Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.':'अपनी Excel शीट को CSV के रूप में सहेजें, जिसमें Name, Mobile Number और Address कॉलम हों। फिर फ़ाइल यहाँ चुनें।',
+'Pending':'बकाया','Paid':'जमा','Manual (own unit)':'मैनुअल (अपनी इकाई)','Unit name':'इकाई का नाम','Pieces in one unit':'एक इकाई में पीस','Price per unit (\u20B9)':'प्रति इकाई कीमत (\u20B9)','e.g. Set':'जैसे सेट',
+'Enter the unit name and how many pieces it holds':'इकाई का नाम और उसमें कितने पीस हैं, लिखें','Example: Set, 6 pieces, \u20B9300. A bill line then reads "2 Set (12 pcs)".':'उदाहरण: सेट, 6 पीस, \u20B9300। बिल में लिखा आएगा "2 सेट (12 पीस)"।','Import customers from Excel':'Excel से ग्राहक जोड़ें','Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.':'अपनी Excel शीट को CSV के रूप में सहेजें, जिसमें Name, Mobile Number और Address कॉलम हों। फिर फ़ाइल यहाँ चुनें।',
 'Download sample CSV':'नमूना CSV डाउनलोड करें','Import customers':'ग्राहक जोड़ें','Or paste the rows here':'या पंक्तियाँ यहाँ पेस्ट करें','Row':'पंक्ति','no name':'नाम नहीं है','mobile number must be 10 digits':'मोबाइल नंबर 10 अंकों का होना चाहिए','mobile number already exists':'मोबाइल नंबर पहले से है',
 'Choose a CSV file or paste the rows first':'पहले CSV फ़ाइल चुनें या पंक्तियाँ पेस्ट करें','Added':'जोड़े गए','Skipped':'छोड़े गए','Switch to light mode':'लाइट मोड चालू करें','Switch to dark mode':'डार्क मोड चालू करें','Sign in':'साइन इन','Sign out':'साइन आउट','Email':'ईमेल','Password':'पासवर्ड','Wrong email or password':'ईमेल या पासवर्ड गलत है','Could not connect. Check your internet.':'कनेक्ट नहीं हो सका। इंटरनेट जाँचें।',
 'Only people added by the shop owner can sign in.':'सिर्फ़ दुकान मालिक द्वारा जोड़े गए लोग ही साइन इन कर सकते हैं।','Loading\u2026':'लोड हो रहा है\u2026','Try again':'फिर कोशिश करें','Could not save. Check your internet and try again.':'सहेजा नहीं जा सका। इंटरनेट जाँचकर फिर कोशिश करें।',
@@ -178,9 +179,9 @@ function fetchAll(table,order){
   function page(from){return rest('GET','/rest/v1/'+table+'?select=*&order='+order+'&limit='+step+'&offset='+from).then(function(rows){out=out.concat(rows);return rows.length===step?page(from+step):out})}
   return page(0);
 }
-function rowItem(r){return {id:r.id,name:r.name,nameHi:r.name_hi||'',category:r.category||'',price:+r.price,dozenPrice:r.dozen_price==null?'':+r.dozen_price,unit:r.unit||'pc',gst:+r.gst||0,hsn:r.hsn||'',stock:r.stock==null?'':r.stock,active:r.active!==false}}
+function rowItem(r){return {id:r.id,name:r.name,nameHi:r.name_hi||'',category:r.category||'',price:+r.price,dozenPrice:r.dozen_price==null?'':+r.dozen_price,unit:r.unit||'pc',unitName:r.unit_name||'',unitQty:r.unit_qty||1,unitPrice:r.unit_price==null?'':+r.unit_price,gst:+r.gst||0,hsn:r.hsn||'',stock:r.stock==null?'':r.stock,active:r.active!==false}}
 function itemRow(i,skipStock){
-  var o={id:i.id,name:i.name,name_hi:i.nameHi||'',category:i.category||'',price:i.price,dozen_price:(i.dozenPrice===''||i.dozenPrice==null)?null:i.dozenPrice,unit:i.unit||'pc',gst:i.gst||0,hsn:i.hsn||'',active:i.active!==false};
+  var o={id:i.id,name:i.name,name_hi:i.nameHi||'',category:i.category||'',price:i.price,dozen_price:(i.dozenPrice===''||i.dozenPrice==null)?null:i.dozenPrice,unit:i.unit||'pc',unit_name:i.unitName||'',unit_qty:i.unitQty||1,unit_price:(i.unitPrice===''||i.unitPrice==null)?null:i.unitPrice,gst:i.gst||0,hsn:i.hsn||'',active:i.active!==false};
   if(!skipStock)o.stock=(i.stock===''||i.stock==null)?null:i.stock;
   return o;
 }
@@ -365,9 +366,18 @@ function stockWarn(l){
   return l.qty*(l.factor||1)>it.stock?'<div class="note warn">'+esc(t('Only'))+' '+it.stock+' '+esc(t('pcs'))+' '+esc(t('in stock'))+'</div>':'';
 }
 function dozPrice(i){return i.dozenPrice!==''&&i.dozenPrice!=null?i.dozenPrice:r2(i.price*12)}
-function unitPrice(i,u){return u==='doz'?dozPrice(i):i.price}
-function unitName(u,q){return u==='doz'?t('dozen'):(q===1?t('pc'):t('pcs'))}
-function qtyLabel(l){var u=l.unit||'pc';return l.qty+' '+unitName(u,l.qty)+(u==='doz'?' ('+(l.qty*12)+' '+t('pcs')+')':'')}
+function hasCustom(i){return !!(i&&i.unitName&&(i.unitQty||1)>1)}
+function customPrice(i){return i.unitPrice!==''&&i.unitPrice!=null?i.unitPrice:r2(i.price*(i.unitQty||1))}
+function du(i){return (i.unit==='custom'&&!hasCustom(i))?'pc':(i.unit||'pc')}
+function unitPrice(i,u){return u==='doz'?dozPrice(i):u==='custom'?customPrice(i):i.price}
+function unitFactor(i,u){return u==='doz'?12:u==='custom'?(i.unitQty||1):1}
+function uLabel(n){return lang==='hi'?tr(n):n}
+function unitName(u,q,o){return u==='doz'?t('dozen'):u==='custom'?uLabel((o&&o.unitName)||'unit'):(q===1?t('pc'):t('pcs'))}
+function customOpt(l){
+  var it=itemById(l.id),nmn=hasCustom(it)?it.unitName:(l.unit==='custom'?l.unitName:''),q=hasCustom(it)?it.unitQty:(l.unit==='custom'?l.factor:0);
+  return nmn?'<option value="custom"'+(l.unit==='custom'?' selected':'')+'>'+esc(uLabel(nmn))+' ('+q+' '+esc(t('pcs'))+')</option>':'';
+}
+function qtyLabel(l){var u=l.unit||'pc',f=l.factor||1;return l.qty+' '+unitName(u,l.qty,l)+(f>1?' ('+(l.qty*f)+' '+t('pcs')+')':'')}
 function clientLabel(){
   var c=cur.clientSel&&cur.clientSel!=='walkin'?clientById(cur.clientSel):null;
   return c?nm(c):nm({name:'Walk-in customer'});
@@ -431,19 +441,19 @@ function drawGrid(){
   var list=db.items.filter(function(i){return i.active&&(filterCat==='All'||i.category===filterCat)&&(!q||(i.name+' '+hn(i)).toLowerCase().indexOf(q)>-1)});
   $('#grid').innerHTML=list.length?list.map(function(i){
     var has=i.stock!==''&&i.stock!=null,out=has&&i.stock<=0;
-    return '<button class="tile'+(out?' out':'')+'" data-add="'+i.id+'"><b>'+esc(nm(i))+'</b><span>'+esc(tc(i.category))+(has?' · '+(out?esc(t('out of stock')):i.stock+' '+esc(t('pcs'))+' '+esc(t('left'))):'')+'</span><span class="price">'+money(unitPrice(i,i.unit||'pc'))+' / '+esc(t(i.unit==='doz'?'dozen':'pc'))+'</span></button>';
+    return '<button class="tile'+(out?' out':'')+'" data-add="'+i.id+'"><b>'+esc(nm(i))+'</b><span>'+esc(tc(i.category))+(has?' · '+(out?esc(t('out of stock')):i.stock+' '+esc(t('pcs'))+' '+esc(t('left'))):'')+'</span><span class="price">'+money(unitPrice(i,du(i)))+' / '+esc(unitName(du(i),1,i))+'</span></button>';
   }).join(''):'<p class="muted">'+esc(t('No items match. Add items in the Items tab.'))+'</p>';
   $('#grid').onclick=function(e){var b=e.target.closest('[data-add]');if(b)addLine(b.dataset.add)};
 }
 function addLine(id){
   var it=itemById(id),l=cur.lines.find(function(x){return x.id===id});
-  cur.paidStr='';if(l)l.qty++;else cur.lines.push({id:id,name:it.name,nameHi:it.nameHi||HN[it.name]||'',price:unitPrice(it,it.unit||'pc'),unit:it.unit||'pc',factor:it.unit==='doz'?12:1,gst:it.gst||0,qty:1});
+  var u0=du(it);cur.paidStr='';if(l)l.qty++;else cur.lines.push({id:id,name:it.name,nameHi:it.nameHi||HN[it.name]||'',price:unitPrice(it,u0),unit:u0,unitName:u0==='custom'?it.unitName:'',factor:unitFactor(it,u0),gst:it.gst||0,qty:1});
   drawBill();
 }
 function drawBill(){
   var p=$('#billpanel');if(!p)return;
   var c=calc(cur),left=r2(c.total-paidNow(c)),showBreak=c.disc>0||(cur.gstOn&&c.tax>0);
-  var lines=cur.lines.length?cur.lines.map(function(l,i){return '<div class="line"><div style="min-width:0"><b>'+esc(nm(l))+'</b><div class="note">'+money(l.price)+' / '+esc(unitName(l.unit||'pc',1))+(l.unit==='doz'?' · '+l.qty+' × 12 = '+(l.qty*12)+' '+esc(t('pcs')):'')+(cur.gstOn&&l.gst?' + '+l.gst+'% '+esc(t('GST')):'')+'</div><select class="unitsel" data-unit="'+i+'" aria-label="'+esc(t('Unit'))+'"><option value="pc"'+((l.unit||'pc')==='pc'?' selected':'')+'>'+esc(t('Piece'))+'</option><option value="doz"'+(l.unit==='doz'?' selected':'')+'>'+esc(t('Dozen (12 pcs)'))+'</option></select>'+stockWarn(l)+'</div>'+
+  var lines=cur.lines.length?cur.lines.map(function(l,i){return '<div class="line"><div style="min-width:0"><b>'+esc(nm(l))+'</b><div class="note">'+money(l.price)+' / '+esc(unitName(l.unit||'pc',1,l))+((l.factor||1)>1?' · '+l.qty+' × '+(l.factor||1)+' = '+(l.qty*(l.factor||1))+' '+esc(t('pcs')):'')+(cur.gstOn&&l.gst?' + '+l.gst+'% '+esc(t('GST')):'')+'</div><select class="unitsel" data-unit="'+i+'" aria-label="'+esc(t('Unit'))+'"><option value="pc"'+((l.unit||'pc')==='pc'?' selected':'')+'>'+esc(t('Piece'))+'</option><option value="doz"'+(l.unit==='doz'?' selected':'')+'>'+esc(t('Dozen (12 pcs)'))+'</option>'+customOpt(l)+'</select>'+stockWarn(l)+'</div>'+
     '<div class="qty"><button class="small" data-dec="'+i+'" aria-label="'+esc(t('Decrease'))+'">−</button><input data-qty="'+i+'" inputmode="numeric" value="'+l.qty+'" aria-label="'+esc(t('Quantity'))+'"><button class="small" data-inc="'+i+'" aria-label="'+esc(t('Increase'))+'">+</button></div>'+
     '<div class="num">'+money(l.price*l.qty)+'</div><button class="small" data-rm="'+i+'" aria-label="'+esc(t('Remove'))+'">✕</button></div>'}).join(''):'<p class="muted">'+esc(t('Tap an item to add it to the bill.'))+'</p>';
   var more=cur.more?'<div class="stack" style="border-top:1px solid var(--line);padding-top:12px">'+
@@ -481,7 +491,7 @@ function drawBill(){
   $('#lines').onchange=function(e){
     var uu=e.target.dataset.unit;
     if(uu!=null){var l=cur.lines[+uu],it=itemById(l.id),prev=l.unit||'pc',nu=e.target.value;
-      l.unit=nu;l.factor=nu==='doz'?12:1;
+      l.unit=nu;l.factor=it?unitFactor(it,nu):(nu==='doz'?12:(nu==='custom'?(l.factor||1):1));l.unitName=nu==='custom'?(it?it.unitName:l.unitName):'';
       l.price=it?unitPrice(it,nu):(prev===nu?l.price:(nu==='doz'?r2(l.price*12):r2(l.price/12)));
       cur.paidStr='';drawBill();return}
     var i=e.target.dataset.qty;if(i!=null){cur.paidStr='';var q=parseInt(e.target.value,10);if(q>0)cur.lines[+i].qty=q;else cur.lines.splice(+i,1);drawBill()}};
@@ -501,7 +511,7 @@ function saveBill(){
   var tt=calc(cur),pd=paidNow(tt);
   if(r2(tt.total-pd)>0&&!cid){toast(t('Choose a customer to keep a pending amount'));return}
   var bill={id:uid(),date:today(),time:nowTime(),clientId:cid,clientName:cname,clientNameHi:(cid&&clientById(cid)&&clientById(cid).nameHi)||'',clientPhone:cphone,
-    lines:cur.lines.map(function(l){return {itemId:l.id,name:l.name,nameHi:l.nameHi||'',price:l.price,gst:cur.gstOn?l.gst:0,unit:l.unit||'pc',factor:l.factor||1,qty:l.qty,total:r2(l.price*l.qty)}}),
+    lines:cur.lines.map(function(l){return {itemId:l.id,name:l.name,nameHi:l.nameHi||'',price:l.price,gst:cur.gstOn?l.gst:0,unit:l.unit||'pc',unitName:l.unitName||'',factor:l.factor||1,qty:l.qty,total:r2(l.price*l.qty)}}),
     subtotal:tt.sub,discount:tt.disc,tax:tt.tax,total:tt.total,pay:cur.pay,notes:cur.notes,status:'paid',payments:pd>0?[{id:uid(),date:today(),time:nowTime(),amount:pd,mode:cur.pay}]:[]};
   guard($('#save'),function(){
     return rpc('create_bill',{b:bill}).then(function(r){
@@ -657,7 +667,8 @@ function viewItems(box){
   '<label>'+esc(t('Category'))+'<select id="ic"></select></label>'+
   '<label id="icnw" hidden>'+esc(t('New category name'))+'<input id="icn"></label>'+
   '<div class="row"><label class="grow">'+esc(t('Price per piece (₹)'))+'<input id="ip" inputmode="decimal"></label><label class="grow">'+esc(t('Price per dozen (₹)'))+'<input id="idz" inputmode="decimal"></label></div>'+
-  '<div class="row"><label class="grow">'+esc(t('Sold by default in'))+'<select id="iu"><option value="pc">'+esc(t('Piece'))+'</option><option value="doz">'+esc(t('Dozen (12 pcs)'))+'</option></select></label><label class="grow">'+esc(t('GST rate %'))+'<input id="ig" inputmode="decimal" placeholder="'+esc(t('Optional'))+'"></label></div>'+
+  '<div class="row"><label class="grow">'+esc(t('Sold by default in'))+'<select id="iu"><option value="pc">'+esc(t('Piece'))+'</option><option value="doz">'+esc(t('Dozen (12 pcs)'))+'</option><option value="custom">'+esc(t('Manual (own unit)'))+'</option></select></label><label class="grow">'+esc(t('GST rate %'))+'<input id="ig" inputmode="decimal" placeholder="'+esc(t('Optional'))+'"></label></div>'+
+  '<div class="stack" id="cuBox" hidden><div class="row"><label class="grow">'+esc(t('Unit name'))+'<input id="iun" placeholder="'+esc(t('e.g. Set'))+'"></label><label class="grow">'+esc(t('Pieces in one unit'))+'<input id="iuq" inputmode="numeric"></label><label class="grow">'+esc(t('Price per unit (\u20B9)'))+'<input id="iup" inputmode="decimal" placeholder="'+esc(t('Optional'))+'"></label></div><p class="note">'+esc(t('Example: Set, 6 pieces, \u20B9300. A bill line then reads "2 Set (12 pcs)".'))+'</p></div>'+
   '<p class="note">'+esc(t('1 dozen = 12 pieces. Fill one price and the other is worked out. Fill both to set a special dozen price.'))+'</p>'+
   '<div class="row"><label class="grow">'+esc(t('HSN code'))+'<input id="ih" placeholder="'+esc(t('Optional'))+'"></label><label class="grow">'+esc(t('Stock (pieces)'))+'<input id="is" inputmode="numeric" placeholder="'+esc(t('Optional'))+'"></label></div>'+
   '<div class="row"><button class="primary grow" type="submit" id="isave">'+esc(t('Add item'))+'</button><button type="button" id="icancel" hidden>'+esc(t('Cancel edit'))+'</button></div>'+
@@ -698,13 +709,15 @@ function viewItems(box){
     (list.length?list.map(function(i){
       var st=stockState(i);
       var stc=st==='na'?'–':i.stock+(st==='out'?' <span class="pill unpaid">'+esc(t('Out of stock'))+'</span>':st==='low'?' <span class="pill partial">'+esc(t('Low stock'))+'</span>':'');
-      return '<tr><td><b>'+esc(nm(i))+'</b>'+(i.hsn?'<div class="note">HSN '+esc(i.hsn)+'</div>':'')+'</td><td>'+esc(tc(i.category))+'</td><td class="num">'+money(i.price)+' / '+esc(t('pc'))+'<div class="note">'+money(dozPrice(i))+' / '+esc(t('dozen'))+'</div></td><td class="num">'+(i.gst?i.gst+'%':'–')+'</td><td class="num">'+stc+'</td><td class="row"><button class="small" data-edit="'+i.id+'">'+esc(t('Edit'))+'</button><button class="small danger" data-del="'+i.id+'">'+esc(t('Delete'))+'</button></td></tr>'}).join(''):
+      return '<tr><td><b>'+esc(nm(i))+'</b>'+(i.hsn?'<div class="note">HSN '+esc(i.hsn)+'</div>':'')+'</td><td>'+esc(tc(i.category))+'</td><td class="num">'+money(i.price)+' / '+esc(t('pc'))+'<div class="note">'+money(dozPrice(i))+' / '+esc(t('dozen'))+'</div>'+(hasCustom(i)?'<div class="note">'+money(customPrice(i))+' / '+esc(uLabel(i.unitName))+' ('+i.unitQty+' '+esc(t('pcs'))+')</div>':'')+'</td><td class="num">'+(i.gst?i.gst+'%':'–')+'</td><td class="num">'+stc+'</td><td class="row"><button class="small" data-edit="'+i.id+'">'+esc(t('Edit'))+'</button><button class="small danger" data-del="'+i.id+'">'+esc(t('Delete'))+'</button></td></tr>'}).join(''):
       '<tr><td colspan="6" class="muted">'+esc(db.items.length?t('No items in this view.'):t('No items yet. Add the first one using the form.'))+'</td></tr>')+'</tbody></table></div>';
   }
   fillCats('');drawCats();drawItems();
   $('#fq').addEventListener('input',function(e){itemF.q=e.target.value;drawItems()});
   $('#ic').onchange=function(){$('#icnw').hidden=this.value!=='__new__';if(this.value==='__new__')$('#icn').focus()};
-  var reset=function(){$('#iform').reset();$('#iid').value='';$('#ititle').textContent=t('Add item');$('#isave').textContent=t('Add item');$('#icancel').hidden=true;$('#icnw').hidden=true};
+  var reset=function(){$('#iform').reset();$('#iid').value='';$('#ititle').textContent=t('Add item');$('#isave').textContent=t('Add item');$('#icancel').hidden=true;$('#icnw').hidden=true;syncCu()};
+  function syncCu(){var show=$('#iu').value==='custom'||$('#iun').value||$('#iuq').value||$('#iup').value;$('#cuBox').hidden=!show}
+  $('#iu').onchange=syncCu;
   $('#icancel').onclick=reset;
   $('#in').oninput=function(){$('#inh').placeholder=tr(this.value)||'आईलाइनर'};
   $('#ip').oninput=function(){var v=parseFloat(this.value);$('#idz').placeholder=v>=0?String(r2(v*12)):''};
@@ -712,14 +725,16 @@ function viewItems(box){
   $('#iform').onsubmit=function(e){
     e.preventDefault();
     var pp=parseFloat($('#ip').value),dp=parseFloat($('#idz').value);
-    if(!(pp>=0)&&!(dp>=0)){toast(t('Enter a valid price'));return}
-    var price=pp>=0?pp:r2(dp/12);
+    var un=$('#iun').value.trim(),uq=parseInt($('#iuq').value,10)||0,up=parseFloat($('#iup').value),isCustom=$('#iu').value==='custom';
+    if(isCustom&&(!un||uq<2)){toast(t('Enter the unit name and how many pieces it holds'));$('#cuBox').hidden=false;return}
+    if(!(pp>=0)&&!(dp>=0)&&!(isCustom&&up>=0)){toast(t('Enter a valid price'));return}
+    var price=pp>=0?pp:(dp>=0?r2(dp/12):r2(up/uq));
     var cat=$('#ic').value;
     if(cat==='__new__')cat=$('#icn').value.trim();
     if(!cat){toast(t('Choose a category'));return}
     var newCat=db.categories.indexOf(cat)<0;
     var st=$('#is').value.trim();
-    var o={name:$('#in').value.trim(),nameHi:$('#inh').value.trim(),unit:$('#iu').value,dozenPrice:dp>=0?dp:'',category:cat,price:price,gst:parseFloat($('#ig').value)||0,hsn:$('#ih').value.trim(),stock:st===''?'':parseInt(st,10),active:true};
+    var o={name:$('#in').value.trim(),nameHi:$('#inh').value.trim(),unit:$('#iu').value,unitName:(un&&uq>=2)?un:'',unitQty:uq>=2?uq:1,unitPrice:(up>=0&&un&&uq>=2)?up:'',dozenPrice:dp>=0?dp:'',category:cat,price:price,gst:parseFloat($('#ig').value)||0,hsn:$('#ih').value.trim(),stock:st===''?'':parseInt(st,10),active:true};
     if(!o.name)o.name=o.nameHi;if(!o.name){toast(t('Enter the item name'));return}
     var id=$('#iid').value,old=id?itemById(id):null,rec=id?Object.assign({},old,o):Object.assign({id:uid()},o);
     var skipStock=!!old&&String(old.stock)===String(o.stock);
@@ -736,7 +751,7 @@ function viewItems(box){
     if(st){itemF.stock=st.dataset.st;drawItems()}
     if(ct){itemF.cat=ct.dataset.ct;drawItems()}
     if(dc)twice(dc,t('Sure?'),function(){del('categories','name',dc.dataset.delcat).then(function(){db.categories=db.categories.filter(function(c){return c!==dc.dataset.delcat});if(itemF.cat===dc.dataset.delcat)itemF.cat='All';render()},fail)});
-    if(ed){var i=itemById(ed.dataset.edit);$('#iid').value=i.id;$('#in').value=i.name;$('#inh').value=i.nameHi||HN[i.name]||'';fillCats(i.category);$('#ip').value=i.price;$('#idz').value=(i.dozenPrice===''||i.dozenPrice==null)?'':i.dozenPrice;$('#iu').value=i.unit||'pc';$('#ig').value=i.gst||'';$('#ih').value=i.hsn||'';$('#is').value=i.stock;$('#ititle').textContent=t('Edit item');$('#isave').textContent=t('Save changes');$('#icancel').hidden=false;$('#in').focus()}
+    if(ed){var i=itemById(ed.dataset.edit);$('#iid').value=i.id;$('#in').value=i.name;$('#inh').value=i.nameHi||HN[i.name]||'';fillCats(i.category);$('#ip').value=i.price;$('#idz').value=(i.dozenPrice===''||i.dozenPrice==null)?'':i.dozenPrice;$('#iu').value=i.unit||'pc';$('#iun').value=i.unitName||'';$('#iuq').value=(i.unitQty>1)?i.unitQty:'';$('#iup').value=(i.unitPrice===''||i.unitPrice==null)?'':i.unitPrice;syncCu();$('#ig').value=i.gst||'';$('#ih').value=i.hsn||'';$('#is').value=i.stock;$('#ititle').textContent=t('Edit item');$('#isave').textContent=t('Save changes');$('#icancel').hidden=false;$('#in').focus()}
     if(dl)twice(dl,t('Sure?'),function(){del('items','id',dl.dataset.del).then(function(){db.items=db.items.filter(function(x){return x.id!==dl.dataset.del});toast(t('Item deleted'));render()},fail)});
   };
 }
