@@ -230,3 +230,6 @@ grant execute on function public.add_payment(text, numeric, text, text, text) to
 grant execute on function public.receive_client_payment(text, numeric, text, text, text) to authenticated;
 grant execute on function public.cancel_bill(text) to authenticated;
 grant execute on function public.import_backup(jsonb) to authenticated;
+
+-- ---------- Bin (added later; see migration-bin.sql) ----------
+-- items, clients and categories have a deleted_at column; purge_bin() removes rows older than 30 days.
