@@ -1,0 +1,10 @@
+{
+  "name": "av-cosmetics-billing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Billing app for AV Cosmetics & Bangle Store. Plain HTML, CSS and JavaScript, no libraries.",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  }
+}
