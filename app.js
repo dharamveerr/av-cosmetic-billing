@@ -30,7 +30,7 @@ var HI={
 'Review bill':'बिल जाँचें','Please check the bill before saving.':'सहेजने से पहले बिल जाँच लें।','Back':'वापस','Confirm & save':'पक्का करें और सहेजें',
 'Import items from Excel':'Excel से सामान जोड़ें','Save your Excel sheet as CSV using the columns in the sample. Name and one price are needed. Then choose the file here.':'अपनी Excel शीट को नमूने के कॉलम के साथ CSV के रूप में सहेजें। नाम और एक कीमत ज़रूरी हैं। फिर फ़ाइल यहाँ चुनें।',
 'Import items':'सामान जोड़ें','no price':'कीमत नहीं है','item already exists':'सामान पहले से है','Manual unit needs the unit name and pieces':'मैनुअल इकाई के लिए इकाई का नाम और पीस चाहिए','Manual (own unit)':'मैनुअल (अपनी इकाई)','Unit name':'इकाई का नाम','Pieces in one unit':'एक इकाई में पीस','Price per unit (\u20B9)':'प्रति इकाई कीमत (\u20B9)','e.g. Set':'जैसे सेट',
-'Enter the unit name and how many pieces it holds':'इकाई का नाम और उसमें कितने पीस हैं, लिखें','Example: Set, 6 pieces, \u20B9300. A bill line then reads "2 Set (12 pcs)".':'उदाहरण: सेट, 6 पीस, \u20B9300। बिल में लिखा आएगा "2 सेट (12 पीस)"।','Import customers from Excel':'Excel से ग्राहक जोड़ें','Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.':'अपनी Excel शीट को CSV के रूप में सहेजें, जिसमें Name, Mobile Number और Address कॉलम हों। फिर फ़ाइल यहाँ चुनें।',
+'Enter the unit name and how many pieces it holds':'इकाई का नाम और उसमें कितने पीस हैं, लिखें','Only the unit name is needed. Pieces and price are optional. Example: Set, 6 pieces, \u20B9300 shows as "2 Set (12 pcs)" on a bill.':'सिर्फ़ इकाई का नाम ज़रूरी है। पीस और कीमत वैकल्पिक हैं। उदाहरण: सेट, 6 पीस, \u20B9300 बिल में "2 सेट (12 पीस)" दिखेगा।','Enter the unit name':'इकाई का नाम लिखें','Manual unit needs the unit name':'मैनुअल इकाई के लिए इकाई का नाम चाहिए','Import customers from Excel':'Excel से ग्राहक जोड़ें','Save your Excel sheet as CSV, with the columns Name, Mobile Number and Address. Then choose the file here.':'अपनी Excel शीट को CSV के रूप में सहेजें, जिसमें Name, Mobile Number और Address कॉलम हों। फिर फ़ाइल यहाँ चुनें।',
 'Download sample CSV':'नमूना CSV डाउनलोड करें','Import customers':'ग्राहक जोड़ें','Or paste the rows here':'या पंक्तियाँ यहाँ पेस्ट करें','Row':'पंक्ति','no name':'नाम नहीं है','mobile number must be 10 digits':'मोबाइल नंबर 10 अंकों का होना चाहिए','mobile number already exists':'मोबाइल नंबर पहले से है',
 'Choose a CSV file or paste the rows first':'पहले CSV फ़ाइल चुनें या पंक्तियाँ पेस्ट करें','Added':'जोड़े गए','Skipped':'छोड़े गए','Switch to light mode':'लाइट मोड चालू करें','Switch to dark mode':'डार्क मोड चालू करें','Sign in':'साइन इन','Sign out':'साइन आउट','Email':'ईमेल','Password':'पासवर्ड','Wrong email or password':'ईमेल या पासवर्ड गलत है','Could not connect. Check your internet.':'कनेक्ट नहीं हो सका। इंटरनेट जाँचें।',
 'Only people added by the shop owner can sign in.':'सिर्फ़ दुकान मालिक द्वारा जोड़े गए लोग ही साइन इन कर सकते हैं।','Loading\u2026':'लोड हो रहा है\u2026','Try again':'फिर कोशिश करें','Could not save. Check your internet and try again.':'सहेजा नहीं जा सका। इंटरनेट जाँचकर फिर कोशिश करें।',
@@ -381,7 +381,7 @@ function qChipsHtml(items,active,attr){
   return ['All'].concat(kinds).map(function(k){return '<button class="chip'+(k===active?' on':'')+'" '+attr+'="'+esc(k)+'">'+esc(k==='All'?t('All'):qLabel(k))+'</button>'}).join('');
 }
 function dozPrice(i){return i.dozenPrice!==''&&i.dozenPrice!=null?i.dozenPrice:r2(i.price*12)}
-function hasCustom(i){return !!(i&&i.unitName&&(i.unitQty||1)>1)}
+function hasCustom(i){return !!(i&&i.unitName)}
 function customPrice(i){return i.unitPrice!==''&&i.unitPrice!=null?i.unitPrice:r2(i.price*(i.unitQty||1))}
 function du(i){return (i.unit==='custom'&&!hasCustom(i))?'pc':(i.unit||'pc')}
 function unitPrice(i,u){return u==='doz'?dozPrice(i):u==='custom'?customPrice(i):i.price}
@@ -390,7 +390,7 @@ function uLabel(n){return lang==='hi'?tr(n):n}
 function unitName(u,q,o){return u==='doz'?t('dozen'):u==='custom'?uLabel((o&&o.unitName)||'unit'):(q===1?t('pc'):t('pcs'))}
 function customOpt(l){
   var it=itemById(l.id),nmn=hasCustom(it)?it.unitName:(l.unit==='custom'?l.unitName:''),q=hasCustom(it)?it.unitQty:(l.unit==='custom'?l.factor:0);
-  return nmn?'<option value="custom"'+(l.unit==='custom'?' selected':'')+'>'+esc(uLabel(nmn))+' ('+q+' '+esc(t('pcs'))+')</option>':'';
+  return nmn?'<option value="custom"'+(l.unit==='custom'?' selected':'')+'>'+esc(uLabel(nmn))+(q>1?' ('+q+' '+esc(t('pcs'))+')':'')+'</option>':'';
 }
 function qtyLabel(l){var u=l.unit||'pc',f=l.factor||1;return l.qty+' '+unitName(u,l.qty,l)+(f>1?' ('+(l.qty*f)+' '+t('pcs')+')':'')}
 function clientLabel(){
@@ -741,7 +741,7 @@ function viewItems(box){
   '<label id="icnw" hidden>'+esc(t('New category name'))+'<input id="icn"></label>'+
   '<div class="row"><label class="grow">'+esc(t('Price per piece (₹)'))+'<input id="ip" inputmode="decimal"></label><label class="grow">'+esc(t('Price per dozen (₹)'))+'<input id="idz" inputmode="decimal"></label></div>'+
   '<div class="row"><label class="grow">'+esc(t('Sold by default in'))+'<select id="iu"><option value="pc">'+esc(t('Piece'))+'</option><option value="doz">'+esc(t('Dozen (12 pcs)'))+'</option><option value="custom">'+esc(t('Manual (own unit)'))+'</option></select></label><label class="grow">'+esc(t('GST rate %'))+'<input id="ig" inputmode="decimal" placeholder="'+esc(t('Optional'))+'"></label></div>'+
-  '<div class="stack" id="cuBox" hidden><div class="row"><label class="grow">'+esc(t('Unit name'))+'<input id="iun" placeholder="'+esc(t('e.g. Set'))+'"></label><label class="grow">'+esc(t('Pieces in one unit'))+'<input id="iuq" inputmode="numeric"></label><label class="grow">'+esc(t('Price per unit (\u20B9)'))+'<input id="iup" inputmode="decimal" placeholder="'+esc(t('Optional'))+'"></label></div><p class="note">'+esc(t('Example: Set, 6 pieces, \u20B9300. A bill line then reads "2 Set (12 pcs)".'))+'</p></div>'+
+  '<div class="stack" id="cuBox" hidden><div class="row"><label class="grow">'+esc(t('Unit name'))+'<input id="iun" placeholder="'+esc(t('e.g. Set'))+'"></label><label class="grow">'+esc(t('Pieces in one unit'))+'<input id="iuq" inputmode="numeric" placeholder="'+esc(t('Optional'))+'"></label><label class="grow">'+esc(t('Price per unit (\u20B9)'))+'<input id="iup" inputmode="decimal" placeholder="'+esc(t('Optional'))+'"></label></div><p class="note">'+esc(t('Only the unit name is needed. Pieces and price are optional. Example: Set, 6 pieces, \u20B9300 shows as "2 Set (12 pcs)" on a bill.'))+'</p></div>'+
   '<p class="note">'+esc(t('1 dozen = 12 pieces. Fill one price and the other is worked out. Fill both to set a special dozen price.'))+'</p>'+
   '<div class="row"><label class="grow">'+esc(t('HSN code'))+'<input id="ih" placeholder="'+esc(t('Optional'))+'"></label><label class="grow">'+esc(t('Stock (pieces)'))+'<input id="is" inputmode="numeric" placeholder="'+esc(t('Optional'))+'"></label></div>'+
   '<div class="row"><button class="primary grow" type="submit" id="isave">'+esc(t('Add item'))+'</button><button type="button" id="icancel" hidden>'+esc(t('Cancel edit'))+'</button></div>'+
@@ -807,15 +807,15 @@ function viewItems(box){
     e.preventDefault();
     var pp=parseFloat($('#ip').value),dp=parseFloat($('#idz').value);
     var un=$('#iun').value.trim(),uq=parseInt($('#iuq').value,10)||0,up=parseFloat($('#iup').value),isCustom=$('#iu').value==='custom';
-    if(isCustom&&(!un||uq<2)){toast(t('Enter the unit name and how many pieces it holds'));$('#cuBox').hidden=false;return}
+    if(isCustom&&!un){toast(t('Enter the unit name'));$('#cuBox').hidden=false;return}
     if(!(pp>=0)&&!(dp>=0)&&!(isCustom&&up>=0)){toast(t('Enter a valid price'));return}
-    var price=pp>=0?pp:(dp>=0?r2(dp/12):r2(up/uq));
+    var price=pp>=0?pp:(dp>=0?r2(dp/12):r2(up/(uq>=1?uq:1)));
     var cat=$('#ic').value;
     if(cat==='__new__')cat=$('#icn').value.trim();
     if(!cat){toast(t('Choose a category'));return}
     var newCat=db.categories.indexOf(cat)<0;
     var st=$('#is').value.trim();
-    var o={name:$('#in').value.trim(),nameHi:$('#inh').value.trim(),unit:$('#iu').value,unitName:(un&&uq>=2)?un:'',unitQty:uq>=2?uq:1,unitPrice:(up>=0&&un&&uq>=2)?up:'',dozenPrice:dp>=0?dp:'',category:cat,price:price,gst:parseFloat($('#ig').value)||0,hsn:$('#ih').value.trim(),stock:st===''?'':parseInt(st,10),active:true};
+    var o={name:$('#in').value.trim(),nameHi:$('#inh').value.trim(),unit:$('#iu').value,unitName:un||'',unitQty:uq>=1?uq:1,unitPrice:(up>=0&&un)?up:'',dozenPrice:dp>=0?dp:'',category:cat,price:price,gst:parseFloat($('#ig').value)||0,hsn:$('#ih').value.trim(),stock:st===''?'':parseInt(st,10),active:true};
     if(!o.name)o.name=o.nameHi;if(!o.name){toast(t('Enter the item name'));return}
     var id=$('#iid').value,old=id?itemById(id):null,rec=id?Object.assign({},old,o):Object.assign({id:uid()},o);
     var skipStock=!!old&&String(old.stock)===String(o.stock);
@@ -1007,15 +1007,15 @@ function readItems(text){
     if(!name){res.skipped.push(t('Row')+' '+line+': '+t('no name'));return}
     if(seen[name.toLowerCase()]){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('item already exists'));return}
     var pp=num(get(r,'price')),dp=num(get(r,'dozen')),up=num(get(r,'unitPrice')),uq=parseInt(get(r,'unitQty'),10)||0,un=get(r,'unitName'),si=get(r,'soldIn').toLowerCase();
-    var custom=un&&uq>=2;
+    var custom=!!un;
     if(!(pp>=0)&&!(dp>=0)&&!(custom&&up>=0)){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('no price'));return}
     var unit='pc';
-    if(/manual|custom|own/.test(si)){if(!custom){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('Manual unit needs the unit name and pieces'));return}unit='custom'}
+    if(/manual|custom|own/.test(si)){if(!custom){res.skipped.push(t('Row')+' '+line+': '+name+' - '+t('Manual unit needs the unit name'));return}unit='custom'}
     else if(/doz/.test(si))unit='doz';
-    var price=pp>=0?pp:(dp>=0?r2(dp/12):r2(up/uq)),st=get(r,'stock'),cat=get(r,'category')||'Other',g=num(get(r,'gst'));
+    var price=pp>=0?pp:(dp>=0?r2(dp/12):r2(up/(uq>=1?uq:1))),st=get(r,'stock'),cat=get(r,'category')||'Other',g=num(get(r,'gst'));
     seen[name.toLowerCase()]=1;
     if(cats.indexOf(cat)<0){cats.push(cat);res.cats.push(cat)}
-    res.added.push({id:uid(),name:name,nameHi:get(r,'nameHi'),category:cat,price:price,dozenPrice:dp>=0?dp:'',unit:unit,unitName:custom?un:'',unitQty:custom?uq:1,unitPrice:(custom&&up>=0)?up:'',gst:g>=0?g:0,hsn:get(r,'hsn'),stock:st===''||isNaN(parseInt(st,10))?'':Math.max(0,parseInt(st,10)),active:true});
+    res.added.push({id:uid(),name:name,nameHi:get(r,'nameHi'),category:cat,price:price,dozenPrice:dp>=0?dp:'',unit:unit,unitName:custom?un:'',unitQty:custom&&uq>=1?uq:1,unitPrice:(custom&&up>=0)?up:'',gst:g>=0?g:0,hsn:get(r,'hsn'),stock:st===''||isNaN(parseInt(st,10))?'':Math.max(0,parseInt(st,10)),active:true});
   });
   return res;
 }
