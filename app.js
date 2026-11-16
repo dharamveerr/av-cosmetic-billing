@@ -73,7 +73,7 @@ var HI={
 'Price (₹)':'कीमत (₹)','GST rate %':'जीएसटी दर %','HSN code':'HSN कोड','Cancel edit':'बदलाव रद्द करें','Save changes':'बदलाव सहेजें','Edit product':'सामान बदलें',
 'Changing a price here never changes old bills. They keep the price they were billed at.':'यहाँ कीमत बदलने से पुराने बिल नहीं बदलते। वे उसी कीमत पर रहते हैं जिस पर बने थे।',
 'Enter a valid price':'सही कीमत लिखें','Product updated':'सामान अपडेट हुआ','Product added':'सामान जुड़ गया','Sure?':'पक्का?','Product deleted':'सामान हटाया गया',
-'Bills':'बिल','Spent':'खर्च','Address':'पता','Add customer':'ग्राहक जोड़ें','Detailed':'विस्तृत','Sold in last 30 days':'पिछले 30 दिन में बिका','Low at or below':'कम स्टॉक सीमा','Type the quantity for every product':'हर सामान की मात्रा लिखें','Show rate per piece':'बिल पर दर प्रति पीस दिखाएँ','Show rate per piece on the bill (default is per dozen)':'बिल पर दर प्रति पीस दिखाएँ (सामान्य: प्रति दर्जन)','Rate on bill':'बिल पर दर','Per dozen':'प्रति दर्जन','Per piece':'प्रति पीस','doz':'दर्जन','SQL query that will run':'चलने वाली SQL क्वेरी','Nothing to add':'जोड़ने के लिए कुछ नहीं','Download sample Excel':'नमूना Excel डाउनलोड करें','Could not read that Excel file. Save it as CSV and try again.':'यह Excel फ़ाइल पढ़ी नहीं जा सकी। इसे CSV में सहेजकर फिर कोशिश करें।','Details':'विवरण','What was it for? (optional)':'यह किसलिए था? (वैकल्पिक)','Expenses':'खर्चे','Expense':'खर्चा','Add expense':'खर्चा जोड़ें','Edit expense':'खर्चा बदलें','Expense added':'खर्चा जुड़ गया','Expense updated':'खर्चा अपडेट हुआ','Total expenses':'कुल खर्चे','Biggest category':'सबसे बड़ी श्रेणी','By category':'श्रेणी-वार','Entries':'प्रविष्टियाँ','Final Sales':'कुल बिक्री (खर्चे घटाकर)','Paid by':'भुगतान माध्यम','Note':'नोट','Save':'सहेजें','Enter a valid amount':'सही रकम लिखें','Choose the date':'तारीख चुनें','No expenses in this period. Add one with the + Add expense button.':'इस अवधि में कोई खर्चा नहीं। + खर्चा जोड़ें दबाकर जोड़ें।','Rent':'किराया','Salary':'वेतन','Electricity':'बिजली','Transport':'आना-जाना','Stock purchase':'माल की ख़रीद','Packing':'पैकिंग','Repair':'मरम्मत','Tea & food':'चाय-खाना','Other':'अन्य','Select all':'सभी चुनें','selected':'चुने गए','Restore selected':'चुने हुए वापस लाएँ','Delete selected':'चुने हुए हटाएँ','Select':'चुनें','Collected by payment mode':'भुगतान माध्यम से प्राप्त','No payments in this period.':'इस अवधि में कोई भुगतान नहीं।','in this period':'इस अवधि में','Reports':'रिपोर्ट','Received':'प्राप्त','Copy bill':'बिल की कॉपी','Copying bill':'बिल की कॉपी बन रही है','Choose the customer for the new bill. You can add or remove products next.':'नए बिल के लिए ग्राहक चुनें। फिर सामान जोड़ या हटा सकते हैं।','Delete invoice':'बिल हटाएँ','Tap again to delete':'हटाने के लिए फिर दबाएँ','deleted':'हटाया गया','Delete moves the invoice to the Bin for 30 days. Stock is put back. You can restore it from the Bin.':'हटाने पर बिल 30 दिन के लिए बिन में जाता है। स्टॉक वापस जुड़ जाता है। बिन से इसे वापस ला सकते हैं।','With GST':'GST के साथ','Some products have no GST rate set. Add it in Products.':'कुछ सामान पर GST दर नहीं है। सामान में जोड़ें।','Stock unit':'स्टॉक इकाई','Enter a valid number':'सही संख्या लिखें','Leave empty for 12 x piece price':'खाली छोड़ें तो 12 x पीस दाम','Also sell in dozen':'दर्जन में भी बेचें','Save this unit for other products':'यह इकाई दूसरे सामान के लिए सहेजें','Saved units':'सहेजी इकाइयाँ','All categories':'सभी श्रेणियाँ','All units':'सभी इकाई','Unit':'इकाई','Stock':'स्टॉक','View more':'और देखें','View less':'कम देखें','Add products manually':'सामान हाथ से जोड़ें','Add customers manually':'ग्राहक हाथ से जोड़ें','Minimal':'संक्षिप्त','WhatsApp number':'WhatsApp नंबर','Created':'बनाया गया','Add another number':'दूसरा नंबर जोड़ें','Remove':'हटाएँ','Download Excel':'Excel डाउनलोड करें','Other numbers':'अन्य नंबर','Customers list downloaded':'ग्राहक सूची डाउनलोड हो गई','Mobile':'मोबाइल','Edit customer':'ग्राहक बदलें','Customer updated':'ग्राहक अपडेट हुआ','Customer added':'ग्राहक जुड़ गया',
+'Bills':'बिल','Spent':'खर्च','Address':'पता','Add customer':'ग्राहक जोड़ें','Detailed':'विस्तृत','Downloaded':'डाउनलोड हो गया','Sold in last 30 days':'पिछले 30 दिन में बिका','Low at or below':'कम स्टॉक सीमा','Type the quantity for every product':'हर सामान की मात्रा लिखें','Show rate per piece':'बिल पर दर प्रति पीस दिखाएँ','Show rate per piece on the bill (default is per dozen)':'बिल पर दर प्रति पीस दिखाएँ (सामान्य: प्रति दर्जन)','Rate on bill':'बिल पर दर','Per dozen':'प्रति दर्जन','Per piece':'प्रति पीस','doz':'दर्जन','SQL query that will run':'चलने वाली SQL क्वेरी','Nothing to add':'जोड़ने के लिए कुछ नहीं','Download sample Excel':'नमूना Excel डाउनलोड करें','Could not read that Excel file. Save it as CSV and try again.':'यह Excel फ़ाइल पढ़ी नहीं जा सकी। इसे CSV में सहेजकर फिर कोशिश करें।','Details':'विवरण','What was it for? (optional)':'यह किसलिए था? (वैकल्पिक)','Expenses':'खर्चे','Expense':'खर्चा','Add expense':'खर्चा जोड़ें','Edit expense':'खर्चा बदलें','Expense added':'खर्चा जुड़ गया','Expense updated':'खर्चा अपडेट हुआ','Total expenses':'कुल खर्चे','Biggest category':'सबसे बड़ी श्रेणी','By category':'श्रेणी-वार','Entries':'प्रविष्टियाँ','Final Sales':'कुल बिक्री (खर्चे घटाकर)','Paid by':'भुगतान माध्यम','Note':'नोट','Save':'सहेजें','Enter a valid amount':'सही रकम लिखें','Choose the date':'तारीख चुनें','No expenses in this period. Add one with the + Add expense button.':'इस अवधि में कोई खर्चा नहीं। + खर्चा जोड़ें दबाकर जोड़ें।','Rent':'किराया','Salary':'वेतन','Electricity':'बिजली','Transport':'आना-जाना','Stock purchase':'माल की ख़रीद','Packing':'पैकिंग','Repair':'मरम्मत','Tea & food':'चाय-खाना','Other':'अन्य','Select all':'सभी चुनें','selected':'चुने गए','Restore selected':'चुने हुए वापस लाएँ','Delete selected':'चुने हुए हटाएँ','Select':'चुनें','Collected by payment mode':'भुगतान माध्यम से प्राप्त','No payments in this period.':'इस अवधि में कोई भुगतान नहीं।','in this period':'इस अवधि में','Reports':'रिपोर्ट','Received':'प्राप्त','Copy bill':'बिल की कॉपी','Copying bill':'बिल की कॉपी बन रही है','Choose the customer for the new bill. You can add or remove products next.':'नए बिल के लिए ग्राहक चुनें। फिर सामान जोड़ या हटा सकते हैं।','Delete invoice':'बिल हटाएँ','Tap again to delete':'हटाने के लिए फिर दबाएँ','deleted':'हटाया गया','Delete moves the invoice to the Bin for 30 days. Stock is put back. You can restore it from the Bin.':'हटाने पर बिल 30 दिन के लिए बिन में जाता है। स्टॉक वापस जुड़ जाता है। बिन से इसे वापस ला सकते हैं।','With GST':'GST के साथ','Some products have no GST rate set. Add it in Products.':'कुछ सामान पर GST दर नहीं है। सामान में जोड़ें।','Stock unit':'स्टॉक इकाई','Enter a valid number':'सही संख्या लिखें','Leave empty for 12 x piece price':'खाली छोड़ें तो 12 x पीस दाम','Also sell in dozen':'दर्जन में भी बेचें','Save this unit for other products':'यह इकाई दूसरे सामान के लिए सहेजें','Saved units':'सहेजी इकाइयाँ','All categories':'सभी श्रेणियाँ','All units':'सभी इकाई','Unit':'इकाई','Stock':'स्टॉक','View more':'और देखें','View less':'कम देखें','Add products manually':'सामान हाथ से जोड़ें','Add customers manually':'ग्राहक हाथ से जोड़ें','Minimal':'संक्षिप्त','WhatsApp number':'WhatsApp नंबर','Created':'बनाया गया','Add another number':'दूसरा नंबर जोड़ें','Remove':'हटाएँ','Download Excel':'Excel डाउनलोड करें','Other numbers':'अन्य नंबर','Customers list downloaded':'ग्राहक सूची डाउनलोड हो गई','Mobile':'मोबाइल','Edit customer':'ग्राहक बदलें','Customer updated':'ग्राहक अपडेट हुआ','Customer added':'ग्राहक जुड़ गया',
 'No customers yet. They are added when you bill a new customer.':'अभी कोई ग्राहक नहीं है। नए ग्राहक का बिल बनाने पर वे जुड़ जाते हैं।',
 'Past bills keep the name they were saved with, even if you edit the customer later.':'ग्राहक को बाद में बदलने पर भी पुराने बिल में वही नाम रहता है जिससे वे सहेजे गए थे।',
 'Today':'आज','Sales':'बिक्री','Daily sales':'दैनिक बिक्री','Monthly sales':'मासिक बिक्री','Month':'महीना','Product-wise sales':'सामान-वार बिक्री','Qty sold':'बिकी मात्रा',
@@ -826,7 +826,7 @@ function showLedger(cid){
 }
 /* Payment history: every payment (part payment) with its invoice, date, time, mode and the balance left after it */
 function defaultPay(){var d=today();return {q:'',from:d,to:d,custom:false,view:'date',tab:'received',sort:'date_desc',psort:'due_desc',isort:'date_asc'}}
-var payF=defaultPay();
+var payF=defaultPay(),payExp={rows:[],name:'payments'};
 function paymentRows(){
   var rows=[];
   db.bills.forEach(function(b){
@@ -837,7 +837,7 @@ function paymentRows(){
 }
 function viewPayments(box){
   box.innerHTML='<div class="stack"><div class="pcards" id="pcards"></div><div class="panel stack">'+
-  '<div class="row" id="pfilters"><input class="srch" id="pq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(payF.q)+'">'+rangeSel('prg',payF)+'<select id="pvs" aria-label="'+esc(t('View'))+'"><option value="date">'+esc(t('By date'))+'</option><option value="invoice">'+esc(t('By invoice'))+'</option></select></div><div class="row" id="pcustom"'+(payF.custom?'':' hidden')+'><label class="grow">'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label class="grow">'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div></div><div id="plist" class="stack"></div></div>';
+  '<div class="row" id="pfilters"><input class="srch" id="pq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(payF.q)+'">'+rangeSel('prg',payF)+'<select id="pvs" aria-label="'+esc(t('View'))+'"><option value="date">'+esc(t('By date'))+'</option><option value="invoice">'+esc(t('By invoice'))+'</option></select><button class="small" type="button" id="pxl">'+esc(t('Download Excel'))+'</button></div><div class="row" id="pcustom"'+(payF.custom?'':' hidden')+'><label class="grow">'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label class="grow">'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div></div><div id="plist" class="stack"></div></div>';
   var upd=function(){payF.q=$('#pq').value;payF.from=$('#pf').value;payF.to=$('#pt').value;drawPayments()};
   ['#pq','#pf','#pt'].forEach(function(x){$(x).addEventListener('input',upd)});
   $('#pvs').value=payF.view;$('#pvs').onchange=function(){payF.view=this.value;drawPayments()};
@@ -846,6 +846,7 @@ function viewPayments(box){
     if(k==='custom'){payF.custom=true;$('#pcustom').hidden=false;drawPayments();return}
     var r=histRange(k);payF.custom=false;payF.from=r[0];payF.to=r[1];$('#pf').value=r[0];$('#pt').value=r[1];$('#pcustom').hidden=true;drawPayments();
   };
+  $('#pxl').onclick=function(){downloadSheet(payExp.rows,payExp.name==='pending'?'Pending':'Payments',payExp.name)};
   $('#pcards').onclick=function(e){var c=e.target.closest('[data-ptab]');if(c){payF.tab=c.dataset.ptab;drawPayments()}};
   $('#plist').onclick=function(e){
     var h1=e.target.closest('[data-ps]'),h2=e.target.closest('[data-pcs]'),h3=e.target.closest('[data-pis]');
@@ -865,6 +866,12 @@ function drawPayments(){
   $('#prg').value=rangeKey(payF);
   $('#pvs').value=payF.view;
   var ps=pendingStats(),pend=payF.tab==='pending';
+  if(pend){
+    var pm=function(b){return !q||(b.clientName+' '+hn(b,'clientName','clientNameHi')+' '+b.clientPhone+' '+b.no).toLowerCase().indexOf(q)>-1};
+    payExp={name:'pending',rows:[['Date','Invoice','Customer','Phone','Total','Paid','Unpaid']].concat(ps.list.filter(pm).map(function(b){return [b.date,b.no,b.clientName,b.clientPhone||'',r2(b.total),r2(paidOf(b)),r2(dueOf(b))]}))};
+  }else{
+    payExp={name:'payments',rows:[['Date','Time','Invoice','Customer','Phone','Payment','Amount','Pending amount']].concat(rows.slice().sort(function(a,b){var x=a.p.date+' '+a.p.time,y=b.p.date+' '+b.p.time;return x<y?1:x>y?-1:0}).map(function(r){return [r.p.date,r.p.time,r.b.no,r.b.clientName,r.b.clientPhone||'',r.p.mode,r2(r.p.amount),r2(r.after)]}))};
+  }
   $('#pcards').innerHTML='<button type="button" class="pcard'+(pend?'':' on')+'" data-ptab="received"><span class="muted">'+esc(t('Received'))+'</span><b class="big">'+money(total)+'</b><span class="note">'+rows.length+' '+esc(t('Payments'))+' \u00B7 '+esc(t(RANGES.find(function(x){return x[0]===rangeKey(payF)}).slice(1,2)[0]))+'</span></button>'+
     '<button type="button" class="pcard'+(pend?' on':'')+'" data-ptab="pending"><span class="muted">'+esc(t('Pending'))+'</span><b class="big warn">'+money(ps.sum)+'</b><span class="note">'+ps.cl.length+' '+esc(t('Customers'))+' \u00B7 '+ps.list.length+' '+esc(t('Pending bills'))+'</span></button>';
   $('#prg').hidden=pend;$('#pvs').hidden=pend;if(pend)$('#pcustom').hidden=true;else $('#pcustom').hidden=!payF.custom;
@@ -921,7 +928,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal(
 /* Bill history: filters (date, status, customer, payment mode, total) and sorting. Opens on today's date each time. */
 function isoDay(d){var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
 function defaultHist(){var d=today();return {q:'',from:d,to:d,custom:false,status:'all',client:'all',mode:'all',min:'',max:'',sort:'date_desc',keep:false}}
-var hist=defaultHist(),lastRoute='';
+var hist=defaultHist(),lastRoute='',histLast=[];
 function billState(b){if(b.status==='cancelled')return 'cancelled';var d=dueOf(b),p=paidOf(b);return d<=0?'paid':(p>0?'part':'unpaid')}
 function histRange(k){
   var t0=new Date(),d=function(n){var x=new Date();x.setDate(x.getDate()-n);return isoDay(x)};
@@ -937,7 +944,7 @@ function viewBills(box){
   db.bills.forEach(function(b){var k=b.clientId||'walkin';if(!seen[k]){seen[k]=1;custs.push({id:k,label:nm(b,'clientName','clientNameHi')})}});
   custs.sort(function(a,c){return a.label.toLowerCase()<c.label.toLowerCase()?-1:1});
   box.innerHTML='<div class="panel stack">'+
-  '<div class="row" id="hfilters"><input class="srch" id="hq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(hist.q)+'">'+rangeSel('hrg',hist)+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select>'+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select>'+'<select id="hs" aria-label="'+esc(t('Status'))+'"></select></div>'+
+  '<div class="row" id="hfilters"><input class="srch" id="hq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(hist.q)+'">'+rangeSel('hrg',hist)+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select>'+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select>'+'<select id="hs" aria-label="'+esc(t('Status'))+'"></select><button class="small" type="button" id="hxl">'+esc(t('Download Excel'))+'</button></div>'+
   '<div class="row" id="hcustom"'+(hist.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div>'+
   '<div class="chips sortbar" id="hsort"></div>'+
   '<div id="hsum"></div><div id="hlist"></div></div>';
@@ -949,6 +956,7 @@ function viewBills(box){
     var r=histRange(k);hist.custom=false;hist.from=r[0];hist.to=r[1];$('#hf').value=r[0];$('#ht').value=r[1];$('#hcustom').hidden=true;drawHist();
   };
   $('#hs').onchange=function(){hist.status=this.value;drawHist()};
+  $('#hxl').onclick=function(){exportBills(histLast)};
   var sortBy=function(k){var c2=hist.sort.split('_');hist.sort=k+'_'+(c2[0]===k&&c2[1]==='desc'?'asc':'desc');drawHist()};
   $('#hsort').onclick=function(e){var b=e.target.closest('[data-sort]');if(b)sortBy(b.dataset.sort)};
   $('#hlist').onclick=function(e){
@@ -972,6 +980,7 @@ function drawHist(){
   var sp=hist.sort.split('_'),key=sp[0],dir=sp[1]==='asc'?1:-1;
   var val={date:function(b){return b.date+' '+b.time},no:function(b){return b.no},cust:function(b){return nm(b,'clientName','clientNameHi').toLowerCase()},total:function(b){return b.total},paid:function(b){return paidOf(b)},due:function(b){return dueOf(b)}}[key]||function(b){return b.date+' '+b.time};
   list=list.slice().sort(function(a,b){var x=val(a),y=val(b);return x<y?-dir:x>y?dir:(a.no<b.no?1:-1)});
+  histLast=list;
   $('#hrg').value=rangeKey(hist);
   $('#hsort').innerHTML=[['no','Bill'],['date','Date'],['cust','Customer'],['total','Total'],['paid','Paid'],['due','Due']].map(function(x){return '<button class="chip'+(key===x[0]?' on':'')+'" data-sort="'+x[0]+'">'+esc(t(x[1]))+(key===x[0]?(dir===1?' \u25B2':' \u25BC'):'')+'</button>'}).join('');
   $('#hs').innerHTML=[['all','All'],['paid','Paid'],['part','Part paid'],['unpaid','Unpaid'],['cancelled','Cancelled']].map(function(x){return '<option value="'+x[0]+'"'+(hist.status===x[0]?' selected':'')+'>'+esc(t(x[1]))+' ('+cnt[x[0]]+')</option>'}).join('');
@@ -1284,7 +1293,7 @@ function xlsxBlob(rows,sheet,opts){
   var data=rows.map(function(r,ri){return '<row r="'+(ri+1)+'">'+r.map(function(v,ci){
     var ref=col(ci)+(ri+1);
     if(typeof v==='number')return '<c r="'+ref+'"><v>'+v+'</v></c>';
-    return '<c r="'+ref+'" t="inlineStr"'+(ri===0?' s="1"':'')+'><is><t xml:space="preserve">'+x(v)+'</t></is></c>'}).join('')+'</row>'}).join('');
+    return '<c r="'+ref+'" t="inlineStr"'+((ri===0||rows[ri].hdr)?' s="1"':'')+'><is><t xml:space="preserve">'+x(v)+'</t></is></c>'}).join('')+'</row>'}).join('');
   var ncol=rows[0].length,cols='<cols>'+rows[0].map(function(_,i){return '<col min="'+(i+1)+'" max="'+(i+1)+'" width="'+(i===0?26:i===4?34:18)+'" customWidth="1"/>'}).join('')+'</cols>';
   var H='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
   var files=([
@@ -1357,6 +1366,14 @@ function xlsxToCsv(buf){
 function loadSheetFile(f,ta){
   if(/\.xlsx$/i.test(f.name)){f.arrayBuffer().then(xlsxToCsv).then(function(txt){ta.value=txt}).catch(function(){toast(t('Could not read that Excel file. Save it as CSV and try again.'))});return}
   var r=new FileReader();r.onload=function(){ta.value=String(r.result)};r.readAsText(f);
+}
+function downloadSheet(rows,sheet,name){saveBlob(xlsxBlob(rows,sheet),'AV-'+name+'-'+today()+'.xlsx');toast(t('Downloaded'))}
+function hdrRow(a){a.hdr=true;return a}
+function statusLabel(b){return t({paid:'Paid',part:'Part paid',unpaid:'Unpaid',cancelled:'Cancelled'}[billState(b)])}
+function exportBills(list){
+  var rows=[['Bill','Date','Time','Customer','Phone','Products','Total','Paid','Due','Status','Payment']];
+  list.forEach(function(b){rows.push([b.no,b.date,b.time,b.clientName,b.clientPhone||'',b.lines.map(function(l){return l.name+' '+qtyLabel(l)}).join('; '),r2(b.total),r2(paidOf(b)),r2(dueOf(b)),statusLabel(b),b.pay])});
+  downloadSheet(rows,'Bill history','bill-history');
 }
 function exportCustomers(){
   var stats={};db.bills.forEach(function(b){if(b.clientId&&b.status!=='cancelled'){var s2=stats[b.clientId]||(stats[b.clientId]={n:0,t:0,d:0});s2.n++;s2.t+=b.total;s2.d+=dueOf(b)}});
@@ -1450,7 +1467,7 @@ function viewReports(box){
   var modeBar=collected>0?'<div class="modebar">'+modes.filter(function(m){return byPay[m]>0}).map(function(m){return '<span class="'+modeCls[m]+'" style="width:'+(byPay[m]/collected*100)+'%"></span>'}).join('')+'</div>':'';
   var legend='<div class="modelegend">'+modes.map(function(m){var v=r2(byPay[m]||0);return '<div class="modeitem"><span class="dot '+modeCls[m]+'"></span><div><div class="muted">'+esc(t(m))+'</div><b>'+money(v)+'</b>'+(collected>0&&v>0?' <span class="note">'+Math.round(v/collected*100)+'%</span>':'')+'</div></div>'}).join('')+'</div>';
   box.innerHTML='<div class="stack">'+
-  '<div class="panel stack"><div class="row" style="justify-content:space-between"><h2>'+esc(t('Reports'))+'</h2><div class="row" id="rfilters">'+rangeSel('rrg',repF)+'</div></div>'+
+  '<div class="panel stack"><div class="row" style="justify-content:space-between"><h2>'+esc(t('Reports'))+'</h2><div class="row" id="rfilters">'+rangeSel('rrg',repF)+'<button class="small" type="button" id="rxl">'+esc(t('Download Excel'))+'</button></div></div>'+
   '<div class="row" id="rcustom"'+(repF.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="rf" type="date" value="'+repF.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="rt" type="date" value="'+repF.to+'"></label></div>'+
   '<div class="kpis">'+kpi(t('Sales'),money(sales),rb.length+' '+esc(t('Bills')))+kpi(t('Collected'),money(collected),npay+' '+esc(t('Payments')))+kpi(t('Pending'),money(due),esc(t('in this period')),due>0?'warnc':'')+kpi(t('Total pending'),money(dueAll),esc(t('All time')),dueAll>0?'warnc':'')+kpi(t('Expenses'),money(expTot),expR.length+' '+esc(t('Entries')))+kpi(t('Final Sales'),money(profit),esc(t('Sales'))+' \u2212 '+esc(t('Expenses')),profit<0?'warnc':'')+'</div>'+
   '</div>'+
@@ -1458,6 +1475,15 @@ function viewReports(box){
   '<div class="cols"><div class="panel stack"><h2>'+esc(t('Daily sales'))+'</h2>'+(days.length?'<div class="rhead"><span>'+esc(t('Date'))+'</span><span></span><span>'+esc(t('Sales'))+'</span><span>'+esc(t('Pending'))+'</span></div>'+days.map(function(d){return row(d,'',day[d]/maxD,money(day[d]),money(dayDue[d]||0),(dayDue[d]||0)>0)}).join(''):none)+'</div>'+
   '<div class="panel stack"><h2>'+esc(t('Monthly sales'))+'</h2>'+(months.length?'<div class="rhead"><span>'+esc(t('Month'))+'</span><span></span><span>'+esc(t('Sales'))+'</span><span>'+esc(t('Pending'))+'</span></div>'+months.map(function(m){return row(m,'',mon[m]/maxM,money(mon[m]),money(monDue[m]||0),(monDue[m]||0)>0)}).join(''):none)+'</div></div>'+
   '<div class="panel stack"><h2>'+esc(t('Product-wise sales'))+'</h2>'+(il.length?'<div class="rhead"><span>'+esc(t('Product'))+'</span><span></span><span>'+esc(t('Sales'))+'</span><span>%</span></div>'+il.map(function(k){return row(esc(lang==='hi'?(items[k].h||HN[k]||tr(k)):k),esc(qtySold(items[k].u)),items[k].t/maxI,money(items[k].t),Math.round(items[k].t/totI*100)+'%',false)}).join(''):none)+'<p class="note">'+esc(t('Cancelled bills are left out of every figure.'))+'</p></div></div>';
+  $('#rxl').onclick=function(){
+    var rows=[hdrRow(['Report','From','To']),['AV Cosmetics & Bangle Store',repF.from||'',repF.to||''],[],hdrRow(['Summary','Amount','Details']),
+      ['Sales',sales,rb.length+' bills'],['Collected',collected,npay+' payments'],['Pending (this period)',due,''],['Total pending (all time)',dueAll,''],['Expenses',expTot,expR.length+' entries'],['Final Sales (Sales - Expenses)',profit,''],[],
+      hdrRow(['Collected by payment mode','Amount','Share'])].concat(modes.map(function(m){var v=r2(byPay[m]||0);return [m,v,collected>0?Math.round(v/collected*100)+'%':'']}),[[],hdrRow(['Daily sales','Sales','Pending'])],
+      days.map(function(d){return [d,r2(day[d]),r2(dayDue[d]||0)]}),[[],hdrRow(['Monthly sales','Sales','Pending'])],
+      months.map(function(m){return [m,r2(mon[m]),r2(monDue[m]||0)]}),[[],hdrRow(['Product','Quantity sold','Sales'])],
+      il.map(function(k){return [k,qtySold(items[k].u),r2(items[k].t)]}));
+    downloadSheet(rows,'Reports','reports');
+  };
   var upd=function(){repF.from=$('#rf').value;repF.to=$('#rt').value;viewReports(box)};
   ['#rf','#rt'].forEach(function(x){$(x).addEventListener('change',upd)});
   $('#rrg').onchange=function(){
