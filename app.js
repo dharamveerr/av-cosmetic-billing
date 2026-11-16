@@ -828,11 +828,10 @@ function viewBills(box){
   '<div class="row" id="hcustom"'+(hist.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div>'+
   '<div class="row"><label class="grow">'+esc(t('Customer'))+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select></label></div>'+
   '<div class="row"><label class="grow">'+esc(t('Payment'))+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select></label>'+
-  '<label class="grow sm">'+esc(t('Min total'))+'<input id="hmin" inputmode="decimal" value="'+esc(hist.min)+'"></label><label class="grow sm">'+esc(t('Max total'))+'<input id="hmax" inputmode="decimal" value="'+esc(hist.max)+'"></label>'+
   '</div><div class="chips sortbar" id="hsort"></div>'+
   '<div class="chips" id="hstat"></div><div id="hsum"></div><div id="hlist"></div></div>';
-  var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;hist.client=$('#hc').value;hist.mode=$('#hm').value;hist.min=$('#hmin').value;hist.max=$('#hmax').value;drawHist()};
-  ['#hq','#hf','#ht','#hc','#hm','#hmin','#hmax'].forEach(function(x){$(x).addEventListener('input',upd);$(x).addEventListener('change',upd)});
+  var upd=function(){hist.q=$('#hq').value;hist.from=$('#hf').value;hist.to=$('#ht').value;hist.client=$('#hc').value;hist.mode=$('#hm').value;hist.min='';hist.max='';drawHist()};
+  ['#hq','#hf','#ht','#hc','#hm'].forEach(function(x){$(x).addEventListener('input',upd);$(x).addEventListener('change',upd)});
   $('#hrange').onclick=function(e){
     var b=e.target.closest('[data-rg]');if(!b)return;
     if(b.dataset.rg==='custom'){hist.custom=true;$('#hcustom').hidden=false;drawHist();return}
