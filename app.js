@@ -669,7 +669,7 @@ function drawBill(){
 }
 function makeBill(){
   if(!cur.lines.length)return null;
-  if(cur.lines.some(function(l){return !(l.qty>0)})){toast(t('Type the quantity for every product'));return null}
+  var nq=cur.lines.filter(function(l){return !(l.qty>0)});if(nq.length){toast(t('Type the quantity for every product')+': '+nq.map(function(l){return nm(l)}).join(', '));return null}
   var cid=null,cname='Walk-in customer',cphone='';
   if(cur.clientSel&&cur.clientSel!=='walkin'){var c0=clientById(cur.clientSel);if(c0){cid=c0.id;cname=c0.name;cphone=c0.phone}}
   var tt=calc(cur),pd=paidNow(tt);
@@ -1087,7 +1087,7 @@ function viewItems(box){
       return !q||(i.name+' '+hn(i)).toLowerCase().indexOf(q)>-1;
     });
     if(pview==='min'){
-      $('#itable').innerHTML='<div class="tablewrap"><table><thead><tr><th>'+esc(t('Product'))+'</th><th class="num">'+esc(t('Price'))+'</th><th></th></tr></thead><tbody>'+
+      $('#itable').innerHTML='<div class="tablewrap"><table class="minlist"><thead><tr><th>'+esc(t('Product'))+'</th><th class="num">'+esc(t('Price'))+'</th><th></th></tr></thead><tbody>'+
       (list.length?list.map(function(i){var u=du(i),pr=u==='custom'?money(customPrice(i))+' / '+esc(uLabel(i.unitName)):u==='doz'?money(dozPrice(i))+' / '+esc(t('dozen')):money(i.price)+' / '+esc(t('pc'));
         return '<tr><td><b>'+esc(nm(i))+'</b></td><td class="num">'+pr+'</td><td class="row"><button class="small" data-edit="'+i.id+'">'+esc(t('Edit'))+'</button><button class="small danger" data-del="'+i.id+'">'+esc(t('Delete'))+'</button></td></tr>'}).join(''):
       '<tr><td colspan="3" class="muted">'+esc(db.items.length?t('No products in this view.'):t('No products yet. Add the first one with the + Add product button.'))+'</td></tr>')+'</tbody></table></div>';
