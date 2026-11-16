@@ -836,7 +836,7 @@ function paymentRows(){
   return rows;
 }
 function viewPayments(box){
-  box.innerHTML='<div class="stack"><div class="pcards" id="pcards"></div><div class="panel stack">'+
+  box.innerHTML='<div class="stack"><h2 style="margin:0">'+esc(t('Payments'))+'</h2><div class="pcards" id="pcards"></div><div class="panel stack">'+
   '<div class="row" id="pfilters"><input class="srch" id="pq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(payF.q)+'">'+rangeSel('prg',payF)+'<select id="pvs" aria-label="'+esc(t('View'))+'"><option value="date">'+esc(t('By date'))+'</option><option value="invoice">'+esc(t('By invoice'))+'</option></select>'+xlBtn('pxl')+'</div><div class="row" id="pcustom"'+(payF.custom?'':' hidden')+'><label class="grow">'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label class="grow">'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div></div><div id="plist" class="stack"></div></div>';
   var upd=function(){payF.q=$('#pq').value;payF.from=$('#pf').value;payF.to=$('#pt').value;drawPayments()};
   ['#pq','#pf','#pt'].forEach(function(x){$(x).addEventListener('input',upd)});
@@ -944,7 +944,7 @@ function viewBills(box){
   var seen={},custs=[];
   db.bills.forEach(function(b){var k=b.clientId||'walkin';if(!seen[k]){seen[k]=1;custs.push({id:k,label:nm(b,'clientName','clientNameHi')})}});
   custs.sort(function(a,c){return a.label.toLowerCase()<c.label.toLowerCase()?-1:1});
-  box.innerHTML='<div class="panel stack">'+
+  box.innerHTML='<div class="panel stack"><h2>'+esc(t('Bill history'))+'</h2>'+
   '<div class="row" id="hfilters"><input class="srch" id="hq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(hist.q)+'">'+rangeSel('hrg',hist)+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select>'+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select>'+'<select id="hs" aria-label="'+esc(t('Status'))+'"></select>'+xlBtn('hxl')+'</div>'+
   '<div class="row" id="hcustom"'+(hist.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div>'+
   '<div class="chips sortbar" id="hsort"></div>'+
@@ -1022,7 +1022,7 @@ var catsOpen=false;
 var pview=(function(){try{return localStorage.getItem('pview')==='min'?'min':'full'}catch(e){return 'full'}})();
 function viewItems(box){
   box.innerHTML='<div class="cols single" id="icols"><div class="stack"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2>'+esc(t('Product List'))+'</h2><div class="row"><button class="small" type="button" id="icatbtn">'+esc(t('Category'))+'</button><button class="small primary" type="button" id="inew">+ '+esc(t('Add product'))+'</button></div></div>'+
-  '<div class="row"><input class="grow" id="fq" placeholder="'+esc(t('Search products by name'))+'" value="'+esc(itemF.q)+'" aria-label="'+esc(t('Search products by name'))+'"><div class="row" id="ifilters"></div><div class="seg" role="group"><button type="button" class="'+(pview==='min'?'':'on')+'" data-pv="full">'+esc(t('Detailed'))+'</button><button type="button" class="'+(pview==='min'?'on':'')+'" data-pv="min">'+esc(t('Minimal'))+'</button></div></div>'+
+  '<div class="row"><div class="srow"><input class="grow" id="fq" placeholder="'+esc(t('Search products by name'))+'" value="'+esc(itemF.q)+'" aria-label="'+esc(t('Search products by name'))+'">'+xlBtn('ixl')+'</div><div class="row" id="ifilters"></div><div class="seg" role="group"><button type="button" class="'+(pview==='min'?'':'on')+'" data-pv="full">'+esc(t('Detailed'))+'</button><button type="button" class="'+(pview==='min'?'on':'')+'" data-pv="min">'+esc(t('Minimal'))+'</button></div></div>'+
   '<div id="itable"></div></div>'+
   '</div>'+
   '<div class="stack" id="catside"'+(catsOpen?'':' hidden')+'><div class="popcard"><button type="button" id="catclose" class="xclose" aria-label="'+esc(t('Cancel'))+'" title="'+esc(t('Cancel'))+'">\u2715</button><div class="panel stack" id="catpanel"></div></div></div>'+
@@ -1103,6 +1103,7 @@ function viewItems(box){
   }
   fillCats('');fillUnits('');syncCu();refreshStock(false);drawCats();drawItems();wireItemImport();
   $('#fq').addEventListener('input',function(e){itemF.q=e.target.value;drawItems()});
+  $('#ixl').onclick=function(){exportItems()};
   $('#ic').onchange=function(){$('#icnw').hidden=this.value!=='__new__';if(this.value==='__new__')$('#icn').focus()};
   var reset=function(){$('#iform').reset();$('#iid').value='';$('#ititle').textContent=t('Add product');$('#isave').textContent=t('Add product');$('#icancel').hidden=true;$('#icnw').hidden=true;syncCu()};
   function fillUnits(v){
@@ -1375,6 +1376,11 @@ function exportBills(list){
   var rows=[['Bill','Date','Time','Customer','Phone','Products','Total','Paid','Due','Status','Payment']];
   list.forEach(function(b){rows.push([b.no,b.date,b.time,b.clientName,b.clientPhone||'',b.lines.map(function(l){return l.name+' '+qtyLabel(l)}).join('; '),r2(b.total),r2(paidOf(b)),r2(dueOf(b)),statusLabel(b),b.pay])});
   downloadSheet(rows,'Bill history','bill-history');
+}
+function exportItems(){
+  var rows=[['Name','Name (Hindi)','Category','Price','Unit','Dozen price','Custom unit','Custom unit price','Stock','GST %','HSN code']];
+  db.items.forEach(function(i){rows.push([i.name,hn(i)===i.name?'':hn(i),i.category||'',i.price,i.unit||'pc',i.dozenPrice===''?'':i.dozenPrice,i.unitName||'',i.unitPrice===''?'':i.unitPrice,stockState(i)==='na'?'':stockText(i),i.gst||'',i.hsn||''])});
+  saveBlob(xlsxBlob(rows,'Products'),'AV-products-'+today()+'.xlsx');toast(t('Downloaded'));
 }
 function exportCustomers(){
   var stats={};db.bills.forEach(function(b){if(b.clientId&&b.status!=='cancelled'){var s2=stats[b.clientId]||(stats[b.clientId]={n:0,t:0,d:0});s2.n++;s2.t+=b.total;s2.d+=dueOf(b)}});
