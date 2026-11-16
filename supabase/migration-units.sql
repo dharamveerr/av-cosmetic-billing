@@ -12,3 +12,4 @@ drop policy if exists staff_all on public.units;
 create policy staff_all on public.units for all to authenticated using (true) with check (true);
 grant select, insert, update, delete on public.units to authenticated;
 alter table public.items add column if not exists stock_unit text not null default '';
+alter table public.items add column if not exists rate_pc boolean not null default false;

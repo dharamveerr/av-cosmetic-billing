@@ -202,9 +202,48 @@ header{position:sticky;top:0;z-index:11;background:var(--bg);margin-bottom:0;pad
 .cols.single{grid-template-columns:minmax(0,1fr)}
 
 /* add popups (customers, products) */
-#cside:not([hidden]),#iside:not([hidden]),#catside:not([hidden]){position:fixed;inset:0;z-index:20;background:rgba(10,8,14,.55);display:flex;padding:16px;overflow:auto}
+#cside:not([hidden]),#iside:not([hidden]),#catside:not([hidden]),#eside:not([hidden]){position:fixed;inset:0;z-index:20;background:rgba(10,8,14,.55);display:flex;padding:16px;overflow:auto}
 .popcard{position:relative;width:100%;max-width:520px;margin:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px}
 .popcard .panel{border:0;padding:0;background:none;box-shadow:none}
 .popcard h2{padding-right:38px}
 .xclose{position:absolute;top:10px;right:10px;width:32px;min-height:0;height:32px;padding:0;border-radius:50%;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center;z-index:1}
 #ifilters select{flex:1 1 140px;min-width:0}
+#hfilters select,#pfilters select{flex:1 1 150px;min-width:0}
+#hfilters .srch,#pfilters .srch{flex:2 1 240px;min-width:0}
+
+/* Payments: Received and Pending cards */
+.pcards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pcard{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:14px 16px;border-radius:14px;min-height:0;height:auto;background:var(--surface);border:1px solid var(--line)}
+.pcard .big{font-size:26px;line-height:1.2}
+.pcard.on{border-color:var(--accent);background:var(--accent-soft)}
+@media (max-width:520px){.pcard .big{font-size:21px}.pcard{padding:12px}}
+
+/* Reports */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi{display:flex;flex-direction:column;gap:4px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.kpi .big{font-size:26px;line-height:1.2}.kpi.warnc .big{color:var(--warn)}
+.modebar{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--chip)}.modebar span{display:block;height:100%}
+.modelegend{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.modeitem{display:flex;align-items:flex-start;gap:8px}.dot{width:12px;height:12px;border-radius:50%;margin-top:5px;flex:none}
+.m-cash{background:var(--accent)}.m-upi{background:#4f8cff}.m-card{background:#36b37e}.m-other{background:#a78bfa}
+.rhead,.rrow{display:grid;grid-template-columns:minmax(90px,1.3fr) 1.6fr minmax(80px,auto) minmax(64px,auto);gap:12px;align-items:center}
+.rhead{font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding-bottom:4px}
+.rhead span:nth-child(3),.rhead span:nth-child(4),.ramt,.rside{text-align:right}
+.rrow{padding:9px 0;border-top:1px solid var(--line)}
+.rtrack{height:10px;border-radius:5px;background:var(--chip);overflow:hidden}.rfill{height:100%;background:var(--accent);border-radius:5px}
+.ramt{font-weight:600}
+@media (max-width:600px){.rhead{display:none}.rrow{grid-template-columns:1fr auto auto}.rrow .rtrack{grid-column:1/-1;order:5}.kpi .big{font-size:22px}}
+#ifilters{display:contents}
+#ifilters select{flex:1 1 150px;min-width:0}
+#fq{flex:2 1 240px;min-width:0}
+#efilters select{flex:1 1 150px;min-width:0}#efilters .srch{flex:2 1 220px;min-width:0}
+.sqlbox{margin:0;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--chip);font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:pre-wrap;word-break:break-word;max-height:240px;overflow:auto}
+.qty2{display:flex;align-items:center;gap:6px}.qty2 input{width:52px;text-align:center;padding:8px 6px}
+.ratechk{display:flex;flex-direction:row;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-top:4px}.ratechk input{width:auto}
+/* product picker on the bill: a list, not boxes */
+#grid.grid{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+#grid .tile{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;height:auto;min-height:0;border:0;border-radius:0;border-bottom:1px solid var(--line);background:var(--surface);padding:11px 14px}
+#grid .tile:last-child{border-bottom:0}
+#grid .tile:hover{background:var(--chip)}
+#grid .tile .tl{display:flex;flex-direction:column;gap:2px;min-width:0;text-align:left}
+#grid .tile .price{white-space:nowrap;font-size:15px}
