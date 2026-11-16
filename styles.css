@@ -306,3 +306,8 @@ header{position:sticky;top:0;z-index:11;background:var(--bg);margin-bottom:0;pad
   .panel table.exprows td.row{grid-column:2;grid-row:2;display:flex;gap:6px;padding:4px 0 0;justify-content:flex-end}
   .panel table.exprows td.row button.small{min-height:30px;padding:2px 10px;font-size:12px}
 }
+#ifilters{display:flex;gap:8px;min-width:0}
+#ifilters select{flex:1 1 0;min-width:0}
+.srow .seg{flex:none}
+.srow .seg button{padding:6px 10px}
+@media (max-width:820px){#ifilters select{min-height:38px;padding-block:6px;padding-inline:8px;font-size:14px}.srow .seg button{min-height:38px;font-size:13px;padding:6px 9px}.srow .xlb{padding-inline:10px}.srow input{padding-inline:10px}}
