@@ -289,7 +289,7 @@ header{position:sticky;top:0;z-index:11;background:var(--bg);margin-bottom:0;pad
   .kpi .muted,.kpi .note{font-size:12px}
   .pcards{gap:8px}
 }
-.srow{display:flex;gap:8px;flex:1 1 240px;min-width:0;align-items:center}.srow #fq{flex:1 1 0;min-width:0}
+.srow{display:flex;gap:8px;flex:0 0 auto;width:100%;min-width:0;align-items:center}.srow #fq{flex:1 1 0;min-width:0}
 @media (max-width:820px){.srow{flex-basis:100%}.srow input,.srow .xlb{min-height:38px;padding-block:6px}}
 @media (max-width:820px){
   .ekpi{grid-template-columns:minmax(0,1fr)}
@@ -320,3 +320,43 @@ header{position:sticky;top:0;z-index:11;background:var(--bg);margin-bottom:0;pad
 .line .qty2 input{width:44px;min-height:36px;padding:4px}
 .line .qty2,.line .qty{flex:none;font-size:13px}
 .line .ratechk{margin-top:0;font-size:12px}
+@media (min-width:821px){#rfilters{display:flex;flex-wrap:nowrap;gap:8px;align-items:center}#rfilters select{width:auto;min-width:150px}}
+
+/* Bill history: heading row holds a second Excel button on the phone only */
+#hxl2{display:none}.hhd{display:contents}
+@media (max-width:820px){
+  .hhd{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .hhd h2{margin:0}
+  #hxl2{display:inline-flex;min-height:38px;padding-block:6px;font-size:15px}
+  #hfilters #hxl{display:none}
+  #hfilters .srch,#hfilters #hrg{grid-column:span 3;order:-2}
+  #hfilters #hc,#hfilters #hm,#hfilters #hs{grid-column:span 2;order:0;font-size:13px;padding-inline:6px 22px;height:38px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background-position:right 6px center}
+}
+
+/* Bill history: colour-bar heading and slim totals (phone only) */
+.hbar,.kpi .pc{display:none}.htt{display:contents}
+@media (max-width:820px){
+  .hhd{gap:10px}
+  .hbar{display:block;width:5px;align-self:stretch;min-height:40px;border-radius:3px;background:var(--accent);flex:none}
+  .htt{display:block;flex:1;min-width:0}
+  .hhd h2{font-size:22px;letter-spacing:-.01em;margin:0}
+}
+
+/* Section titles: big title with a colour bar (phone only) */
+@media (max-width:820px){
+  h2.pgt{display:flex;align-items:center;min-height:40px;font-size:20px;letter-spacing:-.01em;padding-left:13px;white-space:nowrap;position:relative;margin:0}
+  h2.pgt::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:3px;background:var(--accent)}
+}
+
+/* Bill history: sort chips become a dropdown on the phone */
+#hso{display:none}
+@media (max-width:820px){
+  #hsort{display:none}
+  #hfilters #hso{display:flex}
+  #hfilters #hc,#hfilters #hm,#hfilters #hso,#hfilters #hs{grid-column:span 3;order:0;font-size:14px;padding-inline:8px 24px;height:38px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+}
+
+/* Bill popup: action buttons in a neat two-column grid */
+.bact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.bact button{width:100%;min-height:42px}
+.bact button:last-child:nth-child(odd){grid-column:1/-1}

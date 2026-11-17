@@ -14,7 +14,7 @@ function nowTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+
 /* ---------- language ---------- */
 var HI={
 'AV Cosmetics & Bangle Store':'एवी कॉस्मेटिक्स और बैंगल स्टोर','Billing Desk':'बिलिंग डेस्क',
-'New bill':'नया बिल','Bill history':'बिल इतिहास','Products':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
+'New bill':'नया बिल','Sort':'क्रम','All Bill Status':'सभी बिल स्थिति','Bill history':'बिल इतिहास','Products':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
 'Example data loaded.':'नमूना डेटा लोड है।',
 'The products and customers below are samples. Edit them in Products and Customers, or clear all examples in Backup.':'नीचे दिए सामान और ग्राहक नमूने हैं। इन्हें सामान और ग्राहक टैब में बदलें, या बैकअप टैब से सभी नमूने हटाएँ।',
 'Search products by name':'नाम से सामान खोजें','All':'सभी','out of stock':'स्टॉक खत्म','left':'बचे',
@@ -96,7 +96,7 @@ var HN={'Matte Lipstick':'मैट लिपस्टिक','Kajal Pencil':'�
 'Glass Bangles (set of 12)':'काँच की चूड़ियाँ (12 का सेट)','Silk Thread Bangles (pair)':'सिल्क थ्रेड चूड़ियाँ (जोड़ी)','Kundan Bangle':'कुंदन कंगन','Lac Bangles (set of 6)':'लाख की चूड़ियाँ (6 का सेट)',
 'Priya Sharma':'प्रिया शर्मा','Anita Verma':'अनीता वर्मा','Walk-in customer':'सामान्य ग्राहक'};
 /* Automatic English to Hindi writing: common shop words first, then a phonetic fallback. */
-var HW={lipstick:'लिपस्टिक',matte:'मैट',kajal:'काजल',pencil:'पेंसिल',compact:'कॉम्पैक्ट',powder:'पाउडर',nail:'नेल',polish:'पॉलिश',face:'फेस',cream:'क्रीम',glass:'काँच',
+var HW={toda:'तोड़ा',tode:'तोड़े',lipstick:'लिपस्टिक',matte:'मैट',kajal:'काजल',pencil:'पेंसिल',compact:'कॉम्पैक्ट',powder:'पाउडर',nail:'नेल',polish:'पॉलिश',face:'फेस',cream:'क्रीम',glass:'काँच',
 bangle:'चूड़ी',bangles:'चूड़ियाँ',silk:'सिल्क',thread:'थ्रेड',kundan:'कुंदन',lac:'लाख',eyeliner:'आईलाइनर',eyeshadow:'आईशैडो',mascara:'मस्कारा',foundation:'फाउंडेशन',concealer:'कंसीलर',
 blush:'ब्लश',highlighter:'हाइलाइटर',primer:'प्राइमर',serum:'सीरम',lotion:'लोशन',shampoo:'शैम्पू',conditioner:'कंडीशनर',soap:'साबुन',oil:'तेल',hair:'हेयर',gel:'जेल',spray:'स्प्रे',
 perfume:'परफ्यूम',deodorant:'डियोडरेंट',body:'बॉडी',wash:'वॉश',scrub:'स्क्रब',mask:'मास्क',sunscreen:'सनस्क्रीन',moisturizer:'मॉइस्चराइज़र',moisturiser:'मॉइस्चराइज़र',toner:'टोनर',
@@ -111,7 +111,7 @@ sunil:'सुनील',ravi:'रवि',rahul:'राहुल',amit:'अमि
 jyoti:'ज्योति',sapna:'सपना',shweta:'श्वेता',mohan:'मोहन',lal:'लाल',jain:'जैन',agarwal:'अग्रवाल',yadav:'यादव',mishra:'मिश्रा',pandey:'पांडे',tiwari:'तिवारी',khan:'ख़ान',ali:'अली',
 fatima:'फ़ातिमा',sana:'सना',nisha:'निशा',kiran:'किरण',manju:'मंजू',sushma:'सुषमा',madhu:'मधु',mamta:'ममता',anju:'अंजू',asha:'आशा',usha:'उषा',poonam:'पूनम',sonia:'सोनिया',sonam:'सोनम',cone:'कोन',packet:'पैकेट',patel:'पटेल',rao:'राव',anarkali:'अनारकली',mehta:'मेहता',shah:'शाह',reddy:'रेड्डी',nair:'नायर',iyer:'अय्यर',joshi:'जोशी',chauhan:'चौहान',thakur:'ठाकुर',
 saxena:'सक्सेना',bansal:'बंसल',goel:'गोयल',garg:'गर्ग',kapoor:'कपूर',malhotra:'मल्होत्रा',arora:'अरोड़ा',chopra:'चोपड़ा',bhatia:'भाटिया',sethi:'सेठी',kit:'किट',stick:'स्टिक',cleaner:'क्लीनर',
-tikka:'टीका',maang:'मांग',payal:'पायल',anklet:'पायल',nose:'नाक',pin:'पिन',pins:'पिन',hairpin:'हेयरपिन',clutcher:'क्लचर',clutch:'क्लच',duo:'ड्यूओ',combo:'कॉम्बो',offer:'ऑफ़र'};
+tikka:'टीका',maang:'मांग',payal:'पायल',anklet:'पायल',nose:'नाक',pin:'पिन',pins:'पिन',hairpin:'हेयरपिन',clutcher:'क्लचर',clutch:'क्लच',duo:'ड्यूओ',combo:'कॉम्बो',offer:'ऑफ़र',karol:'करोल',bagh:'बाग',lajpat:'लाजपत',nagar:'नगर',gang:'गंज',ganj:'गंज',pokharbhinda:'पोखरभिंडा',khaincha:'खैंचा',delhi:'दिल्ली',road:'रोड',market:'मार्केट',bazar:'बाज़ार',bazaar:'बाज़ार',colony:'कॉलोनी',gali:'गली',chowk:'चौक',mandi:'मंडी',vihar:'विहार',enclave:'एन्क्लेव',sector:'सेक्टर',shop:'दुकान',no:'नं.',dharamveer:'धर्मवीर',dharmveer:'धर्मवीर',dharamvir:'धर्मवीर',dharmvir:'धर्मवीर',veer:'वीर',vir:'वीर',nandini:'नंदिनी',nandani:'नंदनी',nandan:'नंदन',vandana:'वंदना',vandna:'वंदना',mithilesh:'मिथिलेश',mithlesh:'मिथिलेश',anjali:'अंजलि',ankita:'अंकिता',ankit:'अंकित',deepak:'दीपक',dinesh:'दिनेश',mahesh:'महेश',rakesh:'राकेश',mukesh:'मुकेश',rajesh:'राजेश',naresh:'नरेश',sanjay:'संजय',vijay:'विजय',ajay:'अजय',manoj:'मनोज',vinod:'विनोद',pramod:'प्रमोद',anil:'अनिल',sundar:'सुंदर',lakshmi:'लक्ष्मी',laxmi:'लक्ष्मी',durga:'दुर्गा',kamla:'कमला',kamal:'कमल',sarita:'सरिता',savita:'सविता',babita:'बबीता',sangeeta:'संगीता',shanti:'शांति',santosh:'संतोष',sneha:'स्नेहा',swati:'स्वाति',komal:'कोमल',preeti:'प्रीति',priti:'प्रीति',reena:'रीना',renu:'रेनू',shilpa:'शिल्पा',sudha:'सुधा',sushila:'सुशीला',urmila:'उर्मिला',vinita:'विनीता',archana:'अर्चना',alka:'अलका',bhavna:'भावना',chandni:'चांदनी',deepa:'दीपा',divya:'दिव्या',indu:'इंदु',jaya:'जया',lata:'लता',monika:'मोनिका',nidhi:'निधि',pinki:'पिंकी',pinky:'पिंकी',rashmi:'रश्मि',roshni:'रोशनी',sakshi:'साक्षी',simran:'सिमरन'};
 var CONS=[['chh','छ'],['ksh','क्ष'],['kh','ख'],['gh','घ'],['ch','च'],['jh','झ'],['th','थ'],['dh','ध'],['ph','फ'],['bh','भ'],['sh','श'],['k','क'],['g','ग'],['c','क'],['j','ज'],['t','त'],['d','द'],['p','प'],['b','ब'],['n','न'],['m','म'],['y','य'],['r','र'],['l','ल'],['v','व'],['w','व'],['s','स'],['h','ह'],['f','फ'],['z','ज'],['q','क'],['x','क्स']];
 var VOW=[['aa','आ','ा'],['ee','ई','ी'],['oo','ऊ','ू'],['ai','ऐ','ै'],['au','औ','ौ'],['ou','औ','ौ'],['a','अ',''],['i','इ','ि'],['u','उ','ु'],['e','ए','े'],['o','ओ','ो']];
 function phon(w){
@@ -193,7 +193,8 @@ function bothNames(en,hi){
   if(en&&!hi)hi=hiOf(en);
   return {name:en,nameHi:hi};
 }
-function hn(o,k,h){k=k||'name';h=h||'nameHi';return (o[h]&&DEVA.test(o[h]))?o[h]:(HN[o[k]]||tr(o[k]))}
+function known(n){var w=String(n||'').toLowerCase().match(/[a-z]+/g);return !!w&&w.every(function(x){return HW[x]})}
+function hn(o,k,h){k=k||'name';h=h||'nameHi';if(HN[o[k]])return HN[o[k]];if(known(o[k]))return tr(o[k]);return (o[h]&&DEVA.test(o[h]))?o[h]:tr(o[k])}
 function nm(o,k,h){k=k||'name';return lang==='hi'?hn(o,k,h):o[k]}
 function tc(c){return lang==='hi'?(HI[c]||tr(c)):c}
 
@@ -506,6 +507,7 @@ function customPrice(i){return i.unitPrice!==''&&i.unitPrice!=null?i.unitPrice:r
 function du(i){return (i.unit==='custom'&&!hasCustom(i))?'pc':(i.unit||'pc')}
 function unitPrice(i,u){return u==='doz'?dozPrice(i):u==='custom'?customPrice(i):i.price}
 function unitFactor(i,u){return u==='doz'?12:u==='custom'?(i.unitQty||1):1}
+function adr(c){return lang==='hi'?tr(c.address||''):(c.address||'')}
 function uLabel(n){return lang==='hi'?tr(n):n}
 function unitName(u,q,o){return u==='doz'?t('dozen'):u==='custom'?uLabel((o&&o.unitName)||'unit'):(q===1?t('pc'):t('pcs'))}
 function customOpt(l){
@@ -739,8 +741,8 @@ function showBill(id,back){
   openBill=id;openLedger=null;openBack=back||null;var m=$('#modal'),due=dueOf(b);
   var run=0,plist=(b.payments||[]).length?'<h3>'+esc(t('Payments'))+'</h3><div class="tablewrap"><table style="min-width:0"><thead><tr><th>#</th><th>'+esc(t('Date'))+'</th><th>'+esc(t('Payment'))+'</th><th class="num">'+esc(t('Amount'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th></tr></thead><tbody>'+b.payments.map(function(p,n){run=r2(run+p.amount);return '<tr><td>'+(n+1)+'</td><td>'+p.date+' <span class="muted">'+p.time+'</span></td><td>'+esc(t(p.mode))+'</td><td class="num">'+money(p.amount)+'</td><td class="num">'+money(Math.max(0,b.total-run))+'</td></tr>'}).join('')+'</tbody></table></div>':'';
   m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(b.no)+'"><div class="row" style="justify-content:space-between"><div class="row" style="gap:10px;flex-wrap:nowrap">'+(back?'<button class="small" id="mback" type="button">\u2190 '+esc(t('Back'))+'</button>':'')+'<h2>'+esc(b.no)+(b.status==='cancelled'?' <span class="pill cancel">'+esc(t('Cancelled'))+'</span>':'')+'</h2></div><button class="small" id="mx">'+esc(t('Close'))+'</button></div>'+
-  '<div class="row" style="margin-top:8px">'+statusPill(b)+'<span class="note">'+esc(t('Paid'))+' '+money(paidOf(b))+' / '+money(b.total)+'</span></div><pre class="receipt">'+esc(receiptText(b))+'</pre>'+plist+'<div class="row" style="margin-top:12px"><button class="primary grow" id="msh">'+esc(t('Share PDF'))+'</button><button id="mdl">'+esc(t('Download PDF'))+'</button></div><div class="row" style="margin-top:8px"><button class="grow" id="mc">'+esc(t('Copy as text'))+'</button>'+
-  (b.status!=='cancelled'?'<button class="danger" id="mk">'+esc(t('Cancel bill'))+'</button>':'')+'<button id="mcopy">'+esc(t('Copy bill'))+'</button><button class="danger" id="mdel">'+esc(t('Delete invoice'))+'</button></div><p class="note">'+esc(t('Delete moves the invoice to the Bin for 30 days. Stock is put back. You can restore it from the Bin.'))+'</p><p class="note">'+esc(t('Send the copied text on WhatsApp, or paste it into a printing app for your thermal printer.'))+'</p></div>';
+  '<div class="row" style="margin-top:8px">'+statusPill(b)+'<span class="note">'+esc(t('Paid'))+' '+money(paidOf(b))+' / '+money(b.total)+'</span></div><pre class="receipt">'+esc(receiptText(b))+'</pre>'+plist+'<div class="bact"><button class="primary" id="msh">'+esc(t('Share PDF'))+'</button><button id="mdl">'+esc(t('Download PDF'))+'</button><button id="mc">'+esc(t('Copy as text'))+'</button><button id="mcopy">'+esc(t('Copy bill'))+'</button>'+
+  (b.status!=='cancelled'?'<button class="danger" id="mk">'+esc(t('Cancel bill'))+'</button>':'')+'<button class="danger" id="mdel">'+esc(t('Delete invoice'))+'</button></div></div>';
   m.hidden=false;
   $('#mx').onclick=closeModal;
   if(back)$('#mback').onclick=function(){back()};
@@ -841,7 +843,7 @@ function paymentRows(){
   return rows;
 }
 function viewPayments(box){
-  box.innerHTML='<div class="stack"><h2 style="margin:0">'+esc(t('Payments'))+'</h2><div class="pcards" id="pcards"></div><div class="panel stack">'+
+  box.innerHTML='<div class="stack"><h2 class="pgt" style="margin:0">'+esc(t('Payments'))+'</h2><div class="pcards" id="pcards"></div><div class="panel stack">'+
   '<div class="row" id="pfilters"><input class="srch" id="pq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(payF.q)+'">'+rangeSel('prg',payF)+'<select id="pvs" aria-label="'+esc(t('View'))+'"><option value="date">'+esc(t('By date'))+'</option><option value="invoice">'+esc(t('By invoice'))+'</option></select>'+xlBtn('pxl')+'</div><div class="row" id="pcustom"'+(payF.custom?'':' hidden')+'><label class="grow">'+esc(t('From'))+'<input id="pf" type="date" value="'+payF.from+'"></label><label class="grow">'+esc(t('To'))+'<input id="pt" type="date" value="'+payF.to+'"></label></div></div><div id="plist" class="stack"></div></div>';
   var upd=function(){payF.q=$('#pq').value;payF.from=$('#pf').value;payF.to=$('#pt').value;drawPayments()};
   ['#pq','#pf','#pt'].forEach(function(x){$(x).addEventListener('input',upd)});
@@ -949,8 +951,8 @@ function viewBills(box){
   var seen={},custs=[];
   db.bills.forEach(function(b){var k=b.clientId||'walkin';if(!seen[k]){seen[k]=1;custs.push({id:k,label:nm(b,'clientName','clientNameHi')})}});
   custs.sort(function(a,c){return a.label.toLowerCase()<c.label.toLowerCase()?-1:1});
-  box.innerHTML='<div class="panel stack"><h2>'+esc(t('Bill history'))+'</h2>'+
-  '<div class="row" id="hfilters"><input class="srch" id="hq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(hist.q)+'">'+rangeSel('hrg',hist)+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select>'+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select>'+'<select id="hs" aria-label="'+esc(t('Status'))+'"></select>'+xlBtn('hxl')+'</div>'+
+  box.innerHTML='<div class="panel stack"><div class="hhd"><span class="hbar" aria-hidden="true"></span><div class="htt"><h2>'+esc(t('Bill history'))+'</h2></div>'+xlBtn('hxl2')+'</div>'+
+  '<div class="row" id="hfilters"><input class="srch" id="hq" placeholder="'+esc(t('Search'))+': '+esc(t('Customer name, phone or bill number'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(hist.q)+'">'+rangeSel('hrg',hist)+'<select id="hc"><option value="all">'+esc(t('All customers'))+'</option>'+custs.map(function(c){return '<option value="'+esc(c.id)+'"'+(hist.client===c.id?' selected':'')+'>'+esc(c.label)+'</option>'}).join('')+'</select>'+'<select id="hm"><option value="all">'+esc(t('All payment modes'))+'</option>'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(hist.mode===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select>'+'<select id="hso" aria-label="'+esc(t('Sort'))+'"></select>'+'<select id="hs" aria-label="'+esc(t('Status'))+'"></select>'+xlBtn('hxl')+'</div>'+
   '<div class="row" id="hcustom"'+(hist.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="hf" type="date" value="'+hist.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="ht" type="date" value="'+hist.to+'"></label></div>'+
   '<div class="chips sortbar" id="hsort"></div>'+
   '<div id="hsum"></div><div id="hlist"></div></div>';
@@ -962,7 +964,8 @@ function viewBills(box){
     var r=histRange(k);hist.custom=false;hist.from=r[0];hist.to=r[1];$('#hf').value=r[0];$('#ht').value=r[1];$('#hcustom').hidden=true;drawHist();
   };
   $('#hs').onchange=function(){hist.status=this.value;drawHist()};
-  $('#hxl').onclick=function(){exportBills(histLast)};
+  $('#hso').onchange=function(){hist.sort=this.value;drawHist()};
+  $('#hxl').onclick=function(){exportBills(histLast)};$('#hxl2').onclick=function(){exportBills(histLast)};
   var sortBy=function(k){var c2=hist.sort.split('_');hist.sort=k+'_'+(c2[0]===k&&c2[1]==='desc'?'asc':'desc');drawHist()};
   $('#hsort').onclick=function(e){var b=e.target.closest('[data-sort]');if(b)sortBy(b.dataset.sort)};
   $('#hlist').onclick=function(e){
@@ -989,11 +992,12 @@ function drawHist(){
   histLast=list;
   $('#hrg').value=rangeKey(hist);
   $('#hsort').innerHTML=[['no','Bill'],['date','Date'],['cust','Customer'],['total','Total'],['paid','Paid'],['due','Due']].map(function(x){return '<button class="chip'+(key===x[0]?' on':'')+'" data-sort="'+x[0]+'">'+esc(t(x[1]))+(key===x[0]?(dir===1?' \u25B2':' \u25BC'):'')+'</button>'}).join('');
-  $('#hs').innerHTML=[['all','All'],['paid','Paid'],['part','Part paid'],['unpaid','Unpaid'],['cancelled','Cancelled']].map(function(x){return '<option value="'+x[0]+'"'+(hist.status===x[0]?' selected':'')+'>'+esc(t(x[1]))+' ('+cnt[x[0]]+')</option>'}).join('');
+  $('#hso').innerHTML=[['no','Bill'],['date','Date'],['cust','Customer'],['total','Total'],['paid','Paid'],['due','Due']].map(function(x){return ['desc','asc'].map(function(d){var v=x[0]+'_'+d;return '<option value="'+v+'"'+(hist.sort===v?' selected':'')+'>'+esc(t('Sort'))+': '+esc(t(x[1]))+(d==='asc'?' \u25B2':' \u25BC')+'</option>'}).join('')}).join('');
+  $('#hs').innerHTML=[['all','All Bill Status'],['paid','Paid'],['part','Part paid'],['unpaid','Unpaid'],['cancelled','Cancelled']].map(function(x){return '<option value="'+x[0]+'"'+(hist.status===x[0]?' selected':'')+'>'+esc(t(x[1]))+' ('+cnt[x[0]]+')</option>'}).join('');
   var live=list.filter(function(b){return b.status!=='cancelled'});
   var sT=r2(live.reduce(function(s2,b){return s2+b.total},0)),sP=r2(live.reduce(function(s2,b){return s2+paidOf(b)},0)),sD=r2(live.reduce(function(s2,b){return s2+dueOf(b)},0));
-  var hk=function(label,val,sub,cls){return '<div class="kpi'+(cls?' '+cls:'')+'"><span class="muted">'+esc(label)+'</span><b class="big">'+val+'</b><span class="note">'+sub+'</span></div>'};
-  $('#hsum').innerHTML='<div class="kpis">'+hk(t('Bills'),list.length,list.length!==live.length?esc(t('Cancelled'))+' '+(list.length-live.length):'&nbsp;')+hk(t('Total'),money(sT),'&nbsp;')+hk(t('Paid'),money(sP),sT>0?Math.round(sP/sT*100)+'%':'&nbsp;')+hk(t('Due'),money(sD),sD>0?esc(t('Pending')):'&nbsp;',sD>0?'warnc':'')+'</div>';
+  var hk=function(label,val,sub,cls){return '<div class="kpi'+(cls?' '+cls:'')+'"><span class="muted">'+esc(label)+(sub==='&nbsp;'?'':'<span class="pc"> \u00B7 '+sub+'</span>')+'</span><b class="big">'+val+'</b><span class="note">'+sub+'</span></div>'};
+  $('#hsum').innerHTML='<div class="kpis">'+hk(t('Bills'),list.length,list.length!==live.length?esc(t('Cancelled'))+' '+(list.length-live.length):'&nbsp;')+hk(t('Total'),money(sT),'&nbsp;')+hk(t('Paid'),money(sP),sT>0?Math.round(sP/sT*100)+'%':'&nbsp;')+hk(t('Due'),money(sD),sT>0?Math.round(sD/sT*100)+'%':'&nbsp;',sD>0?'warnc':'')+'</div>';
   var arrow=function(k){return key===k?(dir===1?' ▲':' ▼'):''};
   var th=function(k,label,cls){return '<th'+(cls?' class="'+cls+'"':'')+' data-sort="'+k+'" style="cursor:pointer">'+esc(t(label))+arrow(k)+'</th>'};
   $('#hlist').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr>'+th('no','Bill')+th('date','Date')+th('cust','Customer')+th('total','Total','num')+th('paid','Paid','num')+th('due','Due','num')+'<th></th></tr></thead><tbody>'+
@@ -1026,7 +1030,7 @@ function allCats(){
 var catsOpen=false;
 var pview=(function(){try{return localStorage.getItem('pview')==='min'?'min':'full'}catch(e){return 'full'}})();
 function viewItems(box){
-  box.innerHTML='<div class="cols single" id="icols"><div class="stack"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2>'+esc(t('Product List'))+'</h2><div class="row"><button class="small" type="button" id="icatbtn">'+esc(t('Category'))+'</button><button class="small primary" type="button" id="inew">+ '+esc(t('Add product'))+'</button></div></div>'+
+  box.innerHTML='<div class="cols single" id="icols"><div class="stack"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2 class="pgt">'+esc(t('Product List'))+'</h2><div class="row"><button class="small" type="button" id="icatbtn">'+esc(t('Category'))+'</button><button class="small primary" type="button" id="inew">+ '+esc(t('Add product'))+'</button></div></div>'+
   '<div class="stack" style="gap:8px"><div class="srow"><input class="grow" id="fq" placeholder="'+esc(t('Search products by name'))+'" value="'+esc(itemF.q)+'" aria-label="'+esc(t('Search products by name'))+'"><div class="seg" role="group"><button type="button" class="'+(pview==='min'?'':'on')+'" data-pv="full">'+esc(t('More'))+'</button><button type="button" class="'+(pview==='min'?'on':'')+'" data-pv="min">'+esc(t('Less'))+'</button></div>'+xlBtn('ixl')+'</div><div id="ifilters"></div></div>'+
   '<div id="itable"></div></div>'+
   '</div>'+
@@ -1218,10 +1222,10 @@ function viewClients(box){
   function rowOf(c){
     var s=stats[c.id]||{n:0,t:0,d:0};
     var btns='<td class="row"><button class="small" data-acct="'+c.id+'">'+esc(t('Account'))+'</button>'+(min?'':'<button class="small" data-hist="'+esc(c.name)+'">'+esc(t('Bills'))+'</button>')+'<button class="small" data-edit="'+c.id+'">'+esc(t('Edit'))+'</button></td>';
-    if(min)return '<tr><td><b>'+esc(nm(c))+'</b></td><td>'+esc(c.phone)+'</td><td>'+esc(c.address||'')+'</td><td>'+esc(fmtDay(c.created))+'</td>'+btns+'</tr>';
-    return '<tr><td><b>'+esc(nm(c))+'</b></td><td>'+numTags(c)+'</td><td>'+esc(c.address||'')+'</td><td>'+esc(fmtDay(c.created))+'</td><td class="num">'+s.n+'</td><td class="num">'+money(s.t)+'</td><td class="num'+(s.d>0?' warn':'')+'">'+money(s.d)+'</td>'+btns+'</tr>';
+    if(min)return '<tr><td><b>'+esc(nm(c))+'</b></td><td>'+esc(c.phone)+'</td><td>'+esc(adr(c))+'</td><td>'+esc(fmtDay(c.created))+'</td>'+btns+'</tr>';
+    return '<tr><td><b>'+esc(nm(c))+'</b></td><td>'+numTags(c)+'</td><td>'+esc(adr(c))+'</td><td>'+esc(fmtDay(c.created))+'</td><td class="num">'+s.n+'</td><td class="num">'+money(s.t)+'</td><td class="num'+(s.d>0?' warn':'')+'">'+money(s.d)+'</td>'+btns+'</tr>';
   }
-  box.innerHTML='<div class="cols single" id="ccols"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2>'+esc(t('Customers'))+'</h2><div class="row"><button class="small primary" type="button" id="cnew">+ '+esc(t('Add customer'))+'</button><div class="seg" role="group"><button type="button" class="'+(min?'':'on')+'" data-cv="full">'+esc(t('More'))+'</button><button type="button" class="'+(min?'on':'')+'" data-cv="min">'+esc(t('Less'))+'</button></div><button class="small" type="button" id="cxl">'+esc(t('Download Excel'))+'</button></div></div><div class="tablewrap"><table'+(min?' class="minrows"':'')+'><thead><tr>'+head+'</tr></thead><tbody>'+
+  box.innerHTML='<div class="cols single" id="ccols"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2 class="pgt">'+esc(t('Customers'))+'</h2><div class="row"><button class="small primary" type="button" id="cnew">+ '+esc(t('Add customer'))+'</button><div class="seg" role="group"><button type="button" class="'+(min?'':'on')+'" data-cv="full">'+esc(t('More'))+'</button><button type="button" class="'+(min?'on':'')+'" data-cv="min">'+esc(t('Less'))+'</button></div>'+xlBtn('cxl')+'</div></div><div class="tablewrap"><table'+(min?' class="minrows"':'')+'><thead><tr>'+head+'</tr></thead><tbody>'+
   (db.clients.length?db.clients.map(rowOf).join(''):'<tr><td colspan="'+cols+'" class="muted">'+esc(t('No customers yet. They are added when you bill a new customer.'))+'</td></tr>')+
   '</tbody></table></div></div><div class="stack" id="cside" hidden><div class="popcard"><button type="button" id="cclose" class="xclose" aria-label="'+esc(t('Cancel'))+'" title="'+esc(t('Cancel'))+'">\u2715</button>'+
   '<div class="panel stack" id="importPanel" hidden><h2>'+esc(t('Import customers from Excel'))+'</h2><p class="muted">'+esc(t('Save your Excel sheet as CSV with the columns Name, WhatsApp Number, Other Numbers (optional) and Address. Put several numbers in one cell with commas. Numbers under WhatsApp Number are marked WA and numbers under Other Numbers are marked Mob. The first WhatsApp number is the main one.'))+'</p>'+
@@ -1410,7 +1414,7 @@ function viewExpenses(box){
   }).sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0});
   var total=r2(list.reduce(function(s2,e){return s2+e.amount},0));
   var kpi=function(label,val,sub){return '<div class="kpi"><span class="muted">'+esc(label)+'</span><b class="big">'+val+'</b><span class="note">'+sub+'</span></div>'};
-  box.innerHTML='<div class="stack"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2>'+esc(t('Expenses'))+'</h2><button class="small primary" type="button" id="enew">+ '+esc(t('Add expense'))+'</button></div>'+
+  box.innerHTML='<div class="stack"><div class="panel stack"><div class="row" style="justify-content:space-between"><h2 class="pgt">'+esc(t('Expenses'))+'</h2><button class="small primary" type="button" id="enew">+ '+esc(t('Add expense'))+'</button></div>'+
   '<div class="row" id="efilters"><input class="srch" id="eq" placeholder="'+esc(t('Search'))+'" aria-label="'+esc(t('Search'))+'" value="'+esc(expF.q)+'">'+rangeSel('erg',expF)+'</div>'+
   '<div class="row" id="ecustom"'+(expF.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="ef" type="date" value="'+expF.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="et" type="date" value="'+expF.to+'"></label></div>'+
   '<div class="kpis ekpi">'+kpi(t('Total expenses'),money(total),list.length+' '+esc(t('Entries')))+'</div></div>'+
@@ -1479,7 +1483,7 @@ function viewReports(box){
   var modeBar=collected>0?'<div class="modebar">'+modes.filter(function(m){return byPay[m]>0}).map(function(m){return '<span class="'+modeCls[m]+'" style="width:'+(byPay[m]/collected*100)+'%"></span>'}).join('')+'</div>':'';
   var legend='<div class="modelegend">'+modes.map(function(m){var v=r2(byPay[m]||0);return '<div class="modeitem"><span class="dot '+modeCls[m]+'"></span><div><div class="muted">'+esc(t(m))+'</div><b>'+money(v)+'</b>'+(collected>0&&v>0?' <span class="note">'+Math.round(v/collected*100)+'%</span>':'')+'</div></div>'}).join('')+'</div>';
   box.innerHTML='<div class="stack">'+
-  '<div class="panel stack"><div class="row rhd" style="justify-content:space-between"><h2>'+esc(t('Reports'))+'</h2><div class="row" id="rfilters">'+rangeSel('rrg',repF)+''+xlBtn('rxl')+'</div></div>'+
+  '<div class="panel stack"><div class="row rhd" style="justify-content:space-between"><h2 class="pgt">'+esc(t('Reports'))+'</h2><div class="row" id="rfilters">'+rangeSel('rrg',repF)+''+xlBtn('rxl')+'</div></div>'+
   '<div class="row" id="rcustom"'+(repF.custom?'':' hidden')+'><label class="grow sm">'+esc(t('From'))+'<input id="rf" type="date" value="'+repF.from+'"></label><label class="grow sm">'+esc(t('To'))+'<input id="rt" type="date" value="'+repF.to+'"></label></div>'+
   '<div class="kpis">'+kpi(t('Sales'),money(sales),rb.length+' '+esc(t('Bills')))+kpi(t('Collected'),money(collected),npay+' '+esc(t('Payments')))+kpi(t('Pending'),money(due),esc(t('in this period')),due>0?'warnc':'')+kpi(t('Total pending'),money(dueAll),esc(t('All time')),dueAll>0?'warnc':'')+kpi(t('Expenses'),money(expTot),expR.length+' '+esc(t('Entries')))+kpi(t('Final Sales'),money(profit),esc(t('Sales'))+' \u2212 '+esc(t('Expenses')),profit<0?'warnc':'')+'</div>'+
   '</div>'+
@@ -1507,10 +1511,10 @@ function viewReports(box){
 
 /* Backup */
 function viewBackup(box){
-  box.innerHTML='<div class="cols"><div class="panel stack"><h2>'+esc(t('Back up'))+'</h2><p class="muted">'+esc(t('Copy all products, customers and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.'))+'</p>'+
+  box.innerHTML='<div class="cols"><div class="panel stack"><h2 class="pgt">'+esc(t('Back up'))+'</h2><p class="muted">'+esc(t('Copy all products, customers and bills as one block of text. Paste it into a note or a file and keep it in Google Drive or on a computer. Do this at least once a week.'))+'</p>'+
   '<div class="row"><button class="primary" id="bk">'+esc(t('Copy backup'))+'</button><button id="bshow">'+esc(t('Show backup text'))+'</button></div><textarea id="bta" hidden readonly aria-label="'+esc(t('Show backup text'))+'"></textarea>'+
   '<p class="note">'+esc(t('Your data is saved in the cloud database. Everyone you add as a user can sign in and see it. The backup contains customer phone numbers, so keep it private.'))+'</p></div>'+
-  '<div class="panel stack"><h2>'+esc(t('Restore'))+'</h2><p class="muted">'+esc(t('Pick a saved backup file, or paste the backup text below. The backup is added to the database.'))+'</p>'+
+  '<div class="panel stack"><h2 class="pgt">'+esc(t('Restore'))+'</h2><p class="muted">'+esc(t('Pick a saved backup file, or paste the backup text below. The backup is added to the database.'))+'</p>'+
   '<input type="file" id="bf" accept=".json,.txt,text/plain,application/json" aria-label="'+esc(t('Restore'))+'"><textarea id="rta" placeholder="'+esc(t('Paste backup text here'))+'" aria-label="'+esc(t('Paste backup text here'))+'"></textarea>'+
   '<div class="row"><button class="primary" id="rs">'+esc(t('Restore from text'))+'</button><button id="wipe">'+esc(t('Refresh data'))+'</button></div><p class="note">'+esc(t('Restoring adds the backup to the database. Products, customers and bills that already exist are skipped.'))+'</p></div></div>';
   var data=function(){return JSON.stringify(Object.assign({},db,{bin:[]}))};
@@ -1747,7 +1751,7 @@ function viewBin(box){
   var label=function(e){return e.type==='category'?tc(e.name):e.type==='expense'?(e.data.note||t('Expense'))+' \u00B7 '+e.data.date+' \u00B7 '+money(e.data.amount):e.type==='bill'?e.data.no+' · '+nm(e.data,'clientName','clientNameHi')+' · '+money(e.data.total):nm(e.data)};
   var liveKeys={};live.forEach(function(e){liveKeys[binKey(e)]=1});Object.keys(binSel).forEach(function(k){if(!liveKeys[k])delete binSel[k]});
   var picked=list.filter(function(e){return binSel[binKey(e)]}),allOn=list.length>0&&picked.length===list.length;
-  box.innerHTML='<div class="panel stack"><h2>'+esc(t('Bin'))+'</h2>'+
+  box.innerHTML='<div class="panel stack"><h2 class="pgt">'+esc(t('Bin'))+'</h2>'+
   '<div class="row" style="align-items:center"><select id="bf" aria-label="'+esc(t('Type'))+'" style="max-width:260px">'+kinds.map(function(k){return '<option value="'+k[0]+'"'+(binF===k[0]?' selected':'')+'>'+esc(t(k[1]))+' ('+cnt(k[0])+')</option>'}).join('')+'</select>'+
   (list.length?'<label style="flex-direction:row;align-items:center;gap:8px;white-space:nowrap"><input type="checkbox" id="bsa" style="width:auto"'+(allOn?' checked':'')+'> '+esc(t('Select all'))+'</label>':'')+
   (picked.length?'<span class="muted">'+picked.length+' '+esc(t('selected'))+'</span><button class="small primary" id="brsel">'+esc(t('Restore selected'))+'</button><button class="small danger" id="bdsel">'+esc(t('Delete selected'))+'</button>':'')+'</div>'+
