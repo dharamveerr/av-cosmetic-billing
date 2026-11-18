@@ -411,6 +411,7 @@ function render(){
   if(r==='reports'&&lastRoute!=='reports')repF=defaultRep();
   if(r==='expenses'&&lastRoute!=='expenses')expF=defaultExp();
   if(r==='payments'&&location.hash==='#pending'&&lastRoute!=='payments_p'){payF.tab='pending'}
+  if(lastRoute!==r)cntPrev={};
   lastRoute=r;
   document.documentElement.lang=lang==='hi'?'hi':'en';
   $('#ttl').innerHTML=esc(t('AV Cosmetics & Bangle Store'))+' <span class="muted" style="font-weight:400;font-size:13px">&nbsp;'+esc(t('Billing Desk'))+'</span>';
@@ -853,11 +854,33 @@ function showLedger(cid){
     if(!(amt>0)){le.textContent=t('Enter the amount received first.');le.hidden=false;$('#la').focus();return}
     if(amt>due+0.004){le.textContent=t('More than the balance due')+': '+money(due);le.hidden=false;$('#la').focus();return}
     var mode=$('#lm').value;
-    guard(lr,function(){return rpc('receive_client_payment',{p_client:cid,p_amount:amt,p_mode:mode,p_date:today(),p_time:nowTime()}).then(function(){return loadAll()}).then(function(){toast(t('Payment recorded'));showLedger(cid);render()}).catch(fail)});
+    guard(lr,function(){return rpc('receive_client_payment',{p_client:cid,p_amount:amt,p_mode:mode,p_date:today(),p_time:nowTime()}).then(function(){return loadAll()}).then(function(){toast(t('Payment recorded'));closeModal();render()}).catch(fail)});
   };
 }
 /* Payment history: every payment (part payment) with its invoice, date, time, mode and the balance left after it */
-function defaultPay(){var d=today();return {q:'',from:d,to:d,custom:false,view:'date',tab:'received',sort:'date_desc',psort:'due_desc',isort:'date_asc'}}
+/* Count-up: big numbers climb from 0 (or their last value) to the real number */
+var cntPrev={};
+function countUp(root,key){
+  if(!root)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  [].forEach.call(root.querySelectorAll('.big'),function(el,i){
+    var txt=el.textContent.trim(),m=txt.match(/^(\u20B9?)([\d,]*\.?\d+)(%?)$/);if(!m)return;
+    var isM=m[1]!=='',to=parseFloat(m[2].replace(/,/g,'')),pc=m[3],k=key+i,from=cntPrev[k]!=null?cntPrev[k]:0;
+    cntPrev[k]=to;if(reduce||from===to)return;
+    var fmt=function(v){return isM?money(v):Math.round(v)+pc},t0=null;
+    el.textContent=fmt(from);
+    var step=function(ts){
+      if(!document.body.contains(el))return;
+      if(t0===null)t0=ts;
+      var p=Math.min(1,(ts-t0)/700),e=1-Math.pow(1-p,3);
+      el.textContent=p<1?fmt(from+(to-from)*e):txt;
+      if(p<1)requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+    setTimeout(function(){if(document.body.contains(el))el.textContent=txt},1000);
+  });
+}
+function defaultPay(){var w=histRange('week');return {q:'',from:w[0],to:w[1],custom:false,view:'date',tab:'received',sort:'date_desc',psort:'due_desc',isort:'date_asc'}}
 var payF=defaultPay(),payExp={rows:[],name:'payments'};
 function paymentRows(){
   var rows=[];
@@ -906,15 +929,25 @@ function drawPayments(){
   }
   $('#pcards').innerHTML='<button type="button" class="pcard'+(pend?'':' on')+'" data-ptab="received"><span class="muted">'+esc(t('Received'))+'</span><b class="big">'+money(total)+'</b><span class="note">'+rows.length+' '+esc(t('Payments'))+' \u00B7 '+esc(t(RANGES.find(function(x){return x[0]===rangeKey(payF)}).slice(1,2)[0]))+'</span></button>'+
     '<button type="button" class="pcard'+(pend?' on':'')+'" data-ptab="pending"><span class="muted">'+esc(t('Pending'))+'</span><b class="big warn">'+money(ps.sum)+'</b><span class="note">'+ps.cl.length+' '+esc(t('Customers'))+' \u00B7 '+ps.list.length+' '+esc(t('Pending bills'))+'</span></button>';
+  countUp($('#pcards'),'p');
   $('#prg').hidden=pend;$('#pvs').hidden=pend;if(pend)$('#pcustom').hidden=true;else $('#pcustom').hidden=!payF.custom;
   var out=$('#plist');
   if(pend){out.innerHTML=pendingHtml(q);return}
   if(!rows.length){out.innerHTML='<div class="panel"><p class="muted">'+esc(t('No payments found.'))+'</p></div>';return}
   var key=function(r){return r.p.date+' '+r.p.time};
   if(payF.view==='date'){
-    rows=sortBy(rows,payF.sort,{date:key,invoice:function(r){return r.b.no},cust:function(r){return nm(r.b,'clientName','clientNameHi').toLowerCase()},pay:function(r){return r.p.mode},amount:function(r){return r.p.amount},pend:function(r){return r.after}});
+    /* one row per invoice: total received in this period, latest date, and what is still pending now */
+    var gm={},grows=[];
+    rows.forEach(function(r){
+      var g=gm[r.b.id];if(!g){g=gm[r.b.id]={b:r.b,p:{date:'',time:'',mode:'',amount:0},modes:[],cnt:0,after:r2(dueOf(r.b))};grows.push(g)}
+      g.cnt++;g.p.amount=r2(g.p.amount+r.p.amount);
+      if(key(r)>g.p.date+' '+g.p.time){g.p.date=r.p.date;g.p.time=r.p.time}
+      if(g.modes.indexOf(r.p.mode)<0)g.modes.push(r.p.mode);
+    });
+    grows.forEach(function(g){g.p.mode=g.modes.map(function(m){return t(m)}).join(', ')});
+    rows=sortBy(grows,payF.sort,{date:key,invoice:function(r){return r.b.no},cust:function(r){return nm(r.b,'clientName','clientNameHi').toLowerCase()},pay:function(r){return r.p.mode},amount:function(r){return r.p.amount},pend:function(r){return r.after}});
     out.innerHTML='<div class="panel"><div class="tablewrap"><table><thead><tr>'+sortTh('Date','date',payF.sort,'data-ps')+sortTh('Time','date',payF.sort,'data-ps')+sortTh('Invoice','invoice',payF.sort,'data-ps')+sortTh('Customer','cust',payF.sort,'data-ps')+sortTh('Payment','pay',payF.sort,'data-ps')+sortTh('Amount','amount',payF.sort,'data-ps','num')+sortTh('Pending amount','pend',payF.sort,'data-ps','num')+'<th></th></tr></thead><tbody>'+
-    rows.map(function(r){return '<tr><td>'+r.p.date+'</td><td>'+r.p.time+'</td><td><button class="small" data-view="'+r.b.id+'">'+esc(r.b.no)+'</button> <span class="note">'+r.i+' / '+r.n+'</span></td><td>'+esc(nm(r.b,'clientName','clientNameHi'))+'</td><td>'+esc(t(r.p.mode))+'</td><td class="num">'+money(r.p.amount)+'</td><td class="num'+(r.after>0?' warn':'')+'">'+money(r.after)+'</td><td>'+((r.i===r.n&&dueOf(r.b)>0&&r.b.clientId)?'<button class="small primary" data-recv="'+r.b.id+'">'+esc(t('Receive'))+'</button>':'')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
+    rows.map(function(r){return '<tr><td>'+r.p.date+'</td><td>'+r.p.time+'</td><td><button class="small" data-view="'+r.b.id+'">'+esc(r.b.no)+'</button>'+(r.cnt>1?' <span class="note">'+r.cnt+' '+esc(t('Payments'))+'</span>':'')+'</td><td>'+esc(nm(r.b,'clientName','clientNameHi'))+'</td><td>'+esc(r.p.mode)+'</td><td class="num">'+money(r.p.amount)+'</td><td class="num'+(r.after>0?' warn':'')+'">'+money(r.after)+'</td><td>'+((r.after>0&&r.b.clientId)?'<button class="small primary" data-recv="'+r.b.id+'">'+esc(t('Receive'))+'</button>':'')+'</td></tr>'}).join('')+'</tbody></table></div></div>';
     return;
   }
   var groups={},order=[];
@@ -959,7 +992,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal(
 
 /* Bill history: filters (date, status, customer, payment mode, total) and sorting. Opens on today's date each time. */
 function isoDay(d){var p=function(n){return String(n).padStart(2,'0')};return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
-function defaultHist(){var d=today();return {q:'',from:d,to:d,custom:false,status:'all',client:'all',mode:'all',min:'',max:'',sort:'date_desc',keep:false}}
+function defaultHist(){var w=histRange('week');return {q:'',from:w[0],to:w[1],custom:false,status:'all',client:'all',mode:'all',min:'',max:'',sort:'date_desc',keep:false}}
 var hist=defaultHist(),lastRoute='',histLast=[];
 function billState(b){if(b.status==='cancelled')return 'cancelled';var d=dueOf(b),p=paidOf(b);return d<=0?'paid':(p>0?'part':'unpaid')}
 function histRange(k){
@@ -1023,6 +1056,7 @@ function drawHist(){
   var sT=r2(live.reduce(function(s2,b){return s2+b.total},0)),sP=r2(live.reduce(function(s2,b){return s2+paidOf(b)},0)),sD=r2(live.reduce(function(s2,b){return s2+dueOf(b)},0));
   var hk=function(label,val,sub,cls){return '<div class="kpi'+(cls?' '+cls:'')+'"><span class="muted">'+esc(label)+(sub==='&nbsp;'?'':'<span class="pc"> \u00B7 '+sub+'</span>')+'</span><b class="big">'+val+'</b><span class="note">'+sub+'</span></div>'};
   $('#hsum').innerHTML='<div class="kpis">'+hk(t('Bills'),list.length,list.length!==live.length?esc(t('Cancelled'))+' '+(list.length-live.length):'&nbsp;')+hk(t('Total'),money(sT),'&nbsp;')+hk(t('Paid'),money(sP),sT>0?Math.round(sP/sT*100)+'%':'&nbsp;')+hk(t('Due'),money(sD),sT>0?Math.round(sD/sT*100)+'%':'&nbsp;',sD>0?'warnc':'')+'</div>';
+  countUp($('#hsum'),'h');
   var arrow=function(k){return key===k?(dir===1?' ▲':' ▼'):''};
   var th=function(k,label,cls){return '<th'+(cls?' class="'+cls+'"':'')+' data-sort="'+k+'" style="cursor:pointer">'+esc(t(label))+arrow(k)+'</th>'};
   $('#hlist').innerHTML=list.length?'<div class="tablewrap"><table><thead><tr>'+th('no','Bill')+th('date','Date')+th('cust','Customer')+th('total','Total','num')+th('paid','Paid','num')+th('due','Due','num')+'<th></th></tr></thead><tbody>'+
@@ -1429,7 +1463,7 @@ function qtySold(u){
   return Object.keys(u).sort(function(a,b){return a==='pc'?-1:b==='pc'?1:0}).map(function(k){var q=u[k];return q+' '+(k==='pc'?t(q===1?'pc':'pcs'):k==='doz'?t('dozen'):uLabel(k.slice(2)))}).join(', ');
 }
 /* Expenses: daily shop costs. Deleted ones go to the Bin like everything else. */
-function defaultExp(){var r=histRange('month');return {q:'',from:r[0],to:r[1],custom:false}}
+function defaultExp(){var r=histRange('week');return {q:'',from:r[0],to:r[1],custom:false}}
 var expF=defaultExp();
 function viewExpenses(box){
   var q=expF.q.trim().toLowerCase();
@@ -1480,7 +1514,7 @@ function viewExpenses(box){
   document.onkeydown=function(e){if(e.key==='Escape'&&$('#eside')&&!$('#eside').hidden)$('#eside').hidden=true};
 }
 
-function defaultRep(){var d=today();return {from:d,to:d,custom:false}}
+function defaultRep(){var w=histRange('week');return {from:w[0],to:w[1],custom:false}}
 var repF=defaultRep();
 function viewReports(box){
   var ok=db.bills.filter(function(b){return b.status!=='cancelled'});
@@ -1516,6 +1550,7 @@ function viewReports(box){
   '<div class="cols"><div class="panel stack"><h2>'+esc(t('Daily sales'))+'</h2>'+(days.length?'<div class="rhead"><span>'+esc(t('Date'))+'</span><span></span><span>'+esc(t('Sales'))+'</span><span>'+esc(t('Pending'))+'</span></div>'+days.map(function(d){return row(d,'',day[d]/maxD,money(day[d]),money(dayDue[d]||0),(dayDue[d]||0)>0)}).join(''):none)+'</div>'+
   '<div class="panel stack"><h2>'+esc(t('Monthly sales'))+'</h2>'+(months.length?'<div class="rhead"><span>'+esc(t('Month'))+'</span><span></span><span>'+esc(t('Sales'))+'</span><span>'+esc(t('Pending'))+'</span></div>'+months.map(function(m){return row(m,'',mon[m]/maxM,money(mon[m]),money(monDue[m]||0),(monDue[m]||0)>0)}).join(''):none)+'</div></div>'+
   '<div class="panel stack"><h2>'+esc(t('Product-wise sales'))+'</h2>'+(il.length?'<div class="rhead"><span>'+esc(t('Product'))+'</span><span></span><span>'+esc(t('Sales'))+'</span><span>%</span></div>'+il.map(function(k){return row(esc(lang==='hi'?(items[k].h||HN[k]||tr(k)):k),esc(qtySold(items[k].u)),items[k].t/maxI,money(items[k].t),Math.round(items[k].t/totI*100)+'%',false)}).join(''):none)+'<p class="note">'+esc(t('Cancelled bills are left out of every figure.'))+'</p></div></div>';
+  countUp(box,'r');
   $('#rxl').onclick=function(){
     var rows=[hdrRow(['Report','From','To']),['AV Cosmetics & Bangle Store',repF.from||'',repF.to||''],[],hdrRow(['Summary','Amount','Details']),
       ['Sales',sales,rb.length+' bills'],['Collected',collected,npay+' payments'],['Pending (this period)',due,''],['Total pending (all time)',dueAll,''],['Expenses',expTot,expR.length+' entries'],['Final Sales (Sales - Expenses)',profit,''],[],
