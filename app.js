@@ -14,7 +14,7 @@ function nowTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+
 /* ---------- language ---------- */
 var HI={
 'AV Cosmetics & Bangle Store':'एवी कॉस्मेटिक्स और बैंगल स्टोर','Billing Desk':'बिलिंग डेस्क',
-'New bill':'नया बिल','Sort':'क्रम','Checkout':'भुगतान','Hide':'छुपाएँ','All Bill Status':'सभी बिल स्थिति','Bill history':'बिल इतिहास','Products':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
+'New bill':'नया बिल','Sort':'क्रम','Show QR':'QR दिखाएँ','Scan to pay':'भुगतान के लिए स्कैन करें','Payment received':'भुगतान मिल गया','Payment received & save':'भुगतान मिला, सेव करें','UPI ID is not set':'UPI ID सेट नहीं है','Checkout':'भुगतान','Hide':'छुपाएँ','All Bill Status':'सभी बिल स्थिति','Bill history':'बिल इतिहास','Products':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
 'Example data loaded.':'नमूना डेटा लोड है।',
 'The products and customers below are samples. Edit them in Products and Customers, or clear all examples in Backup.':'नीचे दिए सामान और ग्राहक नमूने हैं। इन्हें सामान और ग्राहक टैब में बदलें, या बैकअप टैब से सभी नमूने हटाएँ।',
 'Search products by name':'नाम से सामान खोजें','All':'सभी','out of stock':'स्टॉक खत्म','left':'बचे',
@@ -724,14 +724,34 @@ function commitBill(bill){
 }
 function saveBill(){var b=makeBill();if(b)commitBill(b)}
 /* The bill is shown exactly as the receipt will look. Nothing is saved until Confirm & save is pressed. */
+/* UPI QR: a fresh QR with the exact amount, scanned by the customer's UPI app */
+function showUpiQr(amount,note,doneLabel,onDone){
+  var cfg=(window.AV_CONFIG&&window.AV_CONFIG.upi)||{};
+  if(!cfg.id||!window.AVQR){toast(t('UPI ID is not set'));return}
+  var old=$('#qrov');if(old)old.remove();
+  var link='upi://pay?pa='+cfg.id+'&pn='+encodeURIComponent(cfg.name||'')+'&am='+r2(amount).toFixed(2)+'&cu=INR&tn='+encodeURIComponent(note||'');
+  var ov=document.createElement('div');ov.id='qrov';ov.className='qrov';
+  ov.innerHTML='<div class="qrcard" role="dialog" aria-label="'+esc(t('Scan to pay'))+'"><h2>'+esc(t('Scan to pay'))+'</h2><div class="qrbox" id="qrbox"></div><div class="qramt">'+money(amount)+'</div>'+
+    '<div class="qrnote">'+esc(cfg.name||'')+'</div><div class="qrnote">'+esc(cfg.id)+'</div>'+
+    '<div class="row" style="justify-content:center"><button type="button" id="qrx">'+esc(t('Close'))+'</button>'+(onDone?'<button type="button" class="primary grow" id="qrok">'+esc(doneLabel)+'</button>':'')+'</div></div>';
+  document.body.appendChild(ov);
+  $('#qrbox').appendChild(AVQR.canvas(link,300));
+  var close=function(){ov.remove();document.removeEventListener('keydown',esc2)};
+  var esc2=function(e){if(e.key==='Escape')close()};
+  document.addEventListener('keydown',esc2);
+  $('#qrx').onclick=close;
+  ov.onclick=function(e){if(e.target===ov)close()};
+  var ok=$('#qrok');if(ok)ok.onclick=function(){close();onDone()};
+}
 function reviewBill(){
   var bill=makeBill();if(!bill)return;
   var m=$('#modal');openBill=null;openLedger=null;
   m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(t('Review bill'))+'"><h2 class="pgt">'+esc(t('Review bill'))+'</h2><p class="note">'+esc(t('Please check the bill. It is saved only when you press Confirm & save.'))+'</p>'+
   '<pre class="receipt">'+esc(receiptText(Object.assign({},bill,{no:'\u2014'})))+'</pre>'+
-  '<div class="row stickybar"><button type="button" id="rvback">'+esc(t('Back'))+'</button><button class="primary grow" type="button" id="rvok">'+esc(t('Confirm & save'))+'</button></div></div>';
+  '<div class="row stickybar"><button type="button" id="rvback">'+esc(t('Back'))+'</button>'+(bill.pay==='UPI'&&paidOf(bill)>0?'<button type="button" id="rvqr">'+esc(t('Show QR'))+'</button>':'')+'<button class="primary grow" type="button" id="rvok">'+esc(t('Confirm & save'))+'</button></div></div>';
   m.hidden=false;
   $('#rvback').onclick=closeModal;
+  var rq=$('#rvqr');if(rq)rq.onclick=function(){showUpiQr(paidOf(bill),'AV bill',t('Payment received & save'),function(){closeModal();commitBill(bill)})};
   $('#rvok').onclick=function(){closeModal();commitBill(bill)};
 }
 function receiptText(b){
@@ -837,7 +857,7 @@ function showLedger(cid){
   var due=r2(bills.reduce(function(s,b){return s+dueOf(b)},0));
   var form=due>0?'<div class="stack" style="border-top:1px solid var(--line);padding-top:12px"><div class="row"><label class="grow">'+esc(t('Amount received now (₹)'))+'<input id="la" inputmode="decimal" autocomplete="off"></label><label class="grow">'+esc(t('Payment'))+modeSel('lm')+'</label></div>'+
     '<div class="row"><span class="muted">'+esc(t('Balance after this payment'))+':</span> <b class="warn" id="lprev">'+money(due)+'</b><button class="small" type="button" id="lfull">'+esc(t('Full balance'))+'</button></div><div class="note warn" id="lerr" hidden></div>'+
-    '<button class="primary" id="lrec">'+esc(t('Receive payment'))+'</button><p class="note">'+esc(t('Applied to the oldest unpaid bills first.'))+'</p></div>':'';
+    '<div class="row"><button class="primary grow" id="lrec">'+esc(t('Receive payment'))+'</button><button type="button" id="lqr" hidden>'+esc(t('Show QR'))+'</button></div><p class="note">'+esc(t('Applied to the oldest unpaid bills first.'))+'</p></div>':'';
   m.innerHTML='<div class="dialog wide" role="dialog" aria-label="'+esc(nm(c))+'"><div class="row" style="justify-content:space-between"><div><h2>'+esc(nm(c))+'</h2><div class="note">'+esc(c.phone||'')+'</div></div><button class="small" id="mx">'+esc(t('Close'))+'</button></div>'+
   '<div class="row" style="margin:12px 0"><h3>'+esc(t('Total pending'))+'</h3><span class="big '+(due>0?'warn':'')+'">'+money(due)+'</span></div>'+form+
   '<div class="tablewrap" style="margin-top:12px">'+(bills.length?'<table><thead><tr><th>'+esc(t('Date'))+'</th><th>'+esc(t('Invoice'))+'</th><th class="num">'+esc(t('Total'))+'</th><th class="num">'+esc(t('Paid'))+'</th><th class="num">'+esc(t('Unpaid'))+'</th><th></th></tr></thead><tbody>'+
@@ -848,6 +868,16 @@ function showLedger(cid){
   var la=$('#la');if(la){
     la.oninput=function(){$('#lerr').hidden=true;var v=parseFloat(la.value)||0,rest=Math.max(0,r2(due-v)),pv=$('#lprev');pv.textContent=money(rest);pv.className=rest>0?'warn':''};
     $('#lfull').onclick=function(){la.value=due;la.oninput()};
+  }
+  var lq=$('#lqr');if(lq){
+    var syncQ=function(){lq.hidden=$('#lm').value!=='UPI'};
+    $('#lm').onchange=syncQ;syncQ();
+    lq.onclick=function(){
+      var amt=parseFloat($('#la').value),le=$('#lerr');
+      if(!(amt>0)){le.textContent=t('Enter the amount received first.');le.hidden=false;$('#la').focus();return}
+      if(amt>due+0.004){le.textContent=t('More than the balance due')+': '+money(due);le.hidden=false;$('#la').focus();return}
+      showUpiQr(amt,'AV payment',t('Payment received'),function(){$('#lrec').click()});
+    };
   }
   var lr=$('#lrec');if(lr)lr.onclick=function(){
     var amt=parseFloat($('#la').value),le=$('#lerr');
