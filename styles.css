@@ -360,3 +360,75 @@ header{position:sticky;top:0;z-index:11;background:var(--bg);margin-bottom:0;pad
 .bact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
 .bact button{width:100%;min-height:42px}
 .bact button:last-child:nth-child(odd){grid-column:1/-1}
+
+/* New bill: tighter spacing on the phone so the bill and products fit together */
+.gstrow{display:contents}
+@media (max-width:820px){
+  .billfor{padding:6px 12px}.billfor .small{min-height:32px}
+  #billpanel{padding:10px 12px;gap:8px}
+  #billpanel .stack{gap:8px}
+  .gstrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .gstrow #moreb{min-height:32px;padding:2px 10px;align-self:center!important}
+  #billpanel .totals{column-gap:0;margin-top:2px}
+  #billpanel .totals .grand{font-size:20px;padding-top:6px;margin-top:2px}
+  #billpanel input,#billpanel select{min-height:36px}
+  #billpanel .row{gap:8px}
+  #billpanel .line{padding:6px 0}
+}
+
+/* New bill product search: search + category + unit in one line (phone only) */
+.psrow{display:contents}#qc,#qq{display:none}
+@media (max-width:820px){
+  .cols{gap:8px}
+  .psrow{display:flex;gap:6px;min-width:0}
+  .psrow #q{flex:1 1 0;min-width:0}
+  #qc,#qq{display:flex;flex:0 0 30%;min-width:0;min-height:38px;padding-inline:6px 20px;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #qq[hidden]{display:none}
+  #cats,#qcats{display:none}
+  .psrow #q{min-height:38px}
+}
+
+/* New bill: customer name and Change sit in the Current bill heading row (phone only) */
+.bphd{display:contents}.bpcust,.bpchg{display:none}
+@media (max-width:820px){
+  .billfor{display:none}
+  .bphd{display:flex;align-items:center;gap:8px;min-width:0}
+  .bphd h2.pgt{flex:none}
+  .bpcust{display:block;flex:1;min-width:0;text-align:right;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bpchg{display:inline-flex;flex:none;min-height:32px;padding:2px 10px}
+}
+
+/* New bill (phone): total strip on top, checkout part hidden until tapped, bill and products joined */
+.cko{display:contents}.tstrip{display:none}
+@media (max-width:820px){
+  #billpanel .bphd{order:0}
+  #billpanel .tstrip{order:1;display:flex;align-items:center;gap:8px;background:var(--accent-soft);border-radius:10px;padding:5px 6px 5px 12px}
+  #billpanel .tstrip .tsamt{font-size:22px;line-height:1.2}
+  #billpanel .tstrip #ckb{margin-left:auto;min-height:36px;padding:2px 12px;border-color:var(--accent);color:var(--accent);font-weight:600}
+  #billpanel .cko{order:2;display:none;flex-direction:column;gap:8px}
+  #billpanel .cko.open{display:flex}
+  #billpanel .cko .totals .grand{display:none}
+  #billpanel #lines{order:3}
+  .cols{gap:0}
+  #billpanel{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:0;padding-bottom:2px}
+  .cols>.panel:not(#billpanel){border-top-left-radius:0;border-top-right-radius:0;border-top:1px dashed var(--line);padding-top:8px}
+}
+
+.tscnt{display:none}
+@media (max-width:820px){#billpanel .tstrip .tscnt{display:inline;font-size:12px}#billpanel #lines{overscroll-behavior:contain}}
+
+/* Checkout open (phone): only the selected products and the checkout part show */
+@media (max-width:820px){
+  .cols.ckopen>.panel:not(#billpanel){display:none}
+  .cols.ckopen #billpanel{border-bottom:1px solid var(--line);border-bottom-left-radius:12px;border-bottom-right-radius:12px;padding-bottom:10px}
+  .cols.ckopen #billpanel #lines{order:2}
+  .cols.ckopen #billpanel .cko{order:3}
+}
+#grid .tile{flex:none}
+
+/* New bill (phone): Total lives in the bottom bar; the top strip only shows in the full bill view */
+@media (max-width:820px){
+  #billpanel .tstrip{display:none}
+  .cols.ckopen #billpanel .tstrip{display:flex}
+  .cols.hasbar{padding-bottom:76px}
+}

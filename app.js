@@ -14,7 +14,7 @@ function nowTime(){var d=new Date();return String(d.getHours()).padStart(2,'0')+
 /* ---------- language ---------- */
 var HI={
 'AV Cosmetics & Bangle Store':'एवी कॉस्मेटिक्स और बैंगल स्टोर','Billing Desk':'बिलिंग डेस्क',
-'New bill':'नया बिल','Sort':'क्रम','All Bill Status':'सभी बिल स्थिति','Bill history':'बिल इतिहास','Products':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
+'New bill':'नया बिल','Sort':'क्रम','Checkout':'भुगतान','Hide':'छुपाएँ','All Bill Status':'सभी बिल स्थिति','Bill history':'बिल इतिहास','Products':'सामान','Customers':'ग्राहक','Reports':'रिपोर्ट','Backup':'बैकअप',
 'Example data loaded.':'नमूना डेटा लोड है।',
 'The products and customers below are samples. Edit them in Products and Customers, or clear all examples in Backup.':'नीचे दिए सामान और ग्राहक नमूने हैं। इन्हें सामान और ग्राहक टैब में बदलें, या बैकअप टैब से सभी नमूने हटाएँ।',
 'Search products by name':'नाम से सामान खोजें','All':'सभी','out of stock':'स्टॉक खत्म','left':'बचे',
@@ -535,21 +535,16 @@ function clientLabel(){
 }
 function viewBilling(box){
   if(cur.step==='client'){drawClientStep(box);return}
-  box.innerHTML='<div class="stack"><div class="panel row" style="justify-content:space-between"><div><span class="muted">'+esc(t('Bill for'))+':</span> <b>'+esc(clientLabel())+'</b></div><button class="small" id="chg">'+esc(t('Change'))+'</button></div>'+
-  '<div class="cols"><div class="panel stack"><input id="q" placeholder="'+esc(t('Search products by name'))+'" value="'+esc(query)+'" aria-label="'+esc(t('Search products by name'))+'"><div class="chips" id="cats"></div><div class="chips" id="qcats"></div><div class="grid" id="grid"></div></div>'+
+  box.innerHTML='<div class="stack"><div class="panel row billfor" style="justify-content:space-between"><div><span class="muted">'+esc(t('Bill for'))+':</span> <b>'+esc(clientLabel())+'</b></div><button class="small" id="chg">'+esc(t('Change'))+'</button></div>'+
+  '<div class="cols"><div class="panel stack"><div class="psrow"><input id="q" placeholder="'+esc(t('Search products by name'))+'" value="'+esc(query)+'" aria-label="'+esc(t('Search products by name'))+'"><select id="qc" aria-label="'+esc(t('Category'))+'"></select><select id="qq" aria-label="'+esc(t('Unit'))+'"></select></div><div class="chips" id="cats"></div><div class="chips" id="qcats"></div><div class="grid" id="grid"></div></div>'+
   '<div class="panel stack" id="billpanel"></div></div></div><div class="cartbar" id="cartbar" hidden></div>';
   $('#chg').onclick=function(){cur.step='client';render()};
   $('#q').addEventListener('input',function(e){query=e.target.value;drawGrid()});
   drawGrid();drawBill();
   if(billIO)billIO.disconnect();
-  if('IntersectionObserver' in window){
-    cartVisible=true;
-    billIO=new IntersectionObserver(function(en){cartVisible=!en[0].isIntersecting;var cb=$('#cartbar');if(cb)cb.hidden=!cur.lines.length||!cartVisible},{rootMargin:'0px 0px -90px 0px'});
-    billIO.observe($('#billpanel'));
-  }
 }
 function drawClientStep(box){
-  box.innerHTML='<div class="panel stack" style="max-width:640px;margin:0 auto"><h2>'+esc(t('Who is this bill for?'))+'</h2>'+(cur.copyOf?'<div class="banner">'+esc(t('Copying bill'))+' <b>'+esc(cur.copyOf)+'</b> ('+cur.lines.length+' '+esc(t('Products'))+'). '+esc(t('Choose the customer for the new bill. You can add or remove products next.'))+'</div>':'')+
+  box.innerHTML='<div class="panel stack" style="max-width:640px;margin:0 auto"><h2 class="pgt">'+esc(t('Who is this bill for?'))+'</h2>'+(cur.copyOf?'<div class="banner">'+esc(t('Copying bill'))+' <b>'+esc(cur.copyOf)+'</b> ('+cur.lines.length+' '+esc(t('Products'))+'). '+esc(t('Choose the customer for the new bill. You can add or remove products next.'))+'</div>':'')+
   '<input id="cq" placeholder="'+esc(t('Search customer by name or phone'))+'" value="'+esc(cq)+'" aria-label="'+esc(t('Search customer by name or phone'))+'">'+
   '<div class="stack" id="clist" style="gap:6px"></div><div id="newc"></div></div>';
   $('#cq').addEventListener('input',function(e){cq=e.target.value;drawClist()});
@@ -593,6 +588,12 @@ function drawGrid(){
   if(filterQty!=='All'&&!act.some(function(i){return qHas(i,filterQty)}))filterQty='All';
   $('#qcats').innerHTML=qChipsHtml(act,filterQty,'data-qty');
   $('#qcats').onclick=function(e){var b=e.target.closest('[data-qty]');if(b){filterQty=b.dataset.qty;drawGrid()}};
+  $('#qc').innerHTML=cats.map(function(c){return '<option value="'+esc(c)+'"'+(c===filterCat?' selected':'')+'>'+esc(c==='All'?t('All categories'):tc(c))+'</option>'}).join('');
+  $('#qc').onchange=function(){filterCat=this.value;drawGrid()};
+  var kinds=qKinds(act);
+  $('#qq').hidden=kinds.length<2;
+  $('#qq').innerHTML=['All'].concat(kinds).map(function(k){return '<option value="'+esc(k)+'"'+(k===filterQty?' selected':'')+'>'+esc(k==='All'?t('All units'):qLabel(k))+'</option>'}).join('');
+  $('#qq').onchange=function(){filterQty=this.value;drawGrid()};
   var q=query.trim().toLowerCase();
   var list=db.items.filter(function(i){return i.active&&(filterCat==='All'||i.category===filterCat)&&(filterQty==='All'||qHas(i,filterQty))&&(!q||(i.name+' '+hn(i)).toLowerCase().indexOf(q)>-1)});
   $('#grid').innerHTML=list.length?list.map(function(i){
@@ -600,38 +601,62 @@ function drawGrid(){
     return '<button class="tile'+(out?' out':'')+'" data-add="'+i.id+'"><div class="tl"><b>'+esc(nm(i))+'</b><span>'+esc(tc(i.category))+(has?' \u00B7 '+(out?esc(t('out of stock')):stockPlain(i)+' '+esc(t('left'))):'')+'</span></div><span class="price">'+money(unitPrice(i,du(i)))+' / '+esc(unitName(du(i),1,i))+'</span></button>';
   }).join(''):'<p class="muted">'+esc(t('No products match. Add products in the Products tab.'))+'</p>';
   $('#grid').onclick=function(e){var b=e.target.closest('[data-add]');if(b)addLine(b.dataset.add)};
+  /* phone: show 6 products, the rest scroll inside the list */
+  var gd=$('#grid'),tl=gd.querySelectorAll('.tile');
+  if(window.matchMedia('(max-width:820px)').matches&&tl.length>6){
+    var h=0;for(var gi=0;gi<6;gi++)h+=tl[gi].offsetHeight;
+    gd.style.maxHeight=(h+2)+'px';gd.style.overflowY='auto';
+  }else{gd.style.maxHeight='';gd.style.overflowY=''}
 }
 function addLine(id){
   var it=itemById(id),l=cur.lines.find(function(x){return x.id===id});
   var u0=du(it);cur.paidStr='';if(l)l.qty++;else cur.lines.push({id:id,name:it.name,nameHi:it.nameHi||HN[it.name]||'',price:unitPrice(it,u0),unit:u0,unitName:u0==='custom'?it.unitName:'',factor:unitFactor(it,u0),gst:it.gst||0,showRate:it.ratePc?'pc':'doz',qty:u0==='pc'?0:1});
   drawBill();
 }
+var lastLineN=-1;
 function drawBill(){
   var p=$('#billpanel');if(!p)return;
+  var oldL=$('#lines'),prevTop=oldL?oldL.scrollTop:0;
   var c=calc(cur),left=r2(c.total-paidNow(c)),showBreak=c.disc>0||(cur.gstOn&&c.tax>0);
   var lines=cur.lines.length?cur.lines.map(function(l,i){
     var two=(l.unit||'pc')==='pc'&&!l.unitName&&(l.factor||1)===1,dz=Math.floor(l.qty/12),pz=l.qty-dz*12;
     var note='<span class="note">₹<input class="priceinp" data-price="'+i+'" inputmode="decimal" value="'+l.price+'" aria-label="'+esc(t('Price'))+'"> / '+esc(unitName(l.unit||'pc',1,l))+((l.factor||1)>1?' · '+l.qty+' × '+(l.factor||1)+' = '+(l.qty*(l.factor||1))+' '+esc(t('pcs')):'')+(priceEdited(l)?' <span class="warn">('+esc(t('edited'))+')</span>':'')+(cur.gstOn&&l.gst?' + '+l.gst+'% '+esc(t('GST')):'')+'</span>';
     var qty=two?'<div class="qty2"><input data-dz="'+i+'" inputmode="numeric" value="'+(dz||'')+'" aria-label="'+esc(t('doz'))+'"><span class="muted">'+esc(t('doz'))+'</span><input data-pz="'+i+'" inputmode="numeric" value="'+(pz||'')+'" aria-label="'+esc(t('pc'))+'"><span class="muted">'+esc(t('pc'))+'</span></div>':'<div class="qty"><button class="small" data-dec="'+i+'" aria-label="'+esc(t('Decrease'))+'">−</button><input data-qty="'+i+'" inputmode="numeric" value="'+l.qty+'" aria-label="'+esc(t('Quantity'))+'"><button class="small" data-inc="'+i+'" aria-label="'+esc(t('Increase'))+'">+</button></div>';
     return '<div class="line"><div class="l1"><b>'+esc(nm(l))+'</b><span class="num">'+money(l.price*l.qty)+'</span><button class="small" data-rm="'+i+'" aria-label="'+esc(t('Remove'))+'">✕</button></div>'+
-      '<div class="l2">'+note+(two?'':'<select class="unitsel" data-unit="'+i+'" aria-label="'+esc(t('Unit'))+'">'+pieceOpt(l)+dozOpt(l)+customOpt(l)+'</select>')+'<span class="sp"></span>'+qty+'</div>'+
+      '<div class="l2">'+note+(two?'':(function(os){return os.split('<option').length>2?'<select class="unitsel" data-unit="'+i+'" aria-label="'+esc(t('Unit'))+'">'+os+'</select>':''})(pieceOpt(l)+dozOpt(l)+customOpt(l)))+'<span class="sp"></span>'+qty+'</div>'+
       (two?'<label class="ratechk"><input type="checkbox" data-rate="'+i+'"'+(l.showRate==='pc'?' checked':'')+'> '+esc(t('Show rate per piece'))+'</label>':'')+stockWarn(l)+'</div>'
-  }).join(''):'<p class="muted">'+esc(t('Tap an product to add it to the bill.'))+'</p>';
+  }).join(''):'';
   var more=cur.more?'<div class="stack" style="border-top:1px solid var(--line);padding-top:12px">'+
     '<div class="row"><label class="grow">'+esc(t('Discount'))+'<select id="dt"><option value="flat"'+(cur.dtype==='flat'?' selected':'')+'>'+esc(t('Flat ₹'))+'</option><option value="pct"'+(cur.dtype==='pct'?' selected':'')+'>'+esc(t('Percent %'))+'</option></select></label>'+
     '<label class="grow">'+esc(t('Amount'))+'<input id="dv" inputmode="decimal" value="'+(cur.dval||'')+'" placeholder="0"></label></div>'+
     '<label>'+esc(t('Notes'))+'<input id="nt" value="'+esc(cur.notes)+'" placeholder="'+esc(t('Optional'))+'"></label></div>':'';
-  p.innerHTML='<h2>'+esc(t('Current bill'))+'</h2><div id="lines">'+lines+'</div>'+
-  '<div class="totals">'+(showBreak?'<span class="muted">'+esc(t('Subtotal'))+'</span><span class="num">'+money(c.sub)+'</span>'+
+  p.innerHTML='<div class="bphd"><h2 class="pgt">'+esc(t('Current bill'))+'</h2><b class="bpcust">'+esc(clientLabel())+'</b><button class="small bpchg" id="chg2">'+esc(t('Change'))+'</button></div><div class="tstrip"><span class="muted">'+esc(t('Total'))+'</span><b class="num tsamt">'+money(c.total)+'</b><span class="muted tscnt">'+(cur.lines.length?cur.lines.length+' '+esc(t('Products')):'')+'</span><button class="small" id="ckb" type="button">'+esc(cur.ck?t('Hide'):t('Checkout'))+(cur.ck?' \u25B4':' \u25BE')+'</button></div><div id="lines">'+lines+'</div>'+
+  '<div class="cko'+(cur.ck?' open':'')+'"><div class="totals">'+(showBreak?'<span class="muted">'+esc(t('Subtotal'))+'</span><span class="num">'+money(c.sub)+'</span>'+
     (c.disc?'<span class="muted">'+esc(t('Discount'))+'</span><span class="num">− '+money(c.disc)+'</span>':'')+
     (cur.gstOn&&c.tax?'<span class="muted">'+esc(t('GST'))+'</span><span class="num">+ '+money(c.tax)+'</span>':''):'')+
   '<span class="grand">'+esc(t('Total'))+'</span><span class="grand num">'+money(c.total)+'</span></div>'+
+  '<div class="gstrow">'+
   '<label style="flex-direction:row;align-items:center;gap:8px;color:var(--fg);font-size:15px;font-weight:600"><input type="checkbox" id="gst" style="width:auto"'+(cur.gstOn?' checked':'')+'> '+esc(t('With GST'))+'</label>'+
+  '<button class="small" id="moreb" style="align-self:flex-start">'+esc(cur.more?t('Fewer options'):t('More options'))+(cur.more?' ▴':' ▾')+'</button>'+'</div>'+
   (cur.gstOn&&cur.lines.some(function(l){return !l.gst})?'<div class="note warn">'+esc(t('Some products have no GST rate set. Add it in Products.'))+'</div>':'')+
-  '<button class="small" id="moreb" style="align-self:flex-start">'+esc(cur.more?t('Fewer options'):t('More options'))+(cur.more?' ▴':' ▾')+'</button>'+more+
+  more+
   '<div class="row" style="align-items:flex-end"><label class="grow sm">'+esc(t('Paid now'))+'<input id="pn" inputmode="decimal" value="'+esc(cur.paidStr)+'" placeholder="'+c.total+'"></label><label class="grow sm">'+esc(t('Payment'))+'<select id="pm">'+['cash','UPI','card','other'].map(function(m){return '<option value="'+m+'"'+(cur.pay===m?' selected':'')+'>'+esc(t(m))+'</option>'}).join('')+'</select></label><button class="small" id="pfull">'+esc(t('Full'))+'</button></div>'+
   '<div class="totals" style="margin-top:0"><span class="muted">'+esc(t('Balance left'))+'</span><span class="num'+(left>0?' warn':'')+'" id="leftv">'+money(left)+'</span></div><div class="note" id="leftnote"'+(left>0?'':' hidden')+'>'+esc(t('The balance will be added to the pending list.'))+'</div>'+
-  '<div class="row"><button class="primary grow" id="save"'+(cur.lines.length?'':' disabled')+'>'+esc(t('Save bill'))+'</button><button id="clear"'+(cur.lines.length?'':' disabled')+'>'+esc(t('Clear'))+'</button></div>';
+  '<div class="row"><button class="primary grow" id="save"'+(cur.lines.length?'':' disabled')+'>'+esc(t('Save bill'))+'</button><button id="clear"'+(cur.lines.length?'':' disabled')+'>'+esc(t('Clear'))+'</button></div></div>';
+  $('#ckb').onclick=function(){cur.ck=!cur.ck;drawBill();if(cur.ck)p.scrollIntoView({block:'start'})};
+  /* phone: show only the latest 2 selected products; the rest scroll inside the box */
+  var lb=$('#lines');
+  if(lb){
+    var kids=lb.children,nL=kids.length;
+    if(window.matchMedia('(max-width:820px)').matches&&nL>2&&!cur.ck){
+      lb.style.maxHeight=(kids[nL-1].offsetHeight+kids[nL-2].offsetHeight)+'px';lb.style.overflowY='auto';
+      lb.scrollTop=(cur.lines.length>lastLineN||!oldL)?lb.scrollHeight:prevTop;
+    }else{lb.style.maxHeight='';lb.style.overflowY=''}
+  }
+  lastLineN=cur.lines.length;
+  if(billIO){billIO.disconnect();var ts=$('.tstrip');if(ts)billIO.observe(ts)}
+  if(p.parentNode){p.parentNode.classList.toggle('ckopen',!!cur.ck);p.parentNode.classList.toggle('hasbar',!!cur.lines.length&&!cur.ck)}
+  $('#chg2').onclick=function(){cur.step='client';render()};
   $('#moreb').onclick=function(){cur.more=!cur.more;drawBill()};
   $('#pn').oninput=function(e){cur.paidStr=e.target.value;var cc=calc(cur),lf=r2(cc.total-paidNow(cc)),lv=$('#leftv');lv.textContent=money(lf);lv.className='num'+(lf>0?' warn':'');$('#leftnote').hidden=!(lf>0)};
   $('#pfull').onclick=function(){cur.paidStr='';drawBill()};
@@ -669,9 +694,9 @@ function drawBill(){
   $('#save').onclick=reviewBill;
   var cb=$('#cartbar');
   if(cb){
-    cb.hidden=!cur.lines.length||!cartVisible;
+    cb.hidden=!cur.lines.length||!!cur.ck;
     cb.innerHTML='<div><div class="note">'+cur.lines.length+' '+esc(t('Products'))+'</div><b style="font-size:18px">'+money(c.total)+'</b></div><button class="primary" id="cartgo">'+esc(t('View bill'))+'</button>';
-    $('#cartgo').onclick=function(){$('#billpanel').scrollIntoView({behavior:'smooth',block:'start'})};
+    $('#cartgo').onclick=function(){cur.ck=true;drawBill();$('#billpanel').scrollIntoView({block:'start'})};
   }
 }
 function makeBill(){
@@ -701,7 +726,7 @@ function saveBill(){var b=makeBill();if(b)commitBill(b)}
 function reviewBill(){
   var bill=makeBill();if(!bill)return;
   var m=$('#modal');openBill=null;openLedger=null;
-  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(t('Review bill'))+'"><h2>'+esc(t('Review bill'))+'</h2><p class="note">'+esc(t('Please check the bill. It is saved only when you press Confirm & save.'))+'</p>'+
+  m.innerHTML='<div class="dialog" role="dialog" aria-label="'+esc(t('Review bill'))+'"><h2 class="pgt">'+esc(t('Review bill'))+'</h2><p class="note">'+esc(t('Please check the bill. It is saved only when you press Confirm & save.'))+'</p>'+
   '<pre class="receipt">'+esc(receiptText(Object.assign({},bill,{no:'\u2014'})))+'</pre>'+
   '<div class="row stickybar"><button type="button" id="rvback">'+esc(t('Back'))+'</button><button class="primary grow" type="button" id="rvok">'+esc(t('Confirm & save'))+'</button></div></div>';
   m.hidden=false;
