@@ -7,6 +7,8 @@ const path = require('path');
 
 const root = __dirname;
 const firstPort = Number(process.env.PORT) || 8080;
+// Only these files are served. Everything else (.git history, supabase SQL, server.js, notes) stays private.
+const allowed = new Set(['/index.html', '/app.js', '/pdf.js', '/qr.js', '/config.js', '/styles.css']);
 const types = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -18,14 +20,22 @@ const types = {
 };
 
 function handler(req, res) {
-  let pathname = decodeURIComponent(req.url.split('?')[0]);
-  if (pathname.endsWith('/')) pathname += 'index.html';
+  if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405, { Allow: 'GET, HEAD' }); return res.end('Method not allowed'); }
+  let pathname;
+  try { pathname = decodeURIComponent(req.url.split('?')[0]); } catch (e) { res.writeHead(400); return res.end('Bad request'); }
+  if (pathname === '/') pathname = '/index.html';
+  if (!allowed.has(pathname)) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('Not found'); }
   const file = path.join(root, pathname);
-  if (!file.startsWith(root + path.sep)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.readFile(file, (err, data) => {
     if (err) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('Not found'); }
-    res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
-    res.end(data);
+    res.writeHead(200, {
+      'Content-Type': types[path.extname(file)] || 'application/octet-stream',
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'no-referrer'
+    });
+    res.end(req.method === 'HEAD' ? undefined : data);
   });
 }
 
@@ -40,7 +50,8 @@ function start(port, triesLeft) {
       process.exit(1);
     }
   });
-  server.listen(port, () => {
+  // Bind to this computer only, so other devices on the same Wi-Fi cannot reach the app.
+  server.listen(port, '127.0.0.1', () => {
     console.log('AV Cosmetics & Bangle Store billing is running at http://localhost:' + port);
     console.log('Press Ctrl + C to stop.');
   });
